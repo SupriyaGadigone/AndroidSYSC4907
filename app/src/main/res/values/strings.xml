@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AndroidSYSC4907</string>
+    <string name="organization_title">Organization</string>
+    <string name="customer_title">Customer</string>
+    <string name="write_nfc">Write to NFC</string>
+    <string name="edit_nfc">Edit a NFC</string>
+    <string name="food_restriction_name_string">Peanuts</string>
+    <string name="food_restriction_question">What are your restrictions?</string>
 </resources>

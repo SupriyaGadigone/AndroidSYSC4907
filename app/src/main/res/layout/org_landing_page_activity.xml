@@ -8,22 +8,22 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/org_button"
+        android:id="@+id/org_write_nfc_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_centerInParent="true"
-        android:text="@string/organization_title"
+        android:text="@string/write_nfc"
 
         />
 
     <Button
-        android:id="@+id/customer_button"
+        android:id="@+id/org_edit_nfc_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/org_button"
+        android:layout_below="@id/org_write_nfc_button"
         android:layout_centerInParent="true"
-        android:text="@string/customer_title"
+        android:text="@string/edit_nfc"
         />
 
 </RelativeLayout>
