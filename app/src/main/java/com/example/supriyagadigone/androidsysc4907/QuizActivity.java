@@ -11,7 +11,7 @@ public class QuizActivity extends AppCompatActivity{
 
     private RecyclerView mRecyclerView;
     private QuizAdapter mQuizAdapter;
-    String[] subjects =
+    private String[] subjects =
             {
                     "Vegan",
                     "Ovo-Vegetarian",
@@ -28,6 +28,13 @@ public class QuizActivity extends AppCompatActivity{
                     "Fish"
             };
 
+    public String[] getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(String[] subjects) {
+        this.subjects = subjects;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,5 @@ public class QuizActivity extends AppCompatActivity{
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mQuizAdapter);//responsible for providing views that represent items in the data set
-
     }
 }
