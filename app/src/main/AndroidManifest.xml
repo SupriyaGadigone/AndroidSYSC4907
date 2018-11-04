@@ -23,6 +23,8 @@
         <activity android:name=".OrgEditNfc"></activity>
         <activity android:name=".CustomerLandingPage"></activity>
         <activity android:name=".CustomerReadNfc"></activity>
+        <activity android:name=".CustomerGroceryListPage"></activity>
+
     </application>
 
 </manifest>

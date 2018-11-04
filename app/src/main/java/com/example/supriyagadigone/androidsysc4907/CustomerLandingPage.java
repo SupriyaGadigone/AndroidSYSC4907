@@ -9,6 +9,7 @@ import android.widget.Button;
 public class CustomerLandingPage extends AppCompatActivity {
 
     private Button mReadNfcButton;
+    private Button mGroceryListButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,15 @@ public class CustomerLandingPage extends AppCompatActivity {
         mReadNfcButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent quizIntent = new Intent(CustomerLandingPage.this, CustomerReadNfc.class);
+                startActivity(quizIntent);
+            }
+        });
+
+
+        mGroceryListButton = findViewById(R.id.customer_list_button);
+        mGroceryListButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent quizIntent = new Intent(CustomerLandingPage.this, CustomerGroceryListPage.class);
                 startActivity(quizIntent);
             }
         });
