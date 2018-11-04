@@ -24,7 +24,7 @@
         <activity android:name=".CustomerLandingPage"></activity>
         <activity android:name=".CustomerReadNfc"></activity>
         <activity android:name=".CustomerGroceryListPage"></activity>
-
+        <activity android:name=".CustomerProfilePage"></activity>
     </application>
 
 </manifest>

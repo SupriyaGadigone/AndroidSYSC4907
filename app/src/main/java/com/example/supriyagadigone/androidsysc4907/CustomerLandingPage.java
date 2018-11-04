@@ -10,6 +10,7 @@ public class CustomerLandingPage extends AppCompatActivity {
 
     private Button mReadNfcButton;
     private Button mGroceryListButton;
+    private Button mProfileButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,14 @@ public class CustomerLandingPage extends AppCompatActivity {
         mGroceryListButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent quizIntent = new Intent(CustomerLandingPage.this, CustomerGroceryListPage.class);
+                startActivity(quizIntent);
+            }
+        });
+
+        mProfileButton = findViewById(R.id.customer_profile_button);
+        mProfileButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent quizIntent = new Intent(CustomerLandingPage.this, CustomerProfilePage.class);
                 startActivity(quizIntent);
             }
         });
