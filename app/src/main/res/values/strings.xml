@@ -15,4 +15,6 @@
     <string name="read_nfc">Read NFC</string>
     <string name="my_grocery_list">My Grocery List</string>
     <string name="my_profile">My Profile</string>
+    <string name="read_inst_1">1. Ensure NFC Services are turned on in settings</string>
+    <string name="read_inst_2">2. Place the phone near the NFC tag </string>
 </resources>
