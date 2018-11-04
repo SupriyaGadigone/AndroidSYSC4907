@@ -5,5 +5,8 @@
     <string name="write_nfc">Write to NFC</string>
     <string name="edit_nfc">Edit a NFC</string>
     <string name="food_restriction_name_string">Peanuts</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
     <string name="food_restriction_question">What are your restrictions?</string>
+    <string name="login_button_text">Login</string>
 </resources>

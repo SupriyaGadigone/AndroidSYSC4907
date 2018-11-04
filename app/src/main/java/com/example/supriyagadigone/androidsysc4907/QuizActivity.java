@@ -11,6 +11,8 @@ public class QuizActivity extends AppCompatActivity{
 
     private RecyclerView mRecyclerView;
     private QuizAdapter mQuizAdapter;
+
+    //convert to enums
     private String[] subjects =
             {
                     "Vegan",
@@ -28,6 +30,9 @@ public class QuizActivity extends AppCompatActivity{
                     "Fish"
             };
 
+    public static final String PREFS_NAME = "PREFS_FILE";
+
+
     public String[] getSubjects() {
         return subjects;
     }
@@ -41,13 +46,24 @@ public class QuizActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_activity);
 
-
         mRecyclerView = findViewById(R.id.recycler_View);
 
-        mQuizAdapter = new QuizAdapter(subjects);
+        // load tasks from preference
+//        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+//
+//
+//        Map<String,String> allEntries = (Map<String, String>) prefs.getAll();
+//        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+//            Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+//        }
+
+        mQuizAdapter = new QuizAdapter(subjects, getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext()); //this is needed for the view of the recycler view, takes care of the scrolling as well
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mQuizAdapter);//responsible for providing views that represent items in the data set
+
     }
+
+
 }
