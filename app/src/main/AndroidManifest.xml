@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".QuizActivity"></activity>
         <activity android:name=".OrgLandingPage"></activity>
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".OrgWriteNfc"></activity>
     </application>
 
 </manifest>

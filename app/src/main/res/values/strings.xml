@@ -9,4 +9,6 @@
     <string name="password_hint">Password</string>
     <string name="food_restriction_question">What are your restrictions?</string>
     <string name="login_button_text">Login</string>
+    <string name="product_name_text">Product Name</string>
+    <string name="product_information_text">Product Information</string>
 </resources>
