@@ -1,4 +1,4 @@
-package com.example.supriyagadigone.androidsysc4907;
+package com.example.supriyagadigone.androidsysc4907.Customer.Quiz;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.supriyagadigone.androidsysc4907.Customer.CustomerLandingPage;
+import com.example.supriyagadigone.androidsysc4907.R;
 
 
 public class QuizActivity extends AppCompatActivity{

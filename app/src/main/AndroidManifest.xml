@@ -17,15 +17,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".QuizActivity"></activity>
-        <activity android:name=".OrgLandingPage"></activity>
+        <activity android:name=".Customer.Quiz.QuizActivity"></activity>
+        <activity android:name=".Organization.OrgLandingPage"></activity>
         <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".OrgWriteNfc"></activity>
-        <activity android:name=".OrgEditNfc"></activity>
-        <activity android:name=".CustomerLandingPage"></activity>
-        <activity android:name=".CustomerReadNfc"></activity>
-        <activity android:name=".CustomerGroceryListPage"></activity>
-        <activity android:name=".CustomerProfilePage"></activity>
+        <activity android:name=".Organization.OrgWriteNfc"></activity>
+        <activity android:name=".Organization.OrgEditNfc"></activity>
+        <activity android:name=".Customer.CustomerLandingPage"></activity>
+        <activity android:name=".Customer.CustomerReadNfc"></activity>
+        <activity android:name=".Customer.CustomerGroceryListPage"></activity>
+        <activity android:name=".Customer.CustomerProfilePage"></activity>
     </application>
 
 </manifest>

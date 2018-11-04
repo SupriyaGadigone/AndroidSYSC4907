@@ -1,4 +1,4 @@
-package com.example.supriyagadigone.androidsysc4907;
+package com.example.supriyagadigone.androidsysc4907.Customer.Quiz;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.supriyagadigone.androidsysc4907.R;
 
 
 public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> {

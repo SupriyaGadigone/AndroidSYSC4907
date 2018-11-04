@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizActivity;
+import com.example.supriyagadigone.androidsysc4907.Organization.OrgLandingPage;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button mCustomerButton;

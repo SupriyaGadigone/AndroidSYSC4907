@@ -1,4 +1,4 @@
-package com.example.supriyagadigone.androidsysc4907;
+package com.example.supriyagadigone.androidsysc4907.Customer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.supriyagadigone.androidsysc4907.R;
 
 import java.io.UnsupportedEncodingException;
 
