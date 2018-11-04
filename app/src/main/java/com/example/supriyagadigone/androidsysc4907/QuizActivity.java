@@ -1,16 +1,20 @@
 package com.example.supriyagadigone.androidsysc4907;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 
 
 public class QuizActivity extends AppCompatActivity{
 
     private RecyclerView mRecyclerView;
     private QuizAdapter mQuizAdapter;
+    private Button mNextButton;
 
     //convert to enums
     private String[] subjects =
@@ -63,6 +67,13 @@ public class QuizActivity extends AppCompatActivity{
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mQuizAdapter);//responsible for providing views that represent items in the data set
 
+        mNextButton = findViewById(R.id.next_button);
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent quizIntent = new Intent(QuizActivity.this, CustomerLandingPage.class);
+                startActivity(quizIntent);
+            }
+        });
     }
 
 

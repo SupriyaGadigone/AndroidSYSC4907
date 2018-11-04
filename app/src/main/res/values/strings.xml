@@ -11,4 +11,8 @@
     <string name="login_button_text">Login</string>
     <string name="product_name_text">Product Name</string>
     <string name="product_information_text">Product Information</string>
+    <string name="next">Next</string>
+    <string name="read_nfc">Read NFC</string>
+    <string name="my_grocery_list">My Grocery List</string>
+    <string name="my_profile">My Profile</string>
 </resources>

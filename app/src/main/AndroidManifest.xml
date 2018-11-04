@@ -21,6 +21,7 @@
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".OrgWriteNfc"></activity>
         <activity android:name=".OrgEditNfc"></activity>
+        <activity android:name=".CustomerLandingPage"></activity>
     </application>
 
 </manifest>
