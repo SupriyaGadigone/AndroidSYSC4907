@@ -44,20 +44,15 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
             super(itemView);
             mFoodRestrictionText = itemView.findViewById(R.id.food_restriction_name);
             mFoodRestrictionText.setOnClickListener(this);
-            addToSharedPreference(mFoodRestrictionText);
         }
 
-        private void addToSharedPreference(TextView mFoodRestrictionText){
-            SharedPreferences prefs = context.getSharedPreferences(QuizActivity.PREFS_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-
-            editor.putString(mFoodRestrictionText.getText() + "", mFoodRestrictionText.getText() + "");
-
-            editor.commit();
-        }
 
         public void onClick(View view) {
-            Log.e(TAG, "onClick " + getAdapterPosition());
+            SharedPreferences prefs = context.getSharedPreferences(QuizActivity.PREFS_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString(getAdapterPosition() + "", getAdapterPosition() + "");
+            view.setEnabled(false);
+            editor.commit();
         }
     }
 }
