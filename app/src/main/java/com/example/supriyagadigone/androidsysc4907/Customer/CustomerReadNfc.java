@@ -108,7 +108,7 @@ public class CustomerReadNfc extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             try {
                 String result = new CustomerReadNfcDataFeatchr().getUrlString(
-                        "http://74.12.190.176:8000/nfcid/" + mNfcId);
+                        "http://74.12.190.176:8000/nfcid/" + mNfcId +"/1");
 
                 Intent intent = new Intent(CustomerReadNfc.this, CustomerReadNfcData.class);
                 Bundle b = new Bundle();
