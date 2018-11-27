@@ -11,5 +11,7 @@ public class CustomerProfilePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customer_profile_page);
+
+        //TODO: add edit quiz
     }
 }

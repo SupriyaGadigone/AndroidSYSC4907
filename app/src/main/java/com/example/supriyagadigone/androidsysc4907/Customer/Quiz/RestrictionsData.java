@@ -9,7 +9,7 @@ public enum RestrictionsData {
     PESCETARIANS,
     EGGS,
     NUTS,
-    PEANUTS,
+    PENUTS,
     SHELLFISH,
     WHEAT,
     SOY,

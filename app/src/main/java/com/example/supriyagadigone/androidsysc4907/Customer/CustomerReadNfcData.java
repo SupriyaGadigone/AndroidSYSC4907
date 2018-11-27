@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizActivity;
@@ -56,7 +57,7 @@ public class CustomerReadNfcData extends AppCompatActivity {
     }
 
     private void setIngredientsData(JSONArray jsonObject) throws JSONException {
-        RestrictionsData subjects[] = RestrictionsData.values();
+        RestrictionsData savedRestrictions[] = RestrictionsData.values();
         SharedPreferences prefs = getSharedPreferences(QuizActivity.PREFS_NAME, Context.MODE_PRIVATE);
         Map<String, String> allEntries = (Map<String, String>) prefs.getAll();
 
@@ -66,7 +67,7 @@ public class CustomerReadNfcData extends AppCompatActivity {
         for (int i = 1; i < jsonObject.length(); i++) {
             ingredientNames += jsonObject.get(i) + ", ";
             for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-                if (((subjects[Integer.parseInt(entry.getKey())]).toString().toLowerCase()).equals(jsonObject.get(i).toString().toLowerCase())) {
+                if (((savedRestrictions[Integer.parseInt(entry.getKey())]).toString().toLowerCase()).equals(jsonObject.get(i).toString().toLowerCase())) {
                     mWarningRequired = true;
                 }
             }
