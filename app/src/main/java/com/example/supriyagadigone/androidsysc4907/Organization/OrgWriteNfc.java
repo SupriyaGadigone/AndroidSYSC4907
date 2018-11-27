@@ -39,9 +39,9 @@ public class OrgWriteNfc extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nfcwrite);
+        setContentView(R.layout.org_write_nfc_page);
 
-        (findViewById(R.id.button)).setOnClickListener(new OnClickListener() {
+        (findViewById(R.id.write_to_NFC)).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -80,9 +80,9 @@ public class OrgWriteNfc extends Activity {
         // Tag writing mode
         if (mWriteMode && NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
             Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            NdefMessage message = createTextMessage(((TextView)findViewById(R.id.mime)).getText().toString());
+            NdefMessage message = createTextMessage(((TextView)findViewById(R.id.product_name)).getText().toString());
             if (writeTag(message, detectedTag)) {
-                Toast.makeText(this, "Success In writing to the NFC tag", Toast.LENGTH_LONG)
+                Toast.makeText(this, "Success in writing to the NFC tag", Toast.LENGTH_LONG)
                         .show();
             }
         }
