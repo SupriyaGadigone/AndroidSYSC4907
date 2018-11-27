@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/product_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:text="@string/product_name"
+        />
+    <TextView
+    android:id="@+id/product_name_nfc"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_below="@id/product_name"
+    android:layout_centerInParent="true"
+    />
+
+    <TextView
+        android:id="@+id/ingredients"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/product_name_nfc"
+        android:layout_centerInParent="true"
+        android:text="@string/ingredients"
+        />
+
+    <TextView
+        android:id="@+id/ingredients_nfc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ingredients"
+        android:layout_centerInParent="true"
+        />
+
+    <TextView
+        android:id="@+id/warning_nfc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ingredients_nfc"
+        android:layout_centerInParent="true"
+        android:textColor="#ff0000"
+        />
+
+</RelativeLayout>

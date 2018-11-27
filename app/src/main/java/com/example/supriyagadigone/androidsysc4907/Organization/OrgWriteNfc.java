@@ -1,21 +1,8 @@
 package com.example.supriyagadigone.androidsysc4907.Organization;
 
-//import android.os.Bundle;
-//import android.support.v7.app.AppCompatActivity;
-//
-//import com.example.supriyagadigone.androidsysc4907.R;
-//
-//public class OrgWriteNfc extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.org_write_nfc_page);
-//
-//    }
-//}
-
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,7 +19,6 @@ import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +41,7 @@ public class OrgWriteNfc extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfcwrite);
 
-        ((Button) findViewById(R.id.button)).setOnClickListener(new OnClickListener() {
+        (findViewById(R.id.button)).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -94,10 +80,9 @@ public class OrgWriteNfc extends Activity {
         // Tag writing mode
         if (mWriteMode && NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
             Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            NdefRecord record = NdefRecord.createMime( ((TextView)findViewById(R.id.mime)).getText().toString(), ((TextView)findViewById(R.id.value)).getText().toString().getBytes());
-            NdefMessage message = new NdefMessage(new NdefRecord[] { record });
+            NdefMessage message = createTextMessage(((TextView)findViewById(R.id.mime)).getText().toString());
             if (writeTag(message, detectedTag)) {
-                Toast.makeText(this, "Success: Wrote placeid to nfc tag", Toast.LENGTH_LONG)
+                Toast.makeText(this, "Success In writing to the NFC tag", Toast.LENGTH_LONG)
                         .show();
             }
         }
@@ -143,5 +128,30 @@ public class OrgWriteNfc extends Activity {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public NdefMessage createTextMessage(String content) {
+        try {
+            // Get UTF-8 byte
+            byte[] lang = Locale.getDefault().getLanguage().getBytes("UTF-8");
+            byte[] text = content.getBytes("UTF-8"); // Content in UTF-8
+
+            int langSize = lang.length;
+            int textLength = text.length;
+
+            ByteArrayOutputStream payload = new ByteArrayOutputStream(1 + langSize + textLength);
+            payload.write((byte) (langSize & 0x1F));
+            payload.write(lang, 0, langSize);
+            payload.write(text, 0, textLength);
+            NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+                    NdefRecord.RTD_TEXT, new byte[0],
+                    payload.toByteArray());
+            return new NdefMessage(new NdefRecord[]{record});
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

@@ -3,7 +3,6 @@ package com.example.supriyagadigone.androidsysc4907.Customer.Quiz;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +12,15 @@ import com.example.supriyagadigone.androidsysc4907.R;
 
 
 public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> {
-    private String[] subjectValues;
-    private static final String TAG = "QuizAdapter";
+
+    private  final String TAG = "QuizAdapter";
+
+    private RestrictionsData[] mRestrictionsDataValues;
     private Context context;
 
 
-    public QuizAdapter (String[] subjectValues, Context context){
-        this.subjectValues = subjectValues;
+    public QuizAdapter (RestrictionsData[] restrictionsDataValues, Context context){
+        this.mRestrictionsDataValues = restrictionsDataValues;
         this.context = context;
     }
 
@@ -29,11 +30,11 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
     }
 
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.mFoodRestrictionText.setText(subjectValues[position]);
+        holder.mFoodRestrictionText.setText(mRestrictionsDataValues[position].toString());
     }
 
     public int getItemCount() {
-        return subjectValues.length;
+        return mRestrictionsDataValues.length;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -45,7 +46,6 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
             mFoodRestrictionText = itemView.findViewById(R.id.food_restriction_name);
             mFoodRestrictionText.setOnClickListener(this);
         }
-
 
         public void onClick(View view) {
             SharedPreferences prefs = context.getSharedPreferences(QuizActivity.PREFS_NAME, Context.MODE_PRIVATE);

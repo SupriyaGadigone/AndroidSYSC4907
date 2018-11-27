@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // have keep track of the first click so that a new Activity can open up next time
-        // have to keep track if they are customers and org
+        // TODO: have keep track of the first click so that a new Activity can open up next time??
+        // TODO: have to keep track if they are customers and org
         mOrganizationButton = findViewById(R.id.org_button);
         mOrganizationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {

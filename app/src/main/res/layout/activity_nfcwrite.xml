@@ -10,14 +10,8 @@
         android:hint="Mime-type"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="application/vnd.facebook.places" />
+        android:text="89165" />
 
-    <EditText
-        android:id="@+id/value"
-        android:hint="Value"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="180542738648332" />
 
     <Button
         android:id="@+id/button"
