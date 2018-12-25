@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/profile"
+        android:title="My Profile" />
+    <item android:id="@+id/read"
+        android:title="Read NFC Tag" />
+    <item android:id="@+id/list"
+        android:title="My Shopping List" />
+</menu>
