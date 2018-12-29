@@ -1,8 +1,10 @@
 package com.example.supriyagadigone.androidsysc4907.Customer;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
@@ -14,6 +16,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +44,10 @@ public class CustomerReadNfc extends AppCompatActivity {
     private NfcAdapter mNfcAdapter;
     private TextView mNfcDataView;
 
+    private AlertDialog.Builder alertDialogBuilder;
+    private AlertDialog alertDialog;
+    private LayoutInflater factory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +58,15 @@ public class CustomerReadNfc extends AppCompatActivity {
         mNfcDataView = findViewById(R.id.textView_explanation);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
+        factory = LayoutInflater.from(mContext);
+        alertDialogBuilder = new AlertDialog.Builder(mContext);
+
+        // set title
+        alertDialogBuilder.setTitle("Ready to Scan");
+
+        // set dialog message
+        alertDialogBuilder.setMessage("Place device near NFC product tag").setCancelable(true);
+
         if (mNfcAdapter == null) {
             Toast.makeText(this.mContext, "This device doesnt support NFC", Toast.LENGTH_SHORT).show();
             finish();
@@ -55,6 +76,26 @@ public class CustomerReadNfc extends AppCompatActivity {
             mNfcDataView.setText(R.string.nfc_disabled);
         } else {
             mNfcDataView.setText(R.string.nfc_enabled);
+
+            final View view = factory.inflate(R.layout.ready_to_scan_dialog, null);
+            alertDialogBuilder.setView(view);
+
+            // create alert dialog
+            alertDialog = alertDialogBuilder.create();
+
+            alertDialog.setButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // Write your code here to execute after dialog closed
+                    //Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            // show it
+            alertDialog.show();
+
+            // After some action
+            //alertDialog.dismiss();
+
         }
 
         handleIntent(getIntent());
@@ -184,6 +225,21 @@ public class CustomerReadNfc extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if (result != null) {
+                alertDialog.dismiss();
+                final View view2 = factory.inflate(R.layout.scanned, null);
+                alertDialogBuilder.setView(view2);
+                alertDialog = alertDialogBuilder.create();
+
+                alertDialog.setButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog closed
+                        //Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // show it
+                alertDialog.show();
+
                 mNfcDataView.setText("Read content: " + result);
                 new FetchProductData("" + result).execute();
             }
