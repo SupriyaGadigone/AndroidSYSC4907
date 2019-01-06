@@ -47,28 +47,4 @@ public class CustomerLandingPage extends AppCompatActivity {
             }
         });
     }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_customer, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.profile:
-                startActivity(new Intent(this, CustomerProfilePage.class));
-                return true;
-            case R.id.read:
-                startActivity(new Intent(this,CustomerReadNfc.class));
-                return true;
-            case R.id.list:
-                startActivity(new Intent(this, CustomerGroceryListPage.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
 }

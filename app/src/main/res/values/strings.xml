@@ -22,4 +22,6 @@
     <string name="nfc_enabled">NFC is enabled on this device</string>
     <string name="nfc_disabled">NFC is disabled on this device</string>
     <string name="warning_string">This product contains an item you have restrictions on</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
 </resources>
