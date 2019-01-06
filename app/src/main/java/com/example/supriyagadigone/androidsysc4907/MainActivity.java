@@ -4,16 +4,14 @@ import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-
-import com.example.supriyagadigone.androidsysc4907.Customer.CustomerLandingPage;
 import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizActivity;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgLandingPage;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private Button mCustomerButton;
     private Button mOrganizationButton;
@@ -25,12 +23,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        getLayoutInflater().inflate(R.layout.activity_main, frameLayout);
+        initToolbar();
 
         mCustomerButton = findViewById(R.id.customer_button);
         mCustomerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent quizIntent = new Intent(MainActivity.this, TestNavigation.class);
+                Intent quizIntent = new Intent(MainActivity.this, QuizActivity.class);
                 startActivity(quizIntent);
             }
         });

@@ -12,14 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 public class BaseActivity extends AppCompatActivity {
-    private Toolbar toolbar;
+    public Toolbar toolbar;
 
     public DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private NavigationView navigationView;
     protected Context mContext;
+    protected FrameLayout frameLayout;
 
 
     public NavigationView getNavigationView() {
@@ -31,16 +33,19 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mContext = BaseActivity.this;
 
+        setContentView(R.layout.drawer_layout);
+        frameLayout = (FrameLayout)findViewById(R.id.content_frame);
     }
 
-    @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-        initToolbar();
-    }
+//    @Override
+//    public void setContentView(int layoutResID) {
+//        super.setContentView(R.layout.drawer_layout);
+//        initToolbar();
+//    }
 
-    private void initToolbar() {
+    public void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
     }
 
@@ -51,7 +56,7 @@ public class BaseActivity extends AppCompatActivity {
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 

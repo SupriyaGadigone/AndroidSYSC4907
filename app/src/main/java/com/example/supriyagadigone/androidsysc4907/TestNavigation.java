@@ -9,9 +9,9 @@ public class TestNavigation extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.customer_grocery_list_page);
+        setContentView(R.layout.drawer_layout);
 
-        
+
     }
 
 

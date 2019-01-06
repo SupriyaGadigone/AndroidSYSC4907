@@ -9,9 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.supriyagadigone.androidsysc4907.BaseActivity;
 import com.example.supriyagadigone.androidsysc4907.R;
 
-public class CustomerLandingPage extends AppCompatActivity {
+public class CustomerLandingPage extends BaseActivity {
 
     private Button mReadNfcButton;
     private Button mGroceryListButton;
@@ -20,7 +21,10 @@ public class CustomerLandingPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.customer_landing_page_activity);
+//        setContentView(R.layout.customer_landing_page_activity);
+
+        getLayoutInflater().inflate(R.layout.customer_landing_page_activity, frameLayout);
+        initToolbar();
 
         mReadNfcButton = findViewById(R.id.customer_read_nfc_button);
         mReadNfcButton.setOnClickListener(new View.OnClickListener() {
