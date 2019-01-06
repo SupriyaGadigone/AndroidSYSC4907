@@ -8,10 +8,6 @@
     android:columnCount="2"
     tools:context=".MainActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
     <Button
         android:id="@+id/customer_read_nfc_button"
         android:layout_width="200dp"
