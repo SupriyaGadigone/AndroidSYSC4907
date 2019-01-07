@@ -6,13 +6,16 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+
+import com.example.supriyagadigone.androidsysc4907.Customer.CustomerGroceryListPage;
+import com.example.supriyagadigone.androidsysc4907.Customer.CustomerProfilePage;
+import com.example.supriyagadigone.androidsysc4907.Customer.CustomerReadNfc;
 
 public class BaseActivity extends AppCompatActivity {
     public Toolbar toolbar;
@@ -67,24 +70,29 @@ public class BaseActivity extends AppCompatActivity {
 
             public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-                // Checking if the item is in checked state or not, if not make
-                // it in checked state
-                if (menuItem.isChecked())
+                // Checking if the item is in checked state or not, if not make it in checked state
+                if (menuItem.isChecked()) {
                     menuItem.setChecked(false);
-                else
+                }
+                else {
                     menuItem.setChecked(true);
+                }
 
                 // Closing drawer on item click
                 drawerLayout.closeDrawers();
 
-                // Check to see which item was being clicked and perform
-                // appropriate action
+                // Check to see which item was being clicked and perform appropriate action
                 Intent intent;
                 switch (menuItem.getItemId()) {
 
-                    case R.id.settings:
-                        startActivity(new Intent(BaseActivity.this, TestNavigation.class));
+                    case R.id.profile:
+                        startActivity(new Intent(BaseActivity.this, CustomerProfilePage.class));
                         break;
+                    case R.id.read_nfc:
+                        startActivity(new Intent(BaseActivity.this, CustomerReadNfc.class));
+                        break;
+                    case R.id.grocery:
+                        startActivity(new Intent(BaseActivity.this, CustomerGroceryListPage.class));
                 }
                 return false;
             }
@@ -92,8 +100,7 @@ public class BaseActivity extends AppCompatActivity {
 
         // Setting the actionbarToggle to drawer layout
 
-        // calling sync state is necessay or else your hamburger icon wont show
-        // up
+        // calling sync state is necessary or else your hamburger icon wont show up
         drawerToggle.syncState();
 
     }

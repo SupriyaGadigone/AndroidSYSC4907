@@ -25,6 +25,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.supriyagadigone.androidsysc4907.BaseActivity;
 import com.example.supriyagadigone.androidsysc4907.R;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ import java.io.UnsupportedEncodingException;
  * https://www.codexpedia.com/android/android-nfc-read-and-write-example/
  * https://code.tutsplus.com/tutorials/reading-nfc-tags-with-android--mobile-17278
  */
-public class CustomerReadNfc extends AppCompatActivity {
+public class CustomerReadNfc extends BaseActivity {
 
     private static final String TAG = "CustomerReadNfc";
     public static final String MIME_TEXT_PLAIN = "text/plain";
@@ -51,7 +52,8 @@ public class CustomerReadNfc extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.customer_read_nfc_page);
+        getLayoutInflater().inflate(R.layout.customer_read_nfc_page, frameLayout);
+        initToolbar();
 
         mContext = this;
         //TODO: change this to NFC status view

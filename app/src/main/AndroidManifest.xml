@@ -36,7 +36,6 @@
         <activity android:name=".Customer.CustomerGroceryListPage"></activity>
         <activity android:name=".Customer.CustomerProfilePage"></activity>
         <activity android:name=".Customer.CustomerReadNfcData"></activity>
-        <activity android:name=".TestNavigation"></activity>
     </application>
 
 </manifest>
