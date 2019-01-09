@@ -10,7 +10,7 @@
         android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/quizButton"
+        android:backgroundTint="@color/lightPurple"
         android:text="@string/food_restriction_name_string" />
 
 </RelativeLayout>
