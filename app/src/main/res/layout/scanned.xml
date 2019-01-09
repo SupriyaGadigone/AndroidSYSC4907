@@ -7,6 +7,6 @@
         android:id="@+id/dialog_imageview"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@mipmap/check"/>
+        android:src="@drawable/ic_check_circle_black_24dp"/>
 
 </LinearLayout>

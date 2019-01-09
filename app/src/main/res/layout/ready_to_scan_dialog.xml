@@ -7,6 +7,6 @@
         android:id="@+id/dialog_imageview"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@mipmap/scan"/>
+        android:src="@drawable/ic_tap_and_play_black_24dp"/>
 
 </LinearLayout>
