@@ -25,7 +25,6 @@ public class MainActivity extends BaseActivity {
         mCustomerButton = findViewById(R.id.customer_button);
         mCustomerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //Intent quizIntent = new Intent(MainActivity.this, QuizActivity.class);
                 Intent quizIntent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(quizIntent);
             }
