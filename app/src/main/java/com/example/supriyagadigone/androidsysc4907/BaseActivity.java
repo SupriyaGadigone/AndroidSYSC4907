@@ -26,34 +26,23 @@ public class BaseActivity extends AppCompatActivity {
     protected Context mContext;
     protected FrameLayout frameLayout;
 
-
-    public NavigationView getNavigationView() {
-        return navigationView;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = BaseActivity.this;
 
         setContentView(R.layout.drawer_layout);
-        frameLayout = (FrameLayout)findViewById(R.id.content_frame);
+        frameLayout = findViewById(R.id.content_frame);
     }
 
-//    @Override
-//    public void setContentView(int layoutResID) {
-//        super.setContentView(R.layout.drawer_layout);
-//        initToolbar();
-//    }
-
     public void initToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
     }
 
     private void setUpNav() {
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(BaseActivity.this, drawerLayout, R.string.app_name, R.string.app_name);
         drawerLayout.addDrawerListener(drawerToggle);
 
@@ -61,7 +50,7 @@ public class BaseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
 
 
         // Setting Navigation View Item Selected Listener to handle the item
@@ -99,7 +88,6 @@ public class BaseActivity extends AppCompatActivity {
         });
 
         // Setting the actionbarToggle to drawer layout
-
         // calling sync state is necessary or else your hamburger icon wont show up
         drawerToggle.syncState();
 
@@ -130,15 +118,6 @@ public class BaseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item))
             return true;
-
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
 
         return super.onOptionsItemSelected(item) ;
     }

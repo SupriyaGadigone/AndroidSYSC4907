@@ -87,16 +87,13 @@ public class CustomerReadNfc extends BaseActivity {
 
             alertDialog.setButton("Cancel", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    // Write your code here to execute after dialog closed
-                    //Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
                 }
             });
 
             // show it
             alertDialog.show();
 
-            // After some action
-            //alertDialog.dismiss();
+
 
         }
 
@@ -235,7 +232,6 @@ public class CustomerReadNfc extends BaseActivity {
                 alertDialog.setButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog closed
-                        //Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
                     }
                 });
 

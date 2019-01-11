@@ -16,10 +16,6 @@ public class MainActivity extends BaseActivity {
     private Button mCustomerButton;
     private Button mOrganizationButton;
 
-    private DrawerLayout dl;
-    private ActionBarDrawerToggle t;
-    private NavigationView nv;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,44 +40,6 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-//        dl = (DrawerLayout)findViewById(R.id.navigation_drawer);
-//        t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
-//
-//        dl.addDrawerListener(t);
-//        t.syncState();
-//
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//
-//        nv = (NavigationView)findViewById(R.id.nv);
-//        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                int id = item.getItemId();
-//                switch(id)
-//                {
-//                    case R.id.account:
-//                        Toast.makeText(MainActivity.this, "My Account",Toast.LENGTH_SHORT).show();
-//                    case R.id.settings:
-//                        Toast.makeText(MainActivity.this, "Settings",Toast.LENGTH_SHORT).show();
-//                    case R.id.mycart:
-//                        Toast.makeText(MainActivity.this, "My Cart",Toast.LENGTH_SHORT).show();
-//                    default:
-//                        return true;
-//                }
-//
-//
-//
-//
-//            }
-//        });
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//        if(t.onOptionsItemSelected(item))
-//            return true;
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 }
