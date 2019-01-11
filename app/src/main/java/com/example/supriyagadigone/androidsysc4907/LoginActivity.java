@@ -1,25 +1,21 @@
 package com.example.supriyagadigone.androidsysc4907;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
 import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizActivity;
 
 public class LoginActivity extends AppCompatActivity {
-    private static EditText username;
-    private static EditText password;
-    private static Button login_button;
+    private  EditText username;
+    private  EditText password;
+    private  Button login_button;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,9 +31,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void LoginButton(){
-        username = (EditText)findViewById(R.id.username);
-        password = (EditText)findViewById(R.id.password);
-        login_button = (Button)findViewById(R.id.loginButton);
+        username = findViewById(R.id.username);
+        password = findViewById(R.id.password);
+        login_button = findViewById(R.id.loginButton);
 
         username.setHintTextColor(Color.LTGRAY);
         password.setHintTextColor(Color.LTGRAY);

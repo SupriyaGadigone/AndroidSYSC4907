@@ -6,20 +6,20 @@
 
 
     <EditText
-        android:id="@+id/addListEditText"
+        android:id="@+id/addGroceryItemEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="List Name"
+        android:hint="Item name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@id/btnAddList"
-        android:layout_toStartOf="@id/btnAddList"/>
+        android:layout_toLeftOf="@id/btnAddItem"
+        android:layout_toStartOf="@id/btnAddItem"/>
 
     <Button
-        android:id="@+id/btnAddList"
+        android:id="@+id/btnAddItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add List"
+        android:text="Add Item"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -31,6 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/btnAddList" />
+        android:layout_below="@id/btnAddItem" />
 
 </RelativeLayout>

@@ -1,9 +1,6 @@
 package com.example.supriyagadigone.androidsysc4907.Customer;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,16 +12,17 @@ import com.example.supriyagadigone.androidsysc4907.R;
 
 import java.util.ArrayList;
 
-public class CustomerGroceryListPage extends BaseActivity {
+public class CustomerGroceryList extends BaseActivity {
 
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLayoutInflater().inflate(R.layout.customer_grocery_list_page, frameLayout);
+        getLayoutInflater().inflate(R.layout.customer_grocery_list, frameLayout);
         initToolbar();
 
         lvItems = findViewById(R.id.listItems);
@@ -32,12 +30,12 @@ public class CustomerGroceryListPage extends BaseActivity {
         itemsAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
+
         setupListViewListener();
-        setupListViewGroceryList();
     }
 
     public void onAddItem(View v) {
-        EditText etNewItem = (EditText) findViewById(R.id.addListEditText);
+        EditText etNewItem = (EditText) findViewById(R.id.addGroceryItemEditText);
         String itemText = etNewItem.getText().toString();
         itemsAdapter.add(itemText);
         etNewItem.setText("");
@@ -60,17 +58,4 @@ public class CustomerGroceryListPage extends BaseActivity {
 
                 });
     }
-
-
-    private void setupListViewGroceryList() {
-        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                    Intent myIntent = new Intent(view.getContext(), CustomerGroceryList.class);
-                    startActivityForResult(myIntent, 0);
-                }});
-    }
-
-
 }
