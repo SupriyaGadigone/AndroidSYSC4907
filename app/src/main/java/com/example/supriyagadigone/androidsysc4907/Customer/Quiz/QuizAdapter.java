@@ -16,12 +16,15 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
     private  final String TAG = "QuizAdapter";
 
     private RestrictionsData[] mRestrictionsDataValues;
-    private Context context;
+    private Context mContext;
+    private SharedPreferences prefs;
 
 
     public QuizAdapter (RestrictionsData[] restrictionsDataValues, Context context){
         this.mRestrictionsDataValues = restrictionsDataValues;
-        this.context = context;
+        this.mContext = context;
+
+        prefs = mContext.getSharedPreferences(QuizActivity.PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -48,7 +51,6 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
         }
 
         public void onClick(View view) {
-            SharedPreferences prefs = context.getSharedPreferences(QuizActivity.PREFS_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString(getAdapterPosition() + "", getAdapterPosition() + "");
             view.setEnabled(false);

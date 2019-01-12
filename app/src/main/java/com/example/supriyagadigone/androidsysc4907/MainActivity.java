@@ -1,13 +1,10 @@
 package com.example.supriyagadigone.androidsysc4907;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import com.example.supriyagadigone.androidsysc4907.Organization.OrgLandingPage;
 
 /**
  * Landing page of the app which consist of the Organization and Customer button

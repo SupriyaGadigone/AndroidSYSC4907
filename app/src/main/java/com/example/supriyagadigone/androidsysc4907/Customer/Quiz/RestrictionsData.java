@@ -13,5 +13,6 @@ public enum RestrictionsData {
     SHELLFISH,
     WHEAT,
     SOY,
-    FISH
+    FISH,
+    DIARY
 }

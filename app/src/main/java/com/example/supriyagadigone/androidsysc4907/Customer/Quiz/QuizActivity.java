@@ -5,12 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.supriyagadigone.androidsysc4907.Customer.CustomerLandingPage;
+import com.example.supriyagadigone.androidsysc4907.Customer.CustomerTappedProducts;
 import com.example.supriyagadigone.androidsysc4907.R;
 
 public class QuizActivity extends AppCompatActivity {
@@ -38,7 +37,7 @@ public class QuizActivity extends AppCompatActivity {
         mNextButton = findViewById(R.id.next_button);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent quizIntent = new Intent(QuizActivity.this, CustomerLandingPage.class);
+                Intent quizIntent = new Intent(QuizActivity.this, CustomerTappedProducts.class);
                 startActivity(quizIntent);
             }
         });

@@ -1,13 +1,14 @@
 package com.example.supriyagadigone.androidsysc4907;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import java.util.Map;
@@ -18,8 +19,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.supriyagadigone.androidsysc4907.Customer.CustomerTappedProducts;
 import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizActivity;
-import com.example.supriyagadigone.androidsysc4907.Organization.OrgLandingPage;
+import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProducts;
 
 import java.util.HashMap;
 
@@ -39,10 +41,6 @@ public class LoginActivity extends AppCompatActivity {
 
         mUsername = findViewById(R.id.username);
         mPassword = findViewById(R.id.password);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.app_name);
-        setSupportActionBar(toolbar);
 
         mCustOrgBtn = getIntent().getStringExtra("BTN_PRESSED");
 
@@ -66,13 +64,19 @@ public class LoginActivity extends AppCompatActivity {
                             public void onResponse(String response) {
                                 Log.e("LoginActivity", "Token" + response);
                                 if (response != null) {
+                                    Intent intent;
                                     if (mCustOrgBtn.equals("0")) {
-                                        Intent intent = new Intent(LoginActivity.this, QuizActivity.class);
-                                        startActivity(intent);
+                                        SharedPreferences prefs = getSharedPreferences(QuizActivity.PREFS_NAME, Context.MODE_PRIVATE);
+                                        Map<String, String> allEntries = (Map<String, String>) prefs.getAll();
+                                        if (allEntries.entrySet().size() == 0 || allEntries.entrySet() == null) {
+                                            intent = new Intent(LoginActivity.this, QuizActivity.class);
+                                        } else {
+                                            intent = new Intent(LoginActivity.this, CustomerTappedProducts.class);
+                                        }
                                     } else {
-                                        Intent intent = new Intent(LoginActivity.this, OrgLandingPage.class);
-                                        startActivity(intent);
+                                        intent = new Intent(LoginActivity.this, OrgAllProducts.class);
                                     }
+                                    startActivity(intent);
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -90,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
                         };
 
                         mRequestQueue.add(loginRequest);
-
                     }
 
                 }

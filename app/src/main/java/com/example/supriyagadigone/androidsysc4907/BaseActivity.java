@@ -15,7 +15,6 @@ import android.widget.FrameLayout;
 
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerGroceryListPage;
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerProfilePage;
-import com.example.supriyagadigone.androidsysc4907.Customer.CustomerReadNfc;
 
 public class BaseActivity extends AppCompatActivity {
     public Toolbar toolbar;
@@ -78,7 +77,7 @@ public class BaseActivity extends AppCompatActivity {
                         startActivity(new Intent(BaseActivity.this, CustomerProfilePage.class));
                         break;
                     case R.id.read_nfc:
-                        startActivity(new Intent(BaseActivity.this, CustomerReadNfc.class));
+                        startActivity(new Intent(BaseActivity.this, ReadNfc.class));
                         break;
                     case R.id.grocery:
                         startActivity(new Intent(BaseActivity.this, CustomerGroceryListPage.class));

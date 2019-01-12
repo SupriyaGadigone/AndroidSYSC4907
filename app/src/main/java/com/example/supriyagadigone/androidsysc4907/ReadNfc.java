@@ -1,4 +1,4 @@
-package com.example.supriyagadigone.androidsysc4907.Customer;
+package com.example.supriyagadigone.androidsysc4907;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,19 +14,14 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.supriyagadigone.androidsysc4907.BaseActivity;
-import com.example.supriyagadigone.androidsysc4907.R;
+import com.example.supriyagadigone.androidsysc4907.Customer.CustomerReadNfcData;
+import com.example.supriyagadigone.androidsysc4907.Customer.CustomerReadNfcDataFeatchr;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -36,9 +31,9 @@ import java.io.UnsupportedEncodingException;
  * https://www.codexpedia.com/android/android-nfc-read-and-write-example/
  * https://code.tutsplus.com/tutorials/reading-nfc-tags-with-android--mobile-17278
  */
-public class CustomerReadNfc extends BaseActivity {
+public class ReadNfc extends BaseActivity {
 
-    private static final String TAG = "CustomerReadNfc";
+    private static final String TAG = "ReadNfc";
     public static final String MIME_TEXT_PLAIN = "text/plain";
 
     private Context mContext;
@@ -92,9 +87,6 @@ public class CustomerReadNfc extends BaseActivity {
 
             // show it
             alertDialog.show();
-
-
-
         }
 
         handleIntent(getIntent());
@@ -150,7 +142,7 @@ public class CustomerReadNfc extends BaseActivity {
                 String result = new CustomerReadNfcDataFeatchr().getUrlString(
                         "http://74.12.190.176:8000/nfcid/" + mNfcId +"/1");
 
-                Intent intent = new Intent(CustomerReadNfc.this, CustomerReadNfcData.class);
+                Intent intent = new Intent(ReadNfc.this, CustomerReadNfcData.class);
                 Bundle b = new Bundle();
                 b.putString("nfcdata", result);
                 intent.putExtras(b);
