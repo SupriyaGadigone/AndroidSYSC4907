@@ -6,7 +6,7 @@
               android:title="Read NFC Tag"/>
         <item android:id="@+id/write_nfc"
               android:icon="@drawable/ic_phonelink_ring_black_24dp"
-              android:title="Write to NFC"/>
+              android:title="Write NFC Tag"/>
         <item android:id="@+id/edit_nfc"
               android:icon="@drawable/ic_mode_edit_black_24dp"
               android:title="Edit NFC Tag"/>

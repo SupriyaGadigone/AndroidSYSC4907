@@ -24,6 +24,7 @@ public class CustomerGroceryList extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.customer_grocery_list, frameLayout);
         initToolbar();
+        mIsCustomer = true;
 
         lvItems = findViewById(R.id.listItems);
         items = new ArrayList<String>();

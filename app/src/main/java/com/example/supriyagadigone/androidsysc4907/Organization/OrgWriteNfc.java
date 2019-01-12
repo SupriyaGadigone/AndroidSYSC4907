@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Locale;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
@@ -22,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.supriyagadigone.androidsysc4907.BaseActivity;
 import com.example.supriyagadigone.androidsysc4907.R;
 
 /**
@@ -30,7 +30,7 @@ import com.example.supriyagadigone.androidsysc4907.R;
  * http://www.jessechen.net/blog/how-to-nfc-on-the-android-platform/
  * https://github.com/balloob/Android-NFC-Tag-Writer/blob/master/src/nl/paulus/nfctagwriter/MainActivity.java
  */
-public class OrgWriteNfc extends Activity {
+public class OrgWriteNfc extends BaseActivity {
 
     boolean mWriteMode = false;
     private NfcAdapter mNfcAdapter;
@@ -39,7 +39,9 @@ public class OrgWriteNfc extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.org_write_nfc_page);
+        getLayoutInflater().inflate(R.layout.org_write_nfc_page, frameLayout);
+        initToolbar();
+        mIsCustomer = false;
 
         (findViewById(R.id.write_to_NFC)).setOnClickListener(new OnClickListener() {
 

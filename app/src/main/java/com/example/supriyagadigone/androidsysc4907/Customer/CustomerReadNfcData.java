@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.example.supriyagadigone.androidsysc4907.BaseActivity;
 import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizActivity;
 import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.RestrictionsData;
 import com.example.supriyagadigone.androidsysc4907.R;
@@ -15,7 +16,7 @@ import org.json.JSONException;
 
 import java.util.Map;
 
-public class CustomerReadNfcData extends AppCompatActivity {
+public class CustomerReadNfcData extends BaseActivity {
 
     private static final String TAG = "CustomerReadNfcData";
 
@@ -27,7 +28,9 @@ public class CustomerReadNfcData extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.customer_read_nfc_info);
+        getLayoutInflater().inflate(R.layout.customer_read_nfc_info, frameLayout);
+        initToolbar();
+        mIsCustomer = true;
 
         this.mWarningRequired = false;
 

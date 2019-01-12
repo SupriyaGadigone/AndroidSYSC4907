@@ -47,7 +47,7 @@ public class ReadNfc extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLayoutInflater().inflate(R.layout.customer_read_nfc_page, frameLayout);
+        getLayoutInflater().inflate(R.layout.read_nfc_page, frameLayout);
         initToolbar();
 
         mContext = this;

@@ -13,6 +13,7 @@ public class CustomerProfilePage extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.customer_profile_page, frameLayout);
         initToolbar();
+        mIsCustomer = true;
         //TODO: add edit quiz
     }
 }

@@ -56,7 +56,7 @@ public class BaseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         navigationView = findViewById(R.id.nav_view);
-        
+
         if(mIsCustomer){
             navigationView.inflateMenu(R.menu.customer_drawer_contents);
             navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -125,7 +125,6 @@ public class BaseActivity extends AppCompatActivity {
                 }
             });
         }
-
         drawerToggle.syncState();
 
     }
