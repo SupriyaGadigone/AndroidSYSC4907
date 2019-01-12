@@ -1,42 +1,39 @@
 package com.example.supriyagadigone.androidsysc4907;
 
 import android.content.Intent;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizActivity;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgLandingPage;
 
 /**
- * Landing page of the app
+ * Landing page of the app which consist of the Organization and Customer button
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLayoutInflater().inflate(R.layout.activity_main, frameLayout);
-        initToolbar();
+        setContentView(R.layout.activity_main);
 
-        Button mCustomerButton = findViewById(R.id.customer_button);
-        mCustomerButton.setOnClickListener(new View.OnClickListener() {
+        Button customerButton = findViewById(R.id.customer_button);
+        customerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent quizIntent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(quizIntent);
+                Intent customerIntent = new Intent(MainActivity.this, LoginActivity.class);
+                customerIntent.putExtra("BTN_PRESSED", "0"); //0 = the user pressed customer button
+                startActivity(customerIntent);
             }
         });
 
-        // TODO: have keep track of the first click so that a new Activity can open up next time??
-        // TODO: have to keep track if they are customers and org
-        Button mOrganizationButton = findViewById(R.id.org_button);
-        mOrganizationButton.setOnClickListener(new View.OnClickListener() {
+        Button organizationButton = findViewById(R.id.org_button);
+        organizationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent quizIntent = new Intent(MainActivity.this, OrgLandingPage.class);
-                startActivity(quizIntent);
+                Intent orgIntent = new Intent(MainActivity.this, LoginActivity.class);
+                orgIntent.putExtra("BTN_PRESSED", "1"); //1 = the user pressed organization button
+                startActivity(orgIntent);
             }
         });
 
