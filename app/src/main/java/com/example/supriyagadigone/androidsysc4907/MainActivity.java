@@ -11,10 +11,10 @@ import android.widget.Button;
 import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizActivity;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgLandingPage;
 
+/**
+ * Landing page of the app
+ */
 public class MainActivity extends BaseActivity {
-
-    private Button mCustomerButton;
-    private Button mOrganizationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class MainActivity extends BaseActivity {
         getLayoutInflater().inflate(R.layout.activity_main, frameLayout);
         initToolbar();
 
-        mCustomerButton = findViewById(R.id.customer_button);
+        Button mCustomerButton = findViewById(R.id.customer_button);
         mCustomerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent quizIntent = new Intent(MainActivity.this, LoginActivity.class);
@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
 
         // TODO: have keep track of the first click so that a new Activity can open up next time??
         // TODO: have to keep track if they are customers and org
-        mOrganizationButton = findViewById(R.id.org_button);
+        Button mOrganizationButton = findViewById(R.id.org_button);
         mOrganizationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent quizIntent = new Intent(MainActivity.this, OrgLandingPage.class);
