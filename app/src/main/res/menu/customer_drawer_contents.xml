@@ -8,7 +8,10 @@
             android:icon="@drawable/ic_nfc_black_24dp"
             android:title="Read NFC Tag"/>
         <item android:id="@+id/grocery"
-            android:icon="@drawable/ic_shopping_cart_black_24dp"
+            android:icon="@drawable/ic_list_black_24dp"
             android:title="My Grocery Lists"/>
+        <item android:id="@+id/tapped_products"
+            android:icon="@drawable/ic_shopping_cart_black_24dp"
+            android:title="Tapped Products"/>
     </group>
 </menu>

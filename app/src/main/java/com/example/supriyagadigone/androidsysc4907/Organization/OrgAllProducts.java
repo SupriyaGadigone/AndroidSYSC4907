@@ -12,6 +12,7 @@ public class OrgAllProducts extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.org_all_products, frameLayout);
         initToolbar();
+        mIsCustomer = false;
 
         //TODO: toolbar should have write, read and edit NFC
     }

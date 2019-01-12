@@ -12,6 +12,7 @@ public class CustomerTappedProducts extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.customer_tapped_products, frameLayout);
         initToolbar();
+        mIsCustomer = true;
 
         //TODO: if empty put the button to read NFC
     }

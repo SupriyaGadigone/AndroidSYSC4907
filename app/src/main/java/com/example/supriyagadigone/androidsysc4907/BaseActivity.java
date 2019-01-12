@@ -9,12 +9,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerGroceryListPage;
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerProfilePage;
+import com.example.supriyagadigone.androidsysc4907.Customer.CustomerTappedProducts;
+import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProducts;
+import com.example.supriyagadigone.androidsysc4907.Organization.OrgEditNfc;
+import com.example.supriyagadigone.androidsysc4907.Organization.OrgWriteNfc;
 
 public class BaseActivity extends AppCompatActivity {
     public Toolbar toolbar;
@@ -24,6 +29,7 @@ public class BaseActivity extends AppCompatActivity {
     private NavigationView navigationView;
     protected Context mContext;
     protected FrameLayout frameLayout;
+    protected boolean mIsCustomer; //if false, it is organization
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,44 +56,76 @@ public class BaseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         navigationView = findViewById(R.id.nav_view);
+        
+        if(mIsCustomer){
+            navigationView.inflateMenu(R.menu.customer_drawer_contents);
+            navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
+                public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-        // Setting Navigation View Item Selected Listener to handle the item
-        // click of the navigation menu
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                    if (menuItem.isChecked()) {
+                        menuItem.setChecked(false);
+                    }
+                    else {
+                        menuItem.setChecked(true);
+                    }
 
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    drawerLayout.closeDrawers();
 
-                // Checking if the item is in checked state or not, if not make it in checked state
-                if (menuItem.isChecked()) {
-                    menuItem.setChecked(false);
+                    switch (menuItem.getItemId()) {
+
+                        case R.id.profile:
+                            startActivity(new Intent(BaseActivity.this, CustomerProfilePage.class));
+                            break;
+                        case R.id.read_nfc:
+                            startActivity(new Intent(BaseActivity.this, ReadNfc.class));
+                            break;
+                        case R.id.grocery:
+                            startActivity(new Intent(BaseActivity.this, CustomerGroceryListPage.class));
+                            break;
+                        case R.id.tapped_products:
+                            startActivity(new Intent(BaseActivity.this, CustomerTappedProducts.class));
+                            break;
+                    }
+                    return false;
                 }
-                else {
-                    menuItem.setChecked(true);
+            });
+
+        }else{
+            navigationView.inflateMenu(R.menu.org_drawer_contents);
+            navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+                public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                    if (menuItem.isChecked()) {
+                        menuItem.setChecked(false);
+                    }
+                    else {
+                        menuItem.setChecked(true);
+                    }
+
+                    drawerLayout.closeDrawers();
+
+                    switch (menuItem.getItemId()) {
+
+                        case R.id.read_nfc:
+                            startActivity(new Intent(BaseActivity.this, ReadNfc.class));
+                            break;
+                        case R.id.write_nfc:
+                            startActivity(new Intent(BaseActivity.this, OrgWriteNfc.class));
+                            break;
+                        case R.id.edit_nfc:
+                            startActivity(new Intent(BaseActivity.this, OrgEditNfc.class));
+                            break;
+                        case R.id.all_products:
+                            startActivity(new Intent(BaseActivity.this, OrgAllProducts.class));
+                            break;
+                    }
+                    return false;
                 }
+            });
+        }
 
-                // Closing drawer on item click
-                drawerLayout.closeDrawers();
-
-                // Check to see which item was being clicked and perform appropriate action
-                Intent intent;
-                switch (menuItem.getItemId()) {
-
-                    case R.id.profile:
-                        startActivity(new Intent(BaseActivity.this, CustomerProfilePage.class));
-                        break;
-                    case R.id.read_nfc:
-                        startActivity(new Intent(BaseActivity.this, ReadNfc.class));
-                        break;
-                    case R.id.grocery:
-                        startActivity(new Intent(BaseActivity.this, CustomerGroceryListPage.class));
-                }
-                return false;
-            }
-        });
-
-        // Setting the actionbarToggle to drawer layout
-        // calling sync state is necessary or else your hamburger icon wont show up
         drawerToggle.syncState();
 
     }
