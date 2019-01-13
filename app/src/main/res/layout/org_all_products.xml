@@ -17,6 +17,7 @@
         android:layout_height="match_parent"
         android:divider="@android:color/transparent"
         android:dividerHeight="@dimen/default_padding"
+        android:padding="@dimen/default_padding"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 

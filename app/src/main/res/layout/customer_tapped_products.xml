@@ -6,8 +6,19 @@
     android:paddingTop="@dimen/toolbar_padding">
 
     <TextView
+        android:id="@+id/empty_products"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tapped produc list empty"/>
+        android:text="Tapped products list empty"/>
+
+    <ListView
+        android:id="@+id/listProducts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/default_padding"
+        android:padding="@dimen/default_padding"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
 </android.support.constraint.ConstraintLayout>

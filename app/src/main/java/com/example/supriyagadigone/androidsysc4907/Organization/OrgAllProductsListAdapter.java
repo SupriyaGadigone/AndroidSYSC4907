@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.supriyagadigone.androidsysc4907.R;
@@ -17,42 +18,44 @@ public class OrgAllProductsListAdapter extends BaseAdapter {
     Context context;
     Map<String,String> pIVals;
     private static LayoutInflater inflater = null;
+    private boolean mIsCustomer;
 
-    public OrgAllProductsListAdapter(Context context, Map<String,String> pIVals) {
-        // TODO Auto-generated constructor stub
+    public OrgAllProductsListAdapter(Context context, Map<String,String> pIVals, boolean mIsCustomer) {
         this.context = context;
         this.pIVals = pIVals;
+        this.mIsCustomer = mIsCustomer;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return pIVals.size();
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
         return pIVals.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         View vi = convertView;
         if (vi == null)
             vi = LayoutInflater.from(parent.getContext()).inflate(R.layout.org_all_products_row, parent, false);
 
         TextView productName =  vi.findViewById(R.id.product_name);
         TextView productIngredients = vi.findViewById(R.id.product_ingredients);
+        LinearLayout editProduct = vi.findViewById(R.id.edit_product);
+
+        if(mIsCustomer){
+            editProduct.setVisibility(View.GONE);
+        }
 
         String productNameText = (String) pIVals.keySet().toArray()[position];
         String productIngredientsText = pIVals.get(productNameText);
