@@ -114,9 +114,6 @@ public class BaseActivity extends AppCompatActivity {
                         case R.id.write_nfc:
                             startActivity(new Intent(BaseActivity.this, OrgWriteNfc.class));
                             break;
-                        case R.id.edit_nfc:
-                            startActivity(new Intent(BaseActivity.this, OrgEditNfc.class));
-                            break;
                         case R.id.all_products:
                             startActivity(new Intent(BaseActivity.this, OrgAllProducts.class));
                             break;

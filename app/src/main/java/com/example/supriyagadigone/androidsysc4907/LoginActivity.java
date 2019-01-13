@@ -23,12 +23,17 @@ import com.example.supriyagadigone.androidsysc4907.Customer.CustomerTappedProduc
 import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizActivity;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProducts;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 /**
  * Login page for customer and organization
  */
 public class LoginActivity extends AppCompatActivity {
+
+    public static final String LOGIN_PREFS_NAME = "PREFS_CREDENTIALS";
 
     private EditText mUsername;
     private EditText mPassword;
@@ -62,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                         StringRequest loginRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Log.e("LoginActivity", "Token" + response);
+                                Log.e("LoginActivity", "Token: " + response);
                                 if (response != null) {
                                     Intent intent;
                                     if (mCustOrgBtn.equals("0")) {
@@ -76,6 +81,25 @@ public class LoginActivity extends AppCompatActivity {
                                     } else {
                                         intent = new Intent(LoginActivity.this, OrgAllProducts.class);
                                     }
+
+                                    SharedPreferences prefs = getApplicationContext().getSharedPreferences(LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.putString("username", mUsername.getText().toString());
+                                    editor.putString("password", mPassword.getText().toString());
+
+                                    try {
+                                        JSONObject jObject = new JSONObject(response);
+                                        String token = jObject.getString("token");
+                                        editor.putString("token", "token " + token);
+
+                                        Log.e("LoginActivity", "Parsed Token: " + token);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    editor.apply();
+
                                     startActivity(intent);
                                 }
                             }
