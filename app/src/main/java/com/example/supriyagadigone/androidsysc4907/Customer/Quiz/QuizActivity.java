@@ -42,6 +42,5 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: Go through shared preferences and disable the restrictions already clicked - probably have to to in QuizAdapter
     }
 }

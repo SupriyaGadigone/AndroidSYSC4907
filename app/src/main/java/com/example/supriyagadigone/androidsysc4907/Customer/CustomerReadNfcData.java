@@ -73,6 +73,7 @@ public class CustomerReadNfcData extends BaseActivity {
                 }
             }
         }
+        //TODO: fix this, it wont work
         mIngredients.setText(ingredientNames);
     }
 }

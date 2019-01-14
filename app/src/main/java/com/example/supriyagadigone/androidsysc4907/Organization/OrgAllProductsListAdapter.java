@@ -63,7 +63,7 @@ public class OrgAllProductsListAdapter extends BaseAdapter {
         productName.setText(productNameText);
         productIngredients.setText(productIngredientsText);
 
-            //TODO:edit
+            //TODO:edit NFC
 
         return vi;
     }
