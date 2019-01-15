@@ -27,7 +27,7 @@ public class ProductIngredientDataFetcher extends AppCompatActivity {
 
     public void getIngredients(RequestQueue mRequestQueue) {
         String url = "http://69.159.27.129:8000/ingredientList/";
-        StringRequest ingredientsRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest ingredientsRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(TAG, "***Ingredients: " + response);
@@ -45,6 +45,14 @@ public class ProductIngredientDataFetcher extends AppCompatActivity {
                 userCredentials.put("password", password);
 
                 return userCredentials;
+            }
+
+            @Override
+            public Map<String, String> getHeaders()  {
+                Map<String, String>  tokenM = new HashMap<String, String>();
+                tokenM.put("Authorization", token);
+
+                return tokenM;
             }
 
             @Override
