@@ -9,7 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -18,7 +17,6 @@ import com.example.supriyagadigone.androidsysc4907.Customer.CustomerGroceryListP
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerProfilePage;
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerTappedProducts;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProducts;
-import com.example.supriyagadigone.androidsysc4907.Organization.OrgEditNfc;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgWriteNfc;
 
 public class BaseActivity extends AppCompatActivity {

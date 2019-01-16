@@ -24,6 +24,7 @@ public class CustomerGroceryListPage extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.customer_grocery_list_page, frameLayout);
         initToolbar();
+        toolbar.setTitle("Grocery Lists");
         mIsCustomer = true;
 
         lvItems = findViewById(R.id.listItems);

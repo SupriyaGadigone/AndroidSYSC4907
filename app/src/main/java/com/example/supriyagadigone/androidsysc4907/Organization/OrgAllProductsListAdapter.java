@@ -16,26 +16,23 @@ public class OrgAllProductsListAdapter extends BaseAdapter {
 
     private static String TAG = "OrgAllProductsListAdapter";
     Context context;
-    Map<String,String> pIVals;
-    private static LayoutInflater inflater = null;
+    private Map<String,String> productData;
     private boolean mIsCustomer;
 
-    public OrgAllProductsListAdapter(Context context, Map<String,String> pIVals, boolean mIsCustomer) {
+    public OrgAllProductsListAdapter(Context context, Map<String,String> prodData, boolean mIsCustomer) {
         this.context = context;
-        this.pIVals = pIVals;
+        this.productData = prodData;
         this.mIsCustomer = mIsCustomer;
-        inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return pIVals.size();
+        return productData.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return pIVals.get(position);
+        return productData.get(position);
     }
 
     @Override
@@ -50,18 +47,15 @@ public class OrgAllProductsListAdapter extends BaseAdapter {
             vi = LayoutInflater.from(parent.getContext()).inflate(R.layout.org_all_products_row, parent, false);
 
         TextView productName =  vi.findViewById(R.id.product_name);
-        TextView productIngredients = vi.findViewById(R.id.product_ingredients);
         LinearLayout editProduct = vi.findViewById(R.id.edit_product);
 
         if(mIsCustomer){
             editProduct.setVisibility(View.GONE);
         }
 
-        String productNameText = (String) pIVals.keySet().toArray()[position];
-        String productIngredientsText = pIVals.get(productNameText);
-
+        String productNameText = (String) productData.keySet().toArray()[position];
         productName.setText(productNameText);
-        productIngredients.setText(productIngredientsText);
+
 
             //TODO:edit NFC
 

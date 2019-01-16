@@ -17,7 +17,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.supriyagadigone.androidsysc4907.BaseActivity;
 import com.example.supriyagadigone.androidsysc4907.LoginActivity;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProductsListAdapter;
-import com.example.supriyagadigone.androidsysc4907.ProductIngredientDataFetcher;
+import com.example.supriyagadigone.androidsysc4907.RequestHandler;
 import com.example.supriyagadigone.androidsysc4907.R;
 
 import org.json.JSONArray;
@@ -33,10 +33,11 @@ public class CustomerTappedProducts extends BaseActivity {
     private RequestQueue mRequestQueue;
 
     private ListView allProductsList;
-    private Map<String,String> prodIngriVals;
+    private Map<String, String> prodIngriVals;
 
-    private ProductIngredientDataFetcher mProductIngredientDataFet;
+    private RequestHandler mProductIngredientDataFet;
     private TextView emptyProd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,91 +48,76 @@ public class CustomerTappedProducts extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.customer_tapped_products, frameLayout);
 
-        mProductIngredientDataFet = new ProductIngredientDataFetcher();
+        mProductIngredientDataFet = new RequestHandler();
         mRequestQueue = Volley.newRequestQueue(this);
         SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
         mProductIngredientDataFet.setUserCredentials(prefs);
-        mProductIngredientDataFet.getIngredients(mRequestQueue);
-        prodIngriVals = new HashMap<String,String>();
+        getIngredients(mRequestQueue, "product");
+        prodIngriVals = new HashMap<String, String>();
         emptyProd = findViewById(R.id.empty_products);
-
-        setUpAllProducts();
 
         allProductsList = findViewById(R.id.listProducts);
 
 
         initToolbar();
+        toolbar.setTitle("Tapped Products");
         mIsCustomer = true;
     }
 
-    private void setUpAllProducts() {
-        String url = "http://69.159.27.129:8000/product/";
-        StringRequest productListRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+
+
+    public void getIngredients(RequestQueue mRequestQueue, final String endPoint) {
+        String url = mProductIngredientDataFet.HOST_NAME+ endPoint +"/";
+        StringRequest ingredientsRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e(TAG, "Products list" + response);
 
-                if (response != null) {
-                    try {
-                        JSONArray jsonData = new JSONArray(response);
-                        for (int i = 0; i < jsonData.length(); i++) {
-                            JSONObject productJsonObj = new JSONObject(jsonData.get(i).toString());
-                            JSONArray ingredientProdObj = new JSONArray(productJsonObj.getString("ingredient"));
-                            String ingredientStr = "";
-                            for (int j = 0; j < ingredientProdObj.length(); j++) {
-                                JSONArray ingridentValues = new JSONArray(mProductIngredientDataFet.getIngriResponse());
-                                for (int k = 0; k < ingridentValues.length(); k++) {
-                                    JSONObject ingridentVal = new JSONObject(ingridentValues.get(k).toString());
-                                    if(ingredientProdObj.getString(j).equals(ingridentVal.getString("ingredient_id"))){
-                                        ingredientStr+=ingridentVal.getString("name") + ", ";
-                                    }
-                                }
-                            }
-                            prodIngriVals.put(productJsonObj.getString("name"), ingredientStr);
-                        }
-                        OrgAllProductsListAdapter adapter = new OrgAllProductsListAdapter(CustomerTappedProducts.this, prodIngriVals, mIsCustomer);
-                        if(prodIngriVals.size() !=0) {
-                            emptyProd.setVisibility(View.GONE);
-                        }
-                        allProductsList.setAdapter(adapter);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
+                if(response != null){
+                    Log.e(TAG, "***productList: " + response);
+                    setUpAllTappedProducts(response);
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Error: " + error);
-                Log.e(TAG, "Network Response: " + error.networkResponse);
             }
         }) {
-            protected Map<String, String> getParams() {
-
-                Map<String, String> userCredentials = new HashMap<String, String>();
-                userCredentials.put("username", mProductIngredientDataFet.getUsername());
-                userCredentials.put("password", mProductIngredientDataFet.getPassword());
-
-                Log.e(TAG, "un pw: " + mProductIngredientDataFet.getUsername() + "  " + mProductIngredientDataFet.getPassword());
-
-                return userCredentials;
-            }
 
             @Override
             public Map<String, String> getHeaders()  {
-                Map<String, String>  token = new HashMap<String, String>();
-                token.put("Authorization", mProductIngredientDataFet.getToken());
-                Log.e(TAG, "token: " + mProductIngredientDataFet.getToken());
+                Map<String, String>  tokenM = new HashMap<String, String>();
+                tokenM.put("Authorization", mProductIngredientDataFet.getToken());
 
-                return token;
+                return tokenM;
             }
 
+            @Override
+            public Priority getPriority() {
+                return Priority.IMMEDIATE;
+            }
         };
 
-        mRequestQueue.add(productListRequest);
+        mRequestQueue.add(ingredientsRequest);
     }
 
+    private void setUpAllTappedProducts(String response) {
 
+        try {
+            JSONArray jsonData = new JSONArray(response);
+            for (int i = 0; i < jsonData.length(); i++) {
+                JSONObject productJsonObj = new JSONObject(jsonData.get(i).toString());
+
+                prodIngriVals.put(productJsonObj.getString("name"), "");
+            }
+            OrgAllProductsListAdapter adapter = new OrgAllProductsListAdapter(CustomerTappedProducts.this, prodIngriVals, mIsCustomer);
+            if (prodIngriVals.size() != 0) {
+                emptyProd.setVisibility(View.GONE);
+            }
+            allProductsList.setAdapter(adapter);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

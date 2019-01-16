@@ -23,6 +23,7 @@ public class CustomerProfilePage extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.customer_profile_page, frameLayout);
         initToolbar();
+        toolbar.setTitle("Profile");
         mIsCustomer = true;
 
         List<RestrictionsData> restDataList = Arrays.asList(RestrictionsData.values());

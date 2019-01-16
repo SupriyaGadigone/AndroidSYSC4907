@@ -49,6 +49,7 @@ public class ReadNfc extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.read_nfc_page, frameLayout);
         initToolbar();
+        toolbar.setTitle("Read NFC");
 
         mContext = this;
         //TODO: change this to NFC status view

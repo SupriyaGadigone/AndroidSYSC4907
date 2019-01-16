@@ -31,7 +31,7 @@
         <activity android:name=".Customer.Quiz.QuizActivity"></activity>
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".Organization.OrgWriteNfc"></activity>
-        <activity android:name=".Organization.OrgEditNfc"></activity>
+        <activity android:name=".Organization.OrgEditProduct"></activity>
         <activity android:name=".Customer.CustomerGroceryListPage"></activity>
         <activity android:name=".Customer.CustomerProfilePage"></activity>
         <activity android:name=".Customer.CustomerReadNfcData"></activity>

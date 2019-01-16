@@ -41,6 +41,7 @@ public class OrgWriteNfc extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.org_write_nfc_page, frameLayout);
         initToolbar();
+        toolbar.setTitle("Write to NFC");
         mIsCustomer = false;
 
         (findViewById(R.id.write_to_NFC)).setOnClickListener(new OnClickListener() {
