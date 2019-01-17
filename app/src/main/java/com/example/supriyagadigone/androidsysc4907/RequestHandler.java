@@ -28,6 +28,7 @@ public class RequestHandler extends AppCompatActivity {
     private String mNfcId;
 
     private RequestQueue mRequestQueue;
+    private Map<String,String> prodInfo;
 
     OnResponseCallback onResponseCallback= null;
 
@@ -42,12 +43,12 @@ public class RequestHandler extends AppCompatActivity {
         getRequestResponse();
     }
 
-    public RequestHandler(RequestQueue requestQueue,OnResponseCallback onResponseCallback, String token, String endpoint, String nfcId) {
+    public RequestHandler(RequestQueue requestQueue,OnResponseCallback onResponseCallback, String endpoint, Map<String,String> prodInfo) {
         this.mRequestQueue = requestQueue;
         this.onResponseCallback = onResponseCallback;
         this.mEndpoint = endpoint;
-        this.mNfcId = nfcId;
-        this.token = token;
+        this.prodInfo = prodInfo;
+        this.token = prodInfo.get("token");
         getRequestResponseWithParams();
     }
 
@@ -72,11 +73,18 @@ public class RequestHandler extends AppCompatActivity {
         StringRequest ingredientsRequest = new StringRequest(Request.Method.POST, url, getPostResponseListener(), getPostErrorListener()) {
 
             protected Map<String, String> getParams() {
-                Map<String, String> nfcId = new HashMap<String, String>();
-                if(mEndpoint.equals("product") && nfcId!=null) {
-                    nfcId.put("nfc_id", mNfcId);
+                Map<String, String> data = new HashMap<String, String>();
+                if(mEndpoint.equals("product") && data!=null) {
+                    data.put("nfc_id", prodInfo.get("nfc_id"));
                 }
-                return nfcId;
+                if(mEndpoint.equals("newProduct") && data!=null) {
+                    data.put("nfc_id", mNfcId);
+                    for (Map.Entry<String, String> entry : prodInfo.entrySet())
+                    {
+                        data.put(entry.getKey(), entry.getValue());
+                    }
+                }
+                return data;
             }
 
             @Override
