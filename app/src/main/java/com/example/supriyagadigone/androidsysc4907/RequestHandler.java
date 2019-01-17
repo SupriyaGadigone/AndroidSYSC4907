@@ -13,83 +13,149 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+//http://www.zoftino.com/get-&-post-data-using-http-library-volley-in-android
 public class RequestHandler extends AppCompatActivity {
 
     private static String TAG = "RequestHandler";
+    public static final String HOST_NAME = "http://69.159.27.129:8000/";
 
     private String username;
     private String password;
     private String token;
 
-    public static final String HOST_NAME = "http://69.159.27.129:8000/";
+    private String mResponse;
+    private String mEndpoint;
+    private String mNfcId;
 
-    private String ingriResponse;
-    private String prodTappedListResponse;
+    private RequestQueue mRequestQueue;
 
-    public RequestHandler(){
+    OnResponseCallback onResponseCallback= null;
 
+    public RequestHandler(RequestQueue requestQueue) {
+        this.mRequestQueue = requestQueue;
+    }
+    public RequestHandler(RequestQueue requestQueue,OnResponseCallback onResponseCallback, SharedPreferences prefs, String endpoint) {
+        this.mRequestQueue = requestQueue;
+        this.onResponseCallback = onResponseCallback;
+        this.mEndpoint = endpoint;
+        setUserCredentials(prefs);
+        getRequestResponse();
     }
 
+    public RequestHandler(RequestQueue requestQueue,OnResponseCallback onResponseCallback, String token, String endpoint, String nfcId) {
+        this.mRequestQueue = requestQueue;
+        this.onResponseCallback = onResponseCallback;
+        this.mEndpoint = endpoint;
+        this.mNfcId = nfcId;
+        this.token = token;
+        getRequestResponseWithParams();
+    }
 
-    public void getRequestResponse(RequestQueue mRequestQueue, final String endPoint) {
-        String url = HOST_NAME+ endPoint +"/";
-        StringRequest ingredientsRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                if(endPoint.equals("ingredientList")){
-                    Log.e(TAG, "***Ingredients: " + response);
-                    setIngriResponse(response);
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }) {
+    public void getRequestResponse() {
+        String url = HOST_NAME + mEndpoint + "/";
+        StringRequest ingredientsRequest = new StringRequest(Request.Method.POST, url, getPostResponseListener(), getPostErrorListener()) {
 
             @Override
-            public Map<String, String> getHeaders()  {
-                Map<String, String>  tokenM = new HashMap<String, String>();
+            public Map<String, String> getHeaders() {
+                Map<String, String> tokenM = new HashMap<String, String>();
                 tokenM.put("Authorization", token);
 
                 return tokenM;
-            }
-
-            @Override
-            public Priority getPriority() {
-                return Priority.IMMEDIATE;
             }
         };
 
         mRequestQueue.add(ingredientsRequest);
     }
 
-    public void setUserCredentials(SharedPreferences prefs){
+    public void getRequestResponseWithParams() {
+        String url = HOST_NAME + mEndpoint + "/";
+        StringRequest ingredientsRequest = new StringRequest(Request.Method.POST, url, getPostResponseListener(), getPostErrorListener()) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> nfcId = new HashMap<String, String>();
+                if(mEndpoint.equals("product") && nfcId!=null) {
+                    nfcId.put("nfc_id", mNfcId);
+                }
+                return nfcId;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> tokenM = new HashMap<String, String>();
+                tokenM.put("Authorization", token);
+
+                return tokenM;
+            }
+        };
+
+        mRequestQueue.add(ingredientsRequest);
+    }
+
+    private Response.Listener<String> getPostResponseListener() {
+        return new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "Response: " + response);
+
+                onResponseCallback.onResponse(mEndpoint,response);
+              //  setResponse(response);
+//                try {
+//                    JSONArray jsonDataResponse = new JSONArray(response);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+
+//                if (getEndPoint().equals("ingredientList")) {
+//                    Log.e(TAG, "***Ingredients: " + response);
+//                    //TODO: Can make everything JsonArray here to avoid a for loop
+//                    setResponse(response);
+//                }
+
+
+            }
+        };
+    }
+
+    private Response.ErrorListener getPostErrorListener() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //serverResp.setText("Error getting response");
+            }
+        };
+    }
+
+    public void setUserCredentials(SharedPreferences prefs) {
 
         Map<String, String> allEntries = (Map<String, String>) prefs.getAll();
 
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            if(entry.getKey().equals("username")){
+            if (entry.getKey().equals("username")) {
                 username = entry.getValue().toString();
             }
-            if(entry.getKey().equals("password")){
+            if (entry.getKey().equals("password")) {
                 password = entry.getValue().toString();
             }
-            if(entry.getKey().equals("token")){
+            if (entry.getKey().equals("token")) {
                 token = entry.getValue().toString();
             }
         }
     }
 
-    public String getIngriResponse() {
-        return ingriResponse;
+    public String getResponse() {
+        return mResponse;
     }
 
-    public void setIngriResponse(String ingriResponse) {
-        this.ingriResponse = ingriResponse;
+    public void setResponse(String response) {
+        this.mResponse = response;
+    }
+
+    public String getEndpoint() {
+        return mEndpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        mEndpoint = endpoint;
     }
 
     public String getUsername() {
@@ -102,14 +168,6 @@ public class RequestHandler extends AppCompatActivity {
 
     public String getToken() {
         return token;
-    }
-
-    public String getProdTappedListResponse() {
-        return prodTappedListResponse;
-    }
-
-    public void setProdTappedListResponse(String prodTappedListResponse) {
-        this.prodTappedListResponse = prodTappedListResponse;
     }
 
 }

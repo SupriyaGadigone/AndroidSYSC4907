@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                                         }
                                     } else {
                                         intent = new Intent(LoginActivity.this, OrgAllProducts.class);
+                                       // intent = new Intent(LoginActivity.this, RequestHandler.class);
                                     }
 
                                     SharedPreferences prefs = getApplicationContext().getSharedPreferences(LOGIN_PREFS_NAME, Context.MODE_PRIVATE);

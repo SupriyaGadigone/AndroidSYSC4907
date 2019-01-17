@@ -10,16 +10,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.supriyagadigone.androidsysc4907.BaseActivity;
 import com.example.supriyagadigone.androidsysc4907.LoginActivity;
 import com.example.supriyagadigone.androidsysc4907.RequestHandler;
 import com.example.supriyagadigone.androidsysc4907.R;
+import com.example.supriyagadigone.androidsysc4907.RequestQueueSingleton;
+import com.example.supriyagadigone.androidsysc4907.OnResponseCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,17 +25,16 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OrgAllProducts extends BaseActivity {
+public class OrgAllProducts extends BaseActivity implements OnResponseCallback {
 
     private static String TAG = "OrgAllProducts";
     private RequestQueue mRequestQueue;
-
-
-    private ListView allProductsList;
-    private Map<String,String> productData;
-
     private RequestHandler mRequestHandlerm;
+
+    private Map<String, String> productData;
+
     private TextView emptyProd;
+    private ListView allProductsList;
 
 
     @Override
@@ -46,17 +42,19 @@ public class OrgAllProducts extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.org_all_products, frameLayout);
 
-        mRequestHandlerm = new RequestHandler();
-        mRequestQueue = Volley.newRequestQueue(this);
+        mRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext())
+                .getRequestQueue();
         SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
-        mRequestHandlerm.setUserCredentials(prefs);
-        mRequestHandlerm.getRequestResponse(mRequestQueue, "ingredientList");
+        mRequestHandlerm = new RequestHandler(mRequestQueue,
+                this,
+                prefs,
+                "productList");
+
 
         productData = new HashMap<>();
         emptyProd = findViewById(R.id.empty_products);
         //TODO: once empty, write to NFC option should show up
 
-        getProductsData("productList");
 
         allProductsList = findViewById(R.id.listProducts);
 
@@ -65,7 +63,7 @@ public class OrgAllProducts extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent editNFCIntent = new Intent(OrgAllProducts.this, OrgEditProduct.class);
-                editNFCIntent.putExtra("PROD_NAME", (String)productData.keySet().toArray()[position]);
+                editNFCIntent.putExtra("PROD_NAME", (String) productData.keySet().toArray()[position]);
                 editNFCIntent.putExtra("NFC_ID", productData.get(productData.keySet().toArray()[position]));
                 editNFCIntent.putExtra("token", mRequestHandlerm.getToken());
                 startActivity(editNFCIntent);
@@ -79,43 +77,7 @@ public class OrgAllProducts extends BaseActivity {
     }
 
 
-    public void getProductsData(String endPoint) {
-        String url = RequestHandler.HOST_NAME+ endPoint +"/";
-        StringRequest productsListRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                if(response != null){
-                    Log.e(TAG, "ProductList: " + response);
-                    parseProductsData(response);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }) {
-
-            @Override
-            public Map<String, String> getHeaders()  {
-                Map<String, String>  tokenM = new HashMap<String, String>();
-                tokenM.put("Authorization", mRequestHandlerm.getToken());
-
-                return tokenM;
-            }
-
-            @Override
-            public Priority getPriority() {
-                return Priority.IMMEDIATE;
-            }
-        };
-
-        mRequestQueue.add(productsListRequest);
-    }
-
-
-
-    public void parseProductsData(String response){
+    public void parseProductsData(String response) {
         try {
             JSONArray jsonData = new JSONArray(response);
             for (int i = 0; i < jsonData.length(); i++) {
@@ -123,12 +85,18 @@ public class OrgAllProducts extends BaseActivity {
                 productData.put(productJsonObj.getString("name"), productJsonObj.getString("nfc_id"));
             }
             OrgAllProductsListAdapter adapter = new OrgAllProductsListAdapter(OrgAllProducts.this, productData, mIsCustomer);
-            if(productData.size() !=0) {
+            if (productData.size() != 0) {
                 emptyProd.setVisibility(View.GONE);
             }
             allProductsList.setAdapter(adapter);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onResponse(String endpoint, String response) {
+        Log.e(TAG, "ALL HERE: " + response);
+        parseProductsData(response);
+
     }
 }

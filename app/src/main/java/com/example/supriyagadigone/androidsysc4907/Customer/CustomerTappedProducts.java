@@ -16,9 +16,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.supriyagadigone.androidsysc4907.BaseActivity;
 import com.example.supriyagadigone.androidsysc4907.LoginActivity;
+import com.example.supriyagadigone.androidsysc4907.OnResponseCallback;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProductsListAdapter;
 import com.example.supriyagadigone.androidsysc4907.RequestHandler;
 import com.example.supriyagadigone.androidsysc4907.R;
+import com.example.supriyagadigone.androidsysc4907.RequestQueueSingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +29,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomerTappedProducts extends BaseActivity {
+public class CustomerTappedProducts extends BaseActivity implements OnResponseCallback {
 
     private static String TAG = "CustomerTappedProducts";
     private RequestQueue mRequestQueue;
@@ -35,7 +37,6 @@ public class CustomerTappedProducts extends BaseActivity {
     private ListView allProductsList;
     private Map<String, String> prodIngriVals;
 
-    private RequestHandler mProductIngredientDataFet;
     private TextView emptyProd;
 
 
@@ -48,16 +49,18 @@ public class CustomerTappedProducts extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.customer_tapped_products, frameLayout);
 
-        mProductIngredientDataFet = new RequestHandler();
-        mRequestQueue = Volley.newRequestQueue(this);
+        mRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext())
+                .getRequestQueue();
         SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
-        mProductIngredientDataFet.setUserCredentials(prefs);
-        getIngredients(mRequestQueue, "product");
-        prodIngriVals = new HashMap<String, String>();
+        RequestHandler mRequestHandlerm = new RequestHandler(mRequestQueue,
+                this,
+                prefs,
+                "product");
+
+        prodIngriVals = new HashMap<>();
         emptyProd = findViewById(R.id.empty_products);
 
         allProductsList = findViewById(R.id.listProducts);
-
 
         initToolbar();
         toolbar.setTitle("Tapped Products");
@@ -65,49 +68,11 @@ public class CustomerTappedProducts extends BaseActivity {
     }
 
 
-
-
-    public void getIngredients(RequestQueue mRequestQueue, final String endPoint) {
-        String url = mProductIngredientDataFet.HOST_NAME+ endPoint +"/";
-        StringRequest ingredientsRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                if(response != null){
-                    Log.e(TAG, "***productList: " + response);
-                    setUpAllTappedProducts(response);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }) {
-
-            @Override
-            public Map<String, String> getHeaders()  {
-                Map<String, String>  tokenM = new HashMap<String, String>();
-                tokenM.put("Authorization", mProductIngredientDataFet.getToken());
-
-                return tokenM;
-            }
-
-            @Override
-            public Priority getPriority() {
-                return Priority.IMMEDIATE;
-            }
-        };
-
-        mRequestQueue.add(ingredientsRequest);
-    }
-
     private void setUpAllTappedProducts(String response) {
-
         try {
             JSONArray jsonData = new JSONArray(response);
             for (int i = 0; i < jsonData.length(); i++) {
                 JSONObject productJsonObj = new JSONObject(jsonData.get(i).toString());
-
                 prodIngriVals.put(productJsonObj.getString("name"), "");
             }
             OrgAllProductsListAdapter adapter = new OrgAllProductsListAdapter(CustomerTappedProducts.this, prodIngriVals, mIsCustomer);
@@ -119,5 +84,10 @@ public class CustomerTappedProducts extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void onResponse(String endpoint,String response) {
+        setUpAllTappedProducts(response);
     }
 }
