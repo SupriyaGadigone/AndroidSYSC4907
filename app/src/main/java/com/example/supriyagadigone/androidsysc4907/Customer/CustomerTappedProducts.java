@@ -1,10 +1,12 @@
 package com.example.supriyagadigone.androidsysc4907.Customer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,7 +19,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.supriyagadigone.androidsysc4907.BaseActivity;
 import com.example.supriyagadigone.androidsysc4907.LoginActivity;
 import com.example.supriyagadigone.androidsysc4907.OnResponseCallback;
+import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProducts;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProductsListAdapter;
+import com.example.supriyagadigone.androidsysc4907.Organization.OrgEditProduct;
 import com.example.supriyagadigone.androidsysc4907.RequestHandler;
 import com.example.supriyagadigone.androidsysc4907.R;
 import com.example.supriyagadigone.androidsysc4907.RequestQueueSingleton;
@@ -43,8 +47,7 @@ public class CustomerTappedProducts extends BaseActivity implements OnResponseCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //TODO: if empty put the button to read NFC
-        //TODO: find a way to merge this and OrgAllProducts; exact same thing but Request>method and headers
+        //TODO: pass the proper data FIX
 
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.customer_tapped_products, frameLayout);
@@ -60,10 +63,27 @@ public class CustomerTappedProducts extends BaseActivity implements OnResponseCa
         prodIngriVals = new HashMap<>();
         emptyProd = findViewById(R.id.empty_products);
 
-        allProductsList = findViewById(R.id.listProducts);
-
         initToolbar();
         toolbar.setTitle("Tapped Products");
+
+        allProductsList = findViewById(R.id.listProducts);
+
+        for(String m : prodIngriVals.keySet()){
+            Log.e(TAG, "vals: "+m);
+        }
+        allProductsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent tappedNFCIntent = new Intent(CustomerTappedProducts.this, CustomerTappedProductInfo.class);
+                Log.e(TAG, "Position: "+position);
+                Log.e(TAG, "Size: " +prodIngriVals.size());
+                tappedNFCIntent.putExtra("PROD_DATA", (String) prodIngriVals.get(prodIngriVals.keySet().toArray()[position]));
+                startActivity(tappedNFCIntent);
+            }
+        });
+
+
         mIsCustomer = true;
     }
 
@@ -73,7 +93,7 @@ public class CustomerTappedProducts extends BaseActivity implements OnResponseCa
             JSONArray jsonData = new JSONArray(response);
             for (int i = 0; i < jsonData.length(); i++) {
                 JSONObject productJsonObj = new JSONObject(jsonData.get(i).toString());
-                prodIngriVals.put(productJsonObj.getString("name"), "");
+                prodIngriVals.put(productJsonObj.getString("name"), response);
             }
             OrgAllProductsListAdapter adapter = new OrgAllProductsListAdapter(CustomerTappedProducts.this, prodIngriVals, mIsCustomer);
             if (prodIngriVals.size() != 0) {

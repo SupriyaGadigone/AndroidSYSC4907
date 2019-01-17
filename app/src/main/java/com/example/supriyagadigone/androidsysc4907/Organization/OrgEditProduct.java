@@ -52,14 +52,11 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.org_edit_nfc_page, frameLayout);
-        LinearLayout linearLayout = findViewById(R.id.edit_nfc_layout);
-        linearLayout.setBackgroundColor(getResources().getColor(R.color.lightPurple));
-        initToolbar();
+//        LinearLayout linearLayout = findViewById(R.id.edit_nfc_layout);
+//        linearLayout.setBackgroundColor(getResources().getColor(R.color.lightPurple));
 
-        //TODO: fix toolbar
-        ingridentsData = new HashMap<>();
-        mProductName = getIntent().getStringExtra("PROD_NAME");
-        toolbar.setTitle("Edit: " + mProductName);
+
+
 
         mIsCustomer = false;
         prodInfo = new HashMap<>();
@@ -69,6 +66,12 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
         mNfcId = getIntent().getStringExtra("NFC_ID");
         mToken = getIntent().getStringExtra("token");
 
+
+        //TODO: fix toolbar
+        initToolbar();
+        ingridentsData = new HashMap<>();
+        mProductName = getIntent().getStringExtra("PROD_NAME");
+        toolbar.setTitle("Edit: " + mProductName);
 
         prodInfo.put("nfc_id",mNfcId);
         prodInfo.put("token",mToken);
@@ -98,6 +101,7 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
             @Override
             public void onClick(View v) {
                 editProductInfo();
+                finish();
             }
         });
     }

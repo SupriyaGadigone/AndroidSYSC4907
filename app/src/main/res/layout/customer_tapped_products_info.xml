@@ -17,7 +17,7 @@
         android:textSize="@dimen/title_size"
         android:text="Product Name: "/>
 
-    <EditText
+    <TextView
         android:id="@+id/product_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:textSize="@dimen/title_size"
         android:text="NFC ID: "/>
 
-    <EditText
+    <TextView
         android:id="@+id/nfc_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         android:textSize="@dimen/title_size"
         android:text="Product ID: "/>
 
-    <EditText
+    <TextView
         android:id="@+id/product_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,13 +75,8 @@
         android:id="@+id/ingredients_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose Ingredients"/>
+        android:text="Ingredients"/>
 
-    <Button
-        android:id="@+id/save_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save"/>
 
 
 </LinearLayout>
