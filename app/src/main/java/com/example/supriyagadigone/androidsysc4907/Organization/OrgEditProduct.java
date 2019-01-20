@@ -2,6 +2,7 @@ package com.example.supriyagadigone.androidsysc4907.Organization;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,11 +53,6 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.org_edit_nfc_page, frameLayout);
-//        LinearLayout linearLayout = findViewById(R.id.edit_nfc_layout);
-//        linearLayout.setBackgroundColor(getResources().getColor(R.color.lightPurple));
-
-
-
 
         mIsCustomer = false;
         prodInfo = new HashMap<>();
@@ -101,7 +97,6 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
             @Override
             public void onClick(View v) {
                 editProductInfo();
-                finish();
             }
         });
     }
@@ -110,12 +105,12 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
     public void parseProductData(String response) {
         Log.e(TAG, "PROD: " + response);
 
-
-
         try {
-            JSONArray jsonData = new JSONArray(response);
-            JSONObject productJsonObj = new JSONObject(jsonData.get(0).toString());
+            //JSONArray jsonData = new JSONArray(response);
+            JSONObject productJsonObj = new JSONObject(response);
+            Log.e(TAG, "NFC ID: " + productJsonObj.getString("nfc_id"));
             mNfcIdView.setText(productJsonObj.getString("nfc_id"));
+            //JSONArray jsonDataProd = new JSONArray(productJsonObj.getString("product_id"));
             mProductIdView.setText(productJsonObj.getString("product_id"));
             tagItems = new String[]{productJsonObj.getString("tags")};
 
@@ -153,10 +148,10 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
         for (int i = 0; i < ingridentsData.size(); i++) {
             for (int j = 0; j < ingrJsonData.length(); j++) {
                 JSONObject ingriJsonObj = new JSONObject(ingrJsonData.get(j).toString());
-                Log.e(TAG, "NAME: " + ingriJsonObj.getString("name"));
+              //  Log.e(TAG, "NAME: " + ingriJsonObj.getString("name"));
                 String id = ingridentsData.get(ingriJsonObj.getString("name"));
-                Log.e(TAG, "SIZE1: " + mSelectedItems.size());
-                Log.e(TAG, "OTHER: " + ingridentsData.keySet().toArray()[i]);
+               // Log.e(TAG, "SIZE1: " + mSelectedItems.size());
+               // Log.e(TAG, "OTHER: " + ingridentsData.keySet().toArray()[i]);
                 if (ingriJsonObj.getString("name").equals(ingridentsData.keySet().toArray()[i])) {
                     Log.e(TAG, "i: " + i);
                     mSelectedItems.add(Integer.parseInt(id));
@@ -219,8 +214,8 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
         Log.e(TAG, "SIZE3: " + mSelectedItems.size());
         String s = "";
         for(int i = 0; i<=mSelectedItems.size()-1 ; i++){
-            Log.e(TAG, "SELECTED: " + mSelectedItems.get(i));
-            Log.e(TAG, "i: " + i);
+           // Log.e(TAG, "SELECTED: " + mSelectedItems.get(i));
+           // Log.e(TAG, "i: " + i);
             s+= mSelectedItems.get(i) + ",";
         }
         prodInfo.put("new_ingredientId", s);
@@ -240,6 +235,8 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
 
         if (endpoint.equals("newProduct")) {
            // editProductInfo();
+            Intent allProd = new Intent(OrgEditProduct.this, OrgAllProducts.class);
+            startActivity(allProd);
             Log.e(TAG, "HEHEHEHEHEHHEHE");
         }
     }

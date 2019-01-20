@@ -1,6 +1,8 @@
 package com.example.supriyagadigone.androidsysc4907.Organization;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.supriyagadigone.androidsysc4907.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -55,6 +60,19 @@ public class OrgAllProductsListAdapter extends BaseAdapter {
 
         String productNameText = (String) productData.keySet().toArray()[position];
         productName.setText(productNameText);
+//        String resp = productData.get(productData.keySet().toArray()[position]);
+
+
+//        try {
+//            JSONObject productJsonObj = new JSONObject(resp);
+//            //Log.e(TAG, "NFC ID: " + );
+//            if(productJsonObj.getString("flag") != null){
+//                vi.setBackgroundColor(Color.parseColor("#ff0000"));
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+
 
 
             //TODO:edit NFC

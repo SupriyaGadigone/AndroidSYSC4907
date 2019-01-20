@@ -85,8 +85,8 @@ public class OrgAllProducts extends BaseActivity implements OnResponseCallback {
                 productData.put(productJsonObj.getString("name"), productJsonObj.getString("nfc_id"));
             }
             OrgAllProductsListAdapter adapter = new OrgAllProductsListAdapter(OrgAllProducts.this, productData, mIsCustomer);
-            if (productData.size() != 0) {
-                emptyProd.setVisibility(View.GONE);
+            if (productData.size() == 0) {
+                emptyProd.setVisibility(View.VISIBLE);
             }
             allProductsList.setAdapter(adapter);
         } catch (JSONException e) {
@@ -95,7 +95,7 @@ public class OrgAllProducts extends BaseActivity implements OnResponseCallback {
     }
 
     public void onResponse(String endpoint, String response) {
-        Log.e(TAG, "ALL HERE: " + response);
+      //  Log.e(TAG, "ALL HERE: " + response);
         parseProductsData(response);
 
     }

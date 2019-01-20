@@ -3,6 +3,7 @@ package com.example.supriyagadigone.androidsysc4907.Customer;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -89,6 +90,7 @@ public class CustomerTappedProducts extends BaseActivity implements OnResponseCa
 
 
     private void setUpAllTappedProducts(String response) {
+        Log.e(TAG, "TAPPED resp: "+ response);
         try {
             JSONArray jsonData = new JSONArray(response);
             for (int i = 0; i < jsonData.length(); i++) {
@@ -96,8 +98,8 @@ public class CustomerTappedProducts extends BaseActivity implements OnResponseCa
                 prodIngriVals.put(productJsonObj.getString("name"), response);
             }
             OrgAllProductsListAdapter adapter = new OrgAllProductsListAdapter(CustomerTappedProducts.this, prodIngriVals, mIsCustomer);
-            if (prodIngriVals.size() != 0) {
-                emptyProd.setVisibility(View.GONE);
+            if (prodIngriVals.size() == 0) {
+                emptyProd.setVisibility(View.VISIBLE);
             }
             allProductsList.setAdapter(adapter);
 

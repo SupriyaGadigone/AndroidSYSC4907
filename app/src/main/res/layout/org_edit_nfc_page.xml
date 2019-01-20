@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/edit_nfc_layout"
     android:orientation="vertical"
-    android:paddingTop="@dimen/toolbar_padding"
+    android:paddingTop="@dimen/default_padding"
     android:layout_marginTop="@dimen/toolbar_padding"
     android:background="@color/lightPurple">
 
@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:layout_gravity="top"
         android:textSize="@dimen/title_size"
         android:text="Product Name: "/>
 
@@ -21,7 +22,8 @@
         android:id="@+id/product_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/textbox_layout"/>
+        android:layout_marginBottom="@dimen/default_padding"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,7 +36,8 @@
         android:id="@+id/nfc_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/textbox_layout"/>
+        android:layout_marginBottom="@dimen/default_padding"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,7 +50,8 @@
         android:id="@+id/product_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/textbox_layout"/>
+        android:layout_marginBottom="@dimen/default_padding"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,7 +65,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"/>
+        android:spinnerMode="dropdown"
+        android:layout_marginBottom="@dimen/default_padding"/>
 
 
     <TextView
@@ -75,12 +80,15 @@
         android:id="@+id/ingredients_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose Ingredients"/>
+        android:text="Choose Ingredients"
+        android:layout_marginBottom="@dimen/default_padding"/>
 
     <Button
         android:id="@+id/save_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_marginTop="40dp"
         android:text="Save"/>
 
 

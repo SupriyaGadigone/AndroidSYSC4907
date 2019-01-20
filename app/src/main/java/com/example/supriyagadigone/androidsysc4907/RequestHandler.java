@@ -103,7 +103,7 @@ public class RequestHandler extends AppCompatActivity {
         return new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e(TAG, "Response: " + response);
+                //Log.e(TAG, "Response: " + response);
 
                 onResponseCallback.onResponse(mEndpoint,response);
               //  setResponse(response);
