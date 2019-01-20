@@ -42,8 +42,6 @@ public class CustomerTappedProductInfo extends BaseActivity {
         toolbar.setTitle("Tapped Product");
 
         mProductNameView = findViewById(R.id.product_name);
-
-
         mNfcIdView = findViewById(R.id.nfc_id);
         mProductIdView = findViewById(R.id.product_id);
 
@@ -57,8 +55,6 @@ public class CustomerTappedProductInfo extends BaseActivity {
 
     public void parseProductData(String response) {
         Log.e(TAG, "PROD: " + response);
-
-
 
         try {
             JSONArray jsonData = new JSONArray(response);

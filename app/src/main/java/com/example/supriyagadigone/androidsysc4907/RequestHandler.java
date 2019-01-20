@@ -44,6 +44,7 @@ public class RequestHandler extends AppCompatActivity {
     }
 
     public RequestHandler(RequestQueue requestQueue,OnResponseCallback onResponseCallback, String endpoint, Map<String,String> prodInfo) {
+        //TODO: access the singleton here by calling the default constructor
         this.mRequestQueue = requestQueue;
         this.onResponseCallback = onResponseCallback;
         this.mEndpoint = endpoint;
@@ -75,6 +76,7 @@ public class RequestHandler extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> data = new HashMap<String, String>();
                 if(mEndpoint.equals("product") && data!=null) {
+                    Log.e(TAG, "well here");
                     data.put("nfc_id", prodInfo.get("nfc_id"));
                 }
                 if(mEndpoint.equals("newProduct") && data!=null) {
@@ -103,7 +105,7 @@ public class RequestHandler extends AppCompatActivity {
         return new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Log.e(TAG, "Response: " + response);
+                Log.e(TAG, "Response: " + response);
 
                 onResponseCallback.onResponse(mEndpoint,response);
               //  setResponse(response);
@@ -128,7 +130,7 @@ public class RequestHandler extends AppCompatActivity {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //serverResp.setText("Error getting response");
+                Log.e(TAG, "***ERROR***: " + error.toString());
             }
         };
     }
