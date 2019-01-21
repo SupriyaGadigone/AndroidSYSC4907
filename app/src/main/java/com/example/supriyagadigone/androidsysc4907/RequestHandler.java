@@ -20,16 +20,13 @@ public class RequestHandler extends AppCompatActivity {
     private static String TAG = "RequestHandler";
     public static final String HOST_NAME = "http://69.159.27.129:8000/";
 
-    private String username;
-    private String password;
     private String token;
-
-    private String mResponse;
-    private String mEndpoint;
     private String mNfcId;
 
     private RequestQueue mRequestQueue;
+
     private Map<String, String> prodInfo;
+    private String mEndpoint;
 
     OnResponseCallback onResponseCallback = null;
 
@@ -116,8 +113,7 @@ public class RequestHandler extends AppCompatActivity {
                 Log.e(TAG, "Response: " + response);
 
                 onResponseCallback.onResponse(mEndpoint, response);
-
-//                    //TODO: Can make everything JsonArray here to avoid a for loop
+                    //TODO: Can make everything JsonArray here to avoid a for loop
 
             }
         };
@@ -127,7 +123,7 @@ public class RequestHandler extends AppCompatActivity {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "***ERROR***: " + error.toString());
+                Log.e(TAG, "ERROR: " + error.toString());
 
             }
         };
@@ -138,28 +134,10 @@ public class RequestHandler extends AppCompatActivity {
         Map<String, String> allEntries = (Map<String, String>) prefs.getAll();
 
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            if (entry.getKey().equals("username")) {
-                username = entry.getValue().toString();
-            }
-            if (entry.getKey().equals("password")) {
-                password = entry.getValue().toString();
-            }
             if (entry.getKey().equals("token")) {
                 token = entry.getValue().toString();
             }
         }
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getToken() {
-        return token;
     }
 
 }

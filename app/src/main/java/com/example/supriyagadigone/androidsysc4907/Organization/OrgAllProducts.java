@@ -22,7 +22,6 @@ import java.util.Map;
 public class OrgAllProducts extends BaseActivity implements OnResponseCallback {
 
     private static String TAG = "OrgAllProducts";
-    private RequestHandler mRequestHandlerm;
 
     private Map<String, String> productData;
 
@@ -35,7 +34,7 @@ public class OrgAllProducts extends BaseActivity implements OnResponseCallback {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.org_all_products, frameLayout);
 
-        mRequestHandlerm = new RequestHandler(getApplicationContext(),
+        RequestHandler requestHandler = new RequestHandler(getApplicationContext(),
                 this,
                 "productList");
 
@@ -54,7 +53,6 @@ public class OrgAllProducts extends BaseActivity implements OnResponseCallback {
                 Intent editNFCIntent = new Intent(OrgAllProducts.this, OrgEditProduct.class);
                 editNFCIntent.putExtra("PROD_NAME", (String) productData.keySet().toArray()[position]);
                 editNFCIntent.putExtra("NFC_ID", productData.get(productData.keySet().toArray()[position]));
-                editNFCIntent.putExtra("token", mRequestHandlerm.getToken());
                 startActivity(editNFCIntent);
             }
         });
