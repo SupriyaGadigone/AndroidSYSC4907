@@ -2,13 +2,17 @@ package com.example.supriyagadigone.androidsysc4907.Organization;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -16,13 +20,22 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.supriyagadigone.androidsysc4907.BaseActivity;
+import com.example.supriyagadigone.androidsysc4907.LoginActivity;
+import com.example.supriyagadigone.androidsysc4907.OnResponseCallback;
 import com.example.supriyagadigone.androidsysc4907.R;
+import com.example.supriyagadigone.androidsysc4907.RequestHandler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Activity to write NFC tags with own mimetype and ID
@@ -30,11 +43,20 @@ import com.example.supriyagadigone.androidsysc4907.R;
  * http://www.jessechen.net/blog/how-to-nfc-on-the-android-platform/
  * https://github.com/balloob/Android-NFC-Tag-Writer/blob/master/src/nl/paulus/nfctagwriter/MainActivity.java
  */
-public class OrgWriteNfc extends BaseActivity {
+public class OrgWriteNfc extends BaseActivity implements OnResponseCallback {
+
+    private static String TAG = "OrgWriteNfc";
 
     boolean mWriteMode = false;
     private NfcAdapter mNfcAdapter;
     private PendingIntent mNfcPendingIntent;
+
+    private EditText mProductNameView;
+    private EditText mProductIdView;
+    private Spinner mTags; //TODO:get list of tags
+    private Button mIngredientsButton;
+    private String nfcID;
+    private String mToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +65,12 @@ public class OrgWriteNfc extends BaseActivity {
         initToolbar();
         toolbar.setTitle("Write to NFC");
         mIsCustomer = false;
+
+        RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
+                this,
+                "newNFCId");
+
+
 
         (findViewById(R.id.write_to_NFC)).setOnClickListener(new OnClickListener() {
 
@@ -69,7 +97,7 @@ public class OrgWriteNfc extends BaseActivity {
     private void enableTagWriteMode() {
         mWriteMode = true;
         IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        IntentFilter[] mWriteTagFilters = new IntentFilter[] { tagDetected };
+        IntentFilter[] mWriteTagFilters = new IntentFilter[]{tagDetected};
         mNfcAdapter.enableForegroundDispatch(this, mNfcPendingIntent, mWriteTagFilters, null);
     }
 
@@ -83,10 +111,11 @@ public class OrgWriteNfc extends BaseActivity {
         // Tag writing mode
         if (mWriteMode && NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
             Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            NdefMessage message = createTextMessage(((TextView)findViewById(R.id.product_name)).getText().toString());
+            NdefMessage message = createTextMessage(nfcID);
             if (writeTag(message, detectedTag)) {
                 Toast.makeText(this, "Success in writing to the NFC tag", Toast.LENGTH_LONG)
                         .show();
+                newProductInfo();
             }
         }
     }
@@ -95,6 +124,7 @@ public class OrgWriteNfc extends BaseActivity {
      * Writes an NdefMessage to a NFC tag
      */
     public boolean writeTag(NdefMessage message, Tag tag) {
+
         int size = message.toByteArray().length;
         try {
             Ndef ndef = Ndef.get(tag);
@@ -131,6 +161,8 @@ public class OrgWriteNfc extends BaseActivity {
         } catch (Exception e) {
             return false;
         }
+
+
     }
 
     public NdefMessage createTextMessage(String content) {
@@ -150,11 +182,62 @@ public class OrgWriteNfc extends BaseActivity {
                     NdefRecord.RTD_TEXT, new byte[0],
                     payload.toByteArray());
             return new NdefMessage(new NdefRecord[]{record});
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+
+    private void newProductInfo() {
+        //dosable write button until get new nfc_id
+        Map<String, String> prodInfo;
+        prodInfo = new HashMap<>();
+
+        mProductNameView = findViewById(R.id.product_name);
+        // mNfcIdView = findViewById(R.id.nfc_id);
+        mProductIdView = findViewById(R.id.product_id);
+
+        prodInfo.put("new_name", mProductNameView.getText().toString());
+        prodInfo.put("new_nfc_id", nfcID);
+        prodInfo.put("new_product_id", mProductIdView.getText().toString());
+        prodInfo.put("new_tags", "deli");
+        prodInfo.put("token", mToken);
+       // prodInfo.put("token", mToken);
+
+        // Log.e(TAG, "SIZE3: " + mSelectedItems.size());
+//        String s = "";
+//        for(int i = 0; i<=mSelectedItems.size()-1 ; i++){
+//            // Log.e(TAG, "SELECTED: " + mSelectedItems.get(i));
+//            // Log.e(TAG, "i: " + i);
+//            s+= mSelectedItems.get(i) + ",";
+//        }
+       prodInfo.put("new_ingredientId", "1,3");
+
+        RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
+                this,
+                "newProduct", prodInfo);
+    }
+
+
+
+
+    public void onResponse(String endpoint, String response) {
+        if(endpoint.equals("newNFCId")) {
+
+            try {
+                JSONObject productJsonObj = new JSONObject(response);
+                nfcID = productJsonObj.getString("nfc_id");
+                Log.e(TAG, "Resp: " + productJsonObj.getString("nfc_id"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if(endpoint.equals("newProduct")){
+            Log.e(TAG, "haha");
+        }
     }
 }

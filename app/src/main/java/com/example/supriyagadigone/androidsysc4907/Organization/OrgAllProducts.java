@@ -1,21 +1,15 @@
 package com.example.supriyagadigone.androidsysc4907.Organization;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
 import com.example.supriyagadigone.androidsysc4907.BaseActivity;
-import com.example.supriyagadigone.androidsysc4907.LoginActivity;
 import com.example.supriyagadigone.androidsysc4907.RequestHandler;
 import com.example.supriyagadigone.androidsysc4907.R;
-import com.example.supriyagadigone.androidsysc4907.RequestQueueSingleton;
 import com.example.supriyagadigone.androidsysc4907.OnResponseCallback;
 
 import org.json.JSONArray;
@@ -28,7 +22,6 @@ import java.util.Map;
 public class OrgAllProducts extends BaseActivity implements OnResponseCallback {
 
     private static String TAG = "OrgAllProducts";
-    private RequestQueue mRequestQueue;
     private RequestHandler mRequestHandlerm;
 
     private Map<String, String> productData;
@@ -42,12 +35,8 @@ public class OrgAllProducts extends BaseActivity implements OnResponseCallback {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.org_all_products, frameLayout);
 
-        mRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext())
-                .getRequestQueue();
-        SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
-        mRequestHandlerm = new RequestHandler(mRequestQueue,
+        mRequestHandlerm = new RequestHandler(getApplicationContext(),
                 this,
-                prefs,
                 "productList");
 
 

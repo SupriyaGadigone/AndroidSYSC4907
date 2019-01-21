@@ -34,7 +34,6 @@
         <activity android:name=".Organization.OrgEditProduct"></activity>
         <activity android:name=".Customer.CustomerGroceryListPage"></activity>
         <activity android:name=".Customer.CustomerProfilePage"></activity>
-        <activity android:name=".Customer.CustomerReadNfcData"></activity>
         <activity android:name=".Customer.CustomerGroceryList"></activity>
         <activity android:name=".Customer.CustomerTappedProducts"></activity>
         <activity android:name=".Customer.CustomerTappedProductInfo"></activity>

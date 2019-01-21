@@ -14,12 +14,43 @@
         android:hint="@string/product_name_text"/>
 
     <EditText
-        android:id="@+id/product_information"
+        android:id="@+id/product_id"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_weight="1"
         android:inputType="text"
-        android:hint="@string/product_information_text"/>
+        android:hint="Product Id"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/title_size"
+        android:text="Tags: "/>
+
+    <Spinner
+        android:id="@+id/tags_options"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        android:layout_marginBottom="@dimen/default_padding"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/title_size"
+        android:text="Ingredients: "/>
+
+    <Button
+        android:id="@+id/ingredients_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose Ingredients"
+        android:layout_marginBottom="@dimen/default_padding"/>
+
+
 
     <Button
         android:id="@+id/write_to_NFC"

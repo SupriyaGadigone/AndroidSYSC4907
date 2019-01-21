@@ -33,9 +33,7 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
 
     private static String TAG = "OrgEditProduct";
     private String mNfcId;
-    private String mToken;
     private String mProductName;
-    private RequestQueue mRequestQueue;
     private EditText mProductNameView;
     private EditText mNfcIdView;
     private EditText mProductIdView;
@@ -57,11 +55,7 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
         mIsCustomer = false;
         prodInfo = new HashMap<>();
 
-        mRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext())
-                .getRequestQueue();
         mNfcId = getIntent().getStringExtra("NFC_ID");
-        mToken = getIntent().getStringExtra("token");
-
 
         //TODO: fix toolbar
         initToolbar();
@@ -70,11 +64,10 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
         toolbar.setTitle("Edit: " + mProductName);
 
         prodInfo.put("nfc_id",mNfcId);
-        prodInfo.put("token",mToken);
-        RequestHandler mRequestHandlerm1 = new RequestHandler(mRequestQueue,
+        RequestHandler mRequestHandlerm1 = new RequestHandler(getApplicationContext(),
                 this,
                 "ingredientList", prodInfo);
-        RequestHandler mRequestHandlerm2 = new RequestHandler(mRequestQueue,
+        RequestHandler mRequestHandlerm2 = new RequestHandler(getApplicationContext(),
                 this,
                 "product", prodInfo);
 
@@ -201,9 +194,6 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
         });
 
 
-//        for(int i = 0; i<=mSelectedItems.size() ; i++){
-//            Log.e(TAG, "SELECTED: " + mSelectedItems.get(i));
-//        }
     }
 
     private void editProductInfo(){
@@ -214,12 +204,11 @@ public class OrgEditProduct extends BaseActivity implements OnResponseCallback {
         Log.e(TAG, "SIZE3: " + mSelectedItems.size());
         String s = "";
         for(int i = 0; i<=mSelectedItems.size()-1 ; i++){
-           // Log.e(TAG, "SELECTED: " + mSelectedItems.get(i));
-           // Log.e(TAG, "i: " + i);
+
             s+= mSelectedItems.get(i) + ",";
         }
         prodInfo.put("new_ingredientId", s);
-        RequestHandler mRequestHandlerm3 = new RequestHandler(mRequestQueue,
+        RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
                 this,
                 "newProduct", prodInfo);
     }

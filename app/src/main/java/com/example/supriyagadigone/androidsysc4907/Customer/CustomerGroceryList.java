@@ -53,9 +53,7 @@ public class CustomerGroceryList extends BaseActivity {
                                                    View item, int pos, long id) {
                         // Remove the item within array at position
                         items.remove(pos);
-                        // Refresh the adapter
                         itemsAdapter.notifyDataSetChanged();
-                        // Return true consumes the long click event (marks it handled)
                         return true;
                     }
 

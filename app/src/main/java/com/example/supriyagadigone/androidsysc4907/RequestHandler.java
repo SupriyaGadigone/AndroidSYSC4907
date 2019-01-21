@@ -1,5 +1,6 @@
 package com.example.supriyagadigone.androidsysc4907;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -28,28 +29,30 @@ public class RequestHandler extends AppCompatActivity {
     private String mNfcId;
 
     private RequestQueue mRequestQueue;
-    private Map<String,String> prodInfo;
+    private Map<String, String> prodInfo;
 
-    OnResponseCallback onResponseCallback= null;
+    OnResponseCallback onResponseCallback = null;
 
-    public RequestHandler(RequestQueue requestQueue) {
-        this.mRequestQueue = requestQueue;
+    public RequestHandler(Context c) {
+        this.mRequestQueue = RequestQueueSingleton.getInstance(c).getRequestQueue();
+        setUserCredentials(c);
     }
-    public RequestHandler(RequestQueue requestQueue,OnResponseCallback onResponseCallback, SharedPreferences prefs, String endpoint) {
-        this.mRequestQueue = requestQueue;
+
+    public RequestHandler(Context c, OnResponseCallback onResponseCallback, String endpoint) {
+        this(c);
         this.onResponseCallback = onResponseCallback;
         this.mEndpoint = endpoint;
-        setUserCredentials(prefs);
         getRequestResponse();
     }
 
-    public RequestHandler(RequestQueue requestQueue,OnResponseCallback onResponseCallback, String endpoint, Map<String,String> prodInfo) {
+
+    public RequestHandler(Context c, OnResponseCallback onResponseCallback, String endpoint, Map<String, String> prodInfo) {
+        this(c);
         //TODO: access the singleton here by calling the default constructor
-        this.mRequestQueue = requestQueue;
         this.onResponseCallback = onResponseCallback;
         this.mEndpoint = endpoint;
         this.prodInfo = prodInfo;
-        this.token = prodInfo.get("token");
+        this.mNfcId = prodInfo.get("nfc_id");
         getRequestResponseWithParams();
     }
 
@@ -75,17 +78,21 @@ public class RequestHandler extends AppCompatActivity {
 
             protected Map<String, String> getParams() {
                 Map<String, String> data = new HashMap<String, String>();
-                if(mEndpoint.equals("product") && data!=null) {
-                    Log.e(TAG, "well here");
+                if (mEndpoint.equals("product") && data != null) {
+                    Log.e(TAG, "well here: " + prodInfo.get("nfc_id"));
                     data.put("nfc_id", prodInfo.get("nfc_id"));
                 }
-                if(mEndpoint.equals("newProduct") && data!=null) {
-                    data.put("nfc_id", mNfcId);
-                    for (Map.Entry<String, String> entry : prodInfo.entrySet())
-                    {
-                        data.put(entry.getKey(), entry.getValue());
+                if (mEndpoint.equals("newProduct") && data != null) {
+                    if (mNfcId != null) {
+                        data.put("nfc_id", mNfcId);
+                    }
+                    for (Map.Entry<String, String> entry : prodInfo.entrySet()) {
+                        if(entry.getKey()!=null && entry.getValue()!=null) {
+                            data.put(entry.getKey(), entry.getValue());
+                        }
                     }
                 }
+
                 return data;
             }
 
@@ -93,9 +100,10 @@ public class RequestHandler extends AppCompatActivity {
             public Map<String, String> getHeaders() {
                 Map<String, String> tokenM = new HashMap<String, String>();
                 tokenM.put("Authorization", token);
-
                 return tokenM;
             }
+
+
         };
 
         mRequestQueue.add(ingredientsRequest);
@@ -107,20 +115,9 @@ public class RequestHandler extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.e(TAG, "Response: " + response);
 
-                onResponseCallback.onResponse(mEndpoint,response);
-              //  setResponse(response);
-//                try {
-//                    JSONArray jsonDataResponse = new JSONArray(response);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+                onResponseCallback.onResponse(mEndpoint, response);
 
-//                if (getEndPoint().equals("ingredientList")) {
-//                    Log.e(TAG, "***Ingredients: " + response);
 //                    //TODO: Can make everything JsonArray here to avoid a for loop
-//                    setResponse(response);
-//                }
-
 
             }
         };
@@ -131,12 +128,13 @@ public class RequestHandler extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "***ERROR***: " + error.toString());
+
             }
         };
     }
 
-    public void setUserCredentials(SharedPreferences prefs) {
-
+    public void setUserCredentials(Context c) {
+        SharedPreferences prefs = c.getSharedPreferences(LoginActivity.LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
         Map<String, String> allEntries = (Map<String, String>) prefs.getAll();
 
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
@@ -150,22 +148,6 @@ public class RequestHandler extends AppCompatActivity {
                 token = entry.getValue().toString();
             }
         }
-    }
-
-    public String getResponse() {
-        return mResponse;
-    }
-
-    public void setResponse(String response) {
-        this.mResponse = response;
-    }
-
-    public String getEndpoint() {
-        return mEndpoint;
-    }
-
-    public void setEndpoint(String endpoint) {
-        mEndpoint = endpoint;
     }
 
     public String getUsername() {

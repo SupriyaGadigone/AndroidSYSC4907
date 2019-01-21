@@ -1,9 +1,8 @@
 package com.example.supriyagadigone.androidsysc4907.Customer;
 
-import android.content.Context;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.nfc.Tag;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,21 +10,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.example.supriyagadigone.androidsysc4907.BaseActivity;
-import com.example.supriyagadigone.androidsysc4907.LoginActivity;
 import com.example.supriyagadigone.androidsysc4907.OnResponseCallback;
-import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProducts;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProductsListAdapter;
-import com.example.supriyagadigone.androidsysc4907.Organization.OrgEditProduct;
 import com.example.supriyagadigone.androidsysc4907.RequestHandler;
 import com.example.supriyagadigone.androidsysc4907.R;
-import com.example.supriyagadigone.androidsysc4907.RequestQueueSingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +27,6 @@ import java.util.Map;
 public class CustomerTappedProducts extends BaseActivity implements OnResponseCallback {
 
     private static String TAG = "CustomerTappedProducts";
-    private RequestQueue mRequestQueue;
 
     private ListView allProductsList;
     private Map<String, String> prodIngriVals;
@@ -53,12 +42,8 @@ public class CustomerTappedProducts extends BaseActivity implements OnResponseCa
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.customer_tapped_products, frameLayout);
 
-        mRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext())
-                .getRequestQueue();
-        SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
-        RequestHandler mRequestHandlerm = new RequestHandler(mRequestQueue,
+        RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
                 this,
-                prefs,
                 "product");
 
         prodIngriVals = new HashMap<>();
@@ -79,7 +64,7 @@ public class CustomerTappedProducts extends BaseActivity implements OnResponseCa
                 Intent tappedNFCIntent = new Intent(CustomerTappedProducts.this, CustomerTappedProductInfo.class);
                 Log.e(TAG, "Position: "+position);
                 Log.e(TAG, "Size: " +prodIngriVals.size());
-                tappedNFCIntent.putExtra("PROD_DATA", (String) prodIngriVals.get(prodIngriVals.keySet().toArray()[position]));
+                tappedNFCIntent.putExtra("PROD_DATA", prodIngriVals.get(prodIngriVals.keySet().toArray()[position]));
                 startActivity(tappedNFCIntent);
             }
         });
