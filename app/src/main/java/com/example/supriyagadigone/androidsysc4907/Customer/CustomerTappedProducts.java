@@ -40,7 +40,7 @@ public class CustomerTappedProducts extends BaseActivity implements OnResponseCa
         //TODO: pass the proper data FIX
 
         super.onCreate(savedInstanceState);
-        getLayoutInflater().inflate(R.layout.customer_tapped_products, frameLayout);
+        getLayoutInflater().inflate(R.layout.products_list, frameLayout);
 
         RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
                 this,

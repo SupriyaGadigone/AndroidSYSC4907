@@ -32,7 +32,7 @@ public class OrgAllProducts extends BaseActivity implements OnResponseCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLayoutInflater().inflate(R.layout.org_all_products, frameLayout);
+        getLayoutInflater().inflate(R.layout.products_list, frameLayout);
 
         RequestHandler requestHandler = new RequestHandler(getApplicationContext(),
                 this,
