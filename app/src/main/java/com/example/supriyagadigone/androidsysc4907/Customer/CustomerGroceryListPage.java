@@ -37,24 +37,20 @@ public class CustomerGroceryListPage extends BaseActivity {
     }
 
     public void onAddItem(View v) {
-        EditText etNewItem = (EditText) findViewById(R.id.addListEditText);
+        EditText etNewItem = findViewById(R.id.addListEditText);
         String itemText = etNewItem.getText().toString();
         itemsAdapter.add(itemText);
         etNewItem.setText("");
     }
 
-    // Attaches a long click listener to the listview
     private void setupListViewListener() {
         lvItems.setOnItemLongClickListener(
                 new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapter,
                                                    View item, int pos, long id) {
-                        // Remove the item within array at position
                         items.remove(pos);
-                        // Refresh the adapter
                         itemsAdapter.notifyDataSetChanged();
-                        // Return true consumes the long click event (marks it handled)
                         return true;
                     }
 
@@ -71,6 +67,5 @@ public class CustomerGroceryListPage extends BaseActivity {
                     startActivityForResult(myIntent, 0);
                 }});
     }
-
 
 }

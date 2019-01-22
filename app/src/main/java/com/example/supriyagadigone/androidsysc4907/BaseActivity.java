@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerGroceryListPage;
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerProfilePage;
+import com.example.supriyagadigone.androidsysc4907.Organization.OrgProfilePage;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgWriteNfc;
 
 public class BaseActivity extends AppCompatActivity {
@@ -106,6 +107,9 @@ public class BaseActivity extends AppCompatActivity {
 
                     switch (menuItem.getItemId()) {
 
+                        case R.id.profile:
+                            startActivity(new Intent(BaseActivity.this, OrgProfilePage.class));
+                            break;
                         case R.id.read_nfc:
                             startActivity(new Intent(BaseActivity.this, ReadNfc.class));
                             break;

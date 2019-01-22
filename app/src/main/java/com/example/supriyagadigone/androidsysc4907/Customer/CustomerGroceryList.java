@@ -24,6 +24,7 @@ public class CustomerGroceryList extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.customer_grocery_list, frameLayout);
         initToolbar();
+
         //TODO: get the list name clicked here
         //toolbar.setTitle("Grocery Lists");
         mIsCustomer = true;

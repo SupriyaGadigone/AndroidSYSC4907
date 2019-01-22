@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidSYSC4907</string>
+    <string name="app_name">groceR</string>
     <string name="organization_title">Organization</string>
     <string name="customer_title">Customer</string>
     <string name="write_nfc">Write to NFC</string>
