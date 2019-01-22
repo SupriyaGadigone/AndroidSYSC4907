@@ -15,8 +15,6 @@ import android.widget.FrameLayout;
 
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerGroceryListPage;
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerProfilePage;
-import com.example.supriyagadigone.androidsysc4907.Customer.CustomerTappedProducts;
-import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProducts;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgWriteNfc;
 
 public class BaseActivity extends AppCompatActivity {
@@ -82,7 +80,9 @@ public class BaseActivity extends AppCompatActivity {
                             startActivity(new Intent(BaseActivity.this, CustomerGroceryListPage.class));
                             break;
                         case R.id.tapped_products:
-                            startActivity(new Intent(BaseActivity.this, CustomerTappedProducts.class));
+                            Intent allCust = new Intent(BaseActivity.this, UserLandingPage.class);
+                            allCust.putExtra("BTN_PRESSED", "0");
+                            startActivity(allCust);
                             break;
                     }
                     return false;
@@ -113,7 +113,9 @@ public class BaseActivity extends AppCompatActivity {
                             startActivity(new Intent(BaseActivity.this, OrgWriteNfc.class));
                             break;
                         case R.id.all_products:
-                            startActivity(new Intent(BaseActivity.this, OrgAllProducts.class));
+                            Intent allProd = new Intent(BaseActivity.this, UserLandingPage.class);
+                            allProd.putExtra("BTN_PRESSED", "1");
+                            startActivity(allProd);
                             break;
                     }
                     return false;

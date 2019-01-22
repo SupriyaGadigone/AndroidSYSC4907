@@ -11,22 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.Map;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.supriyagadigone.androidsysc4907.Customer.CustomerTappedProducts;
 import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizActivity;
-import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProducts;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Login page for customer and organization
@@ -67,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
                         StringRequest loginRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Log.e("LoginActivity", "Token: " + response);
                                 if (response != null) {
                                     Intent intent;
                                     if (mCustOrgBtn.equals("0")) {
@@ -76,11 +72,12 @@ public class LoginActivity extends AppCompatActivity {
                                         if (allEntries.entrySet().size() == 0 || allEntries.entrySet() == null) {
                                             intent = new Intent(LoginActivity.this, QuizActivity.class);
                                         } else {
-                                            intent = new Intent(LoginActivity.this, CustomerTappedProducts.class);
+                                           // intent = new Intent(LoginActivity.this, CustomerTappedProducts.class);
+                                            intent = new Intent(LoginActivity.this, UserLandingPage.class);
                                         }
                                     } else {
-                                        intent = new Intent(LoginActivity.this, OrgAllProducts.class);
-                                       // intent = new Intent(LoginActivity.this, RequestHandler.class);
+                                       // intent = new Intent(LoginActivity.this, OrgAllProducts.class);
+                                        intent = new Intent(LoginActivity.this, UserLandingPage.class);
                                     }
 
                                     SharedPreferences prefs = getApplicationContext().getSharedPreferences(LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
@@ -93,14 +90,13 @@ public class LoginActivity extends AppCompatActivity {
                                         String token = jObject.getString("token");
                                         editor.putString("token", "token " + token);
 
-                                        Log.e("LoginActivity", "Parsed Token: " + token);
-
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
 
                                     editor.apply();
 
+                                    intent.putExtra("BTN_PRESSED", mCustOrgBtn);
                                     startActivity(intent);
                                 }
                             }

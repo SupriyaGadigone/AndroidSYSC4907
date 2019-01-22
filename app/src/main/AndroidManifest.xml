@@ -35,9 +35,8 @@
         <activity android:name=".Customer.CustomerGroceryListPage"></activity>
         <activity android:name=".Customer.CustomerProfilePage"></activity>
         <activity android:name=".Customer.CustomerGroceryList"></activity>
-        <activity android:name=".Customer.CustomerTappedProducts"></activity>
         <activity android:name=".Customer.CustomerTappedProductInfo"></activity>
-        <activity android:name=".Organization.OrgAllProducts"></activity>
+        <activity android:name=".UserLandingPage"></activity>
     </application>
 
 </manifest>

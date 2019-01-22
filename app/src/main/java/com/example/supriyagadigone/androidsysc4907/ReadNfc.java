@@ -126,7 +126,7 @@ public class ReadNfc extends BaseActivity implements OnResponseCallback {
 
         ParseProductInfo p = new ParseProductInfo();
 
-        alertDialogBuilder.setView(p.parseProductData("[" + response + "]", v, this));
+        alertDialogBuilder.setView(p.parseProductData( response , v, this));
 
         alertDialog = alertDialogBuilder.create();
         alertDialog.setTitle("Product Information");

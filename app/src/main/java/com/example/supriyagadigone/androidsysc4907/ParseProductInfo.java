@@ -25,15 +25,12 @@ public class ParseProductInfo {
         Spinner mTags = v.findViewById(R.id.tags_options);
 
         try {
-            JSONArray jsonData = new JSONArray(response);
-            JSONObject productJsonObj = new JSONObject(jsonData.get(0).toString());
+            JSONObject productJsonObj = new JSONObject(response);
             mProductNameView.setText(productJsonObj.getString("name"));
             mNfcIdView.setText(productJsonObj.getString("nfc_id"));
             mProductIdView.setText(productJsonObj.getString("product_id"));
             tagItems = new String[]{productJsonObj.getString("tags")}; //TODO: get list of tags
 
-//            JSONArray ingrJsonData = new JSONArray(productJsonObj.getString("ingredient"));
-//            parseInfo(ingrJsonData);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(c, android.R.layout.simple_spinner_dropdown_item, tagItems);
             mTags.setAdapter(adapter);

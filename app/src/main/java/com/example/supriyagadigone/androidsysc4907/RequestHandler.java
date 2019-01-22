@@ -76,7 +76,6 @@ public class RequestHandler extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> data = new HashMap<String, String>();
                 if (mEndpoint.equals("product") && data != null) {
-                    Log.e(TAG, "well here: " + prodInfo.get("nfc_id"));
                     data.put("nfc_id", prodInfo.get("nfc_id"));
                 }
                 if (mEndpoint.equals("newProduct") && data != null) {
@@ -110,8 +109,6 @@ public class RequestHandler extends AppCompatActivity {
         return new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e(TAG, "Response: " + response);
-
                 onResponseCallback.onResponse(mEndpoint, response);
                     //TODO: Can make everything JsonArray here to avoid a for loop
 

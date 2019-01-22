@@ -9,8 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.supriyagadigone.androidsysc4907.Customer.CustomerTappedProducts;
 import com.example.supriyagadigone.androidsysc4907.R;
+import com.example.supriyagadigone.androidsysc4907.UserLandingPage;
 
 public class QuizActivity extends AppCompatActivity {
 
@@ -37,8 +37,9 @@ public class QuizActivity extends AppCompatActivity {
         mNextButton = findViewById(R.id.next_button);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent quizIntent = new Intent(QuizActivity.this, CustomerTappedProducts.class);
-                startActivity(quizIntent);
+                Intent allCust = new Intent(QuizActivity.this, UserLandingPage.class);
+                allCust.putExtra("BTN_PRESSED", "0");
+                startActivity(allCust);
             }
         });
 
