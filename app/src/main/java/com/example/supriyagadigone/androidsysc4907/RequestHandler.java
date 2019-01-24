@@ -18,7 +18,7 @@ import java.util.Map;
 public class RequestHandler extends AppCompatActivity {
 
     private static String TAG = "RequestHandler";
-    public static final String HOST_NAME = "http://69.159.27.129:8000/";
+    private static final String HOST_NAME = "http://api.grocer-tap.com/";
 
     private String token;
     private String mNfcId;
@@ -82,6 +82,14 @@ public class RequestHandler extends AppCompatActivity {
                     if (mNfcId != null) {
                         data.put("nfc_id", mNfcId);
                     }
+                    for (Map.Entry<String, String> entry : prodInfo.entrySet()) {
+                        if(entry.getKey()!=null && entry.getValue()!=null) {
+                            data.put(entry.getKey(), entry.getValue());
+                        }
+                    }
+                }
+
+                if(mEndpoint.equals("login") && data != null){
                     for (Map.Entry<String, String> entry : prodInfo.entrySet()) {
                         if(entry.getKey()!=null && entry.getValue()!=null) {
                             data.put(entry.getKey(), entry.getValue());

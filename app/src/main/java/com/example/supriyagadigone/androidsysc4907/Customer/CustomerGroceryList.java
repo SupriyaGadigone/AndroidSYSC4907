@@ -1,6 +1,7 @@
 package com.example.supriyagadigone.androidsysc4907.Customer;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -8,15 +9,19 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.supriyagadigone.androidsysc4907.BaseActivity;
+import com.example.supriyagadigone.androidsysc4907.OnResponseCallback;
 import com.example.supriyagadigone.androidsysc4907.R;
+import com.example.supriyagadigone.androidsysc4907.RequestHandler;
 
 import java.util.ArrayList;
 
-public class CustomerGroceryList extends BaseActivity {
+public class CustomerGroceryList extends BaseActivity implements OnResponseCallback {
 
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
+
+    private static String TAG = "CustomerGroceryList";
 
 
     @Override
@@ -36,6 +41,10 @@ public class CustomerGroceryList extends BaseActivity {
         lvItems.setAdapter(itemsAdapter);
 
         setupListViewListener();
+
+        RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
+                this,
+                "shoppingList");
     }
 
     public void onAddItem(View v) {
@@ -59,5 +68,14 @@ public class CustomerGroceryList extends BaseActivity {
                     }
 
                 });
+    }
+
+    private void parseShoppingListsData(String response){
+
+    }
+
+    public void onResponse(String endpoint, String response) {
+        Log.e(TAG, response);
+        parseShoppingListsData(response);
     }
 }
