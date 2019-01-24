@@ -15,8 +15,8 @@ import android.widget.FrameLayout;
 
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerGroceryListPage;
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerProfilePage;
+import com.example.supriyagadigone.androidsysc4907.Organization.OrgWriteEditProduct;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgProfilePage;
-import com.example.supriyagadigone.androidsysc4907.Organization.OrgWriteNfc;
 
 public class BaseActivity extends AppCompatActivity {
     public Toolbar toolbar;
@@ -114,7 +114,9 @@ public class BaseActivity extends AppCompatActivity {
                             startActivity(new Intent(BaseActivity.this, ReadNfc.class));
                             break;
                         case R.id.write_nfc:
-                            startActivity(new Intent(BaseActivity.this, OrgWriteNfc.class));
+                            Intent writeEdit = new Intent(BaseActivity.this, OrgWriteEditProduct.class);
+                            writeEdit.putExtra("IS_WRITE", "0");
+                            startActivity(writeEdit);
                             break;
                         case R.id.all_products:
                             Intent allProd = new Intent(BaseActivity.this, UserLandingPage.class);

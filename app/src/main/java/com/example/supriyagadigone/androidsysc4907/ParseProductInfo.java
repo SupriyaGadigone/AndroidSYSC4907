@@ -25,7 +25,8 @@ public class ParseProductInfo {
         Spinner mTags = v.findViewById(R.id.tags_options);
 
         try {
-            JSONObject productJsonObj = new JSONObject(response);
+            JSONArray prdArray = new JSONArray(response);
+            JSONObject productJsonObj = new JSONObject(prdArray.get(0).toString());
             mProductNameView.setText(productJsonObj.getString("name"));
             mNfcIdView.setText(productJsonObj.getString("nfc_id"));
             mProductIdView.setText(productJsonObj.getString("product_id"));

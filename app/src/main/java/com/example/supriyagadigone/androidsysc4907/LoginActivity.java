@@ -9,8 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizActivity;
 
 import org.json.JSONException;
@@ -28,7 +26,6 @@ public class LoginActivity extends AppCompatActivity implements OnResponseCallba
 
     private EditText mUsername;
     private EditText mPassword;
-    private RequestQueue mRequestQueue;
     private String mCustOrgBtn;
     private Context mContext;
 
@@ -40,8 +37,6 @@ public class LoginActivity extends AppCompatActivity implements OnResponseCallba
         mPassword = findViewById(R.id.password);
 
         mCustOrgBtn = getIntent().getStringExtra("BTN_PRESSED");
-
-        mRequestQueue = Volley.newRequestQueue(this);
 
         mContext = getApplicationContext();
 
@@ -83,11 +78,9 @@ public class LoginActivity extends AppCompatActivity implements OnResponseCallba
             if (allEntries.entrySet().size() == 0 || allEntries.entrySet() == null) {
                 intent = new Intent(LoginActivity.this, QuizActivity.class);
             } else {
-                // intent = new Intent(LoginActivity.this, CustomerTappedProducts.class);
                 intent = new Intent(LoginActivity.this, UserLandingPage.class);
             }
         } else {
-            // intent = new Intent(LoginActivity.this, OrgAllProducts.class);
             intent = new Intent(LoginActivity.this, UserLandingPage.class);
         }
 

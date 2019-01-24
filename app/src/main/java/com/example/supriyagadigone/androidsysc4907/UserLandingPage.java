@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerTappedProductInfo;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgAllProductsListAdapter;
-import com.example.supriyagadigone.androidsysc4907.Organization.OrgEditProduct;
+import com.example.supriyagadigone.androidsysc4907.Organization.OrgWriteEditProduct;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,7 +76,8 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
                 if (mIsCustomer) {
                     intent = new Intent(UserLandingPage.this, CustomerTappedProductInfo.class);
                 } else {
-                    intent = new Intent(UserLandingPage.this, OrgEditProduct.class);
+                    intent = new Intent(UserLandingPage.this, OrgWriteEditProduct.class);
+                    intent.putExtra("IS_WRITE", "1");
                 }
                 intent.putExtra("PROD_DATA", productData.get(productData.keySet().toArray()[position]));
                 startActivity(intent);
