@@ -2,6 +2,7 @@ package com.example.supriyagadigone.androidsysc4907;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -88,6 +89,11 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
 
     public void parseProductsData(String response) {
         try {
+            if (mIsCustomer) {
+                JSONObject productJsonObj = new JSONObject(response);
+                response = productJsonObj.getString("TappedProducts");
+                productData.put("flag", productJsonObj.getString("flag"));
+            }
             JSONArray jsonData = new JSONArray(response);
             for (int i = 0; i < jsonData.length(); i++) {
                 JSONObject productJsonObj = new JSONObject(jsonData.get(i).toString());
@@ -105,6 +111,7 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
 
     public void onResponse(String endpoint, String response) {
         parseProductsData(response);
+        Log.e(TAG, "*****: "+response);
 
     }
 

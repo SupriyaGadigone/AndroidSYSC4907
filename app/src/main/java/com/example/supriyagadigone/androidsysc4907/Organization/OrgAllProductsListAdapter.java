@@ -15,6 +15,7 @@ import com.example.supriyagadigone.androidsysc4907.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class OrgAllProductsListAdapter extends BaseAdapter {
@@ -23,11 +24,27 @@ public class OrgAllProductsListAdapter extends BaseAdapter {
     Context context;
     private Map<String,String> productData;
     private boolean mIsCustomer;
+    private Map<String, String> flagsMap;
 
     public OrgAllProductsListAdapter(Context context, Map<String,String> prodData, boolean mIsCustomer) {
         this.context = context;
         this.productData = prodData;
         this.mIsCustomer = mIsCustomer;
+
+        flagsMap = new HashMap<>();
+
+
+            String flags = prodData.get("flag");
+            String[] flagsArrayindex = flags.split(",");
+            Log.e(TAG,"Flag size: " + flags.length());
+            for(int i = 0; i < flagsArrayindex.length; i++){
+                String str = flagsArrayindex[i].replace("'", "");
+                String str2 = str.replace(" ", "");
+                Log.e(TAG, "str: "+str2);
+                flagsMap.put(str2, "");
+            }
+
+
     }
 
     @Override
@@ -51,8 +68,12 @@ public class OrgAllProductsListAdapter extends BaseAdapter {
         if (vi == null)
             vi = LayoutInflater.from(parent.getContext()).inflate(R.layout.org_all_products_row, parent, false);
 
+
+
         TextView productName =  vi.findViewById(R.id.product_name);
         LinearLayout editProduct = vi.findViewById(R.id.edit_product);
+
+
 
         if(mIsCustomer){
             editProduct.setVisibility(View.GONE);
@@ -60,22 +81,11 @@ public class OrgAllProductsListAdapter extends BaseAdapter {
 
         String productNameText = (String) productData.keySet().toArray()[position];
         productName.setText(productNameText);
-//        String resp = productData.get(productData.keySet().toArray()[position]);
 
-
-//        try {
-//            JSONObject productJsonObj = new JSONObject(resp);
-//            //Log.e(TAG, "NFC ID: " + );
-//            if(productJsonObj.getString("flag") != null){
-//                vi.setBackgroundColor(Color.parseColor("#ff0000"));
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
-
-
-            //TODO:edit NFC
+        if(flagsMap.containsKey(productNameText.replace(" ", ""))){
+            Log.e(TAG, "herereeree");
+            vi.setBackgroundColor(Color.parseColor("#DB7093"));
+        }
 
         return vi;
     }
