@@ -112,6 +112,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
 
         } else {
             //Todo: add list of ingridients and tags
+            toolbar.setTitle("Write to NFC");
             mNfcIdView.setVisibility(View.GONE);
             mSaveButton.setText("Write to NFC");
             findViewById(R.id.nfc_id_tv).setVisibility(View.GONE);

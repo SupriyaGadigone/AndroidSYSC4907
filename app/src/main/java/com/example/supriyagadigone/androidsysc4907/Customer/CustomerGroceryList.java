@@ -17,12 +17,12 @@ import java.util.ArrayList;
 
 public class CustomerGroceryList extends BaseActivity implements OnResponseCallback {
 
+    private static String TAG = "CustomerGroceryList";
+
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
-
-    private static String TAG = "CustomerGroceryList";
-
+    private String  listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +40,11 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
                 android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
 
-        setupListViewListener();
 
-        RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
-                this,
-                "shoppingList");
+        listData = getIntent().getStringExtra("IS_WRITE");
+        Log.e(TAG, "********: "+listData);
+
+        setupListViewListener();
     }
 
     public void onAddItem(View v) {

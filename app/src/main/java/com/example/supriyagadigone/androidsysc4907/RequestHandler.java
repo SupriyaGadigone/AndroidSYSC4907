@@ -89,13 +89,14 @@ public class RequestHandler extends AppCompatActivity {
                     }
                 }
 
-                if(mEndpoint.equals("login") && data != null){
+                if((mEndpoint.equals("login") || mEndpoint.equals("shoppingList")) && data != null){
                     for (Map.Entry<String, String> entry : prodInfo.entrySet()) {
                         if(entry.getKey()!=null && entry.getValue()!=null) {
                             data.put(entry.getKey(), entry.getValue());
                         }
                     }
                 }
+
 
                 return data;
             }
