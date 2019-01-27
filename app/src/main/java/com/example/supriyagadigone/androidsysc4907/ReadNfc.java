@@ -71,6 +71,7 @@ public class ReadNfc extends BaseActivity implements OnResponseCallback {
     private void setUpReadNFCAlertDialog() {
         //TODO: change this to NFC status view
         mNfcDataView = findViewById(R.id.textView_explanation);
+        mNfcDataView.setVisibility(View.GONE);
 
         factory = LayoutInflater.from(mContext);
 
@@ -83,9 +84,9 @@ public class ReadNfc extends BaseActivity implements OnResponseCallback {
         }
 
         if (!mNfcAdapter.isEnabled()) {
-            mNfcDataView.setText(R.string.nfc_disabled);
+          //  mNfcDataView.setText(R.string.nfc_disabled); //TODO: UI for this
         } else {
-            mNfcDataView.setText(R.string.nfc_enabled);
+         //   mNfcDataView.setText(R.string.nfc_enabled);
 
             final View view = factory.inflate(R.layout.ready_to_scan_dialog, null);
             alertDialogBuilder.setView(view);
@@ -213,7 +214,7 @@ public class ReadNfc extends BaseActivity implements OnResponseCallback {
             if (result != null) {
                 alertDialog.dismiss();
 
-                mNfcDataView.setText("NFC ID: " + result);
+               // mNfcDataView.setText("NFC ID: " + result);
                 displayProductInfo(result);
             }
         }

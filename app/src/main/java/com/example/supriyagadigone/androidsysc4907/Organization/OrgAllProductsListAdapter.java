@@ -31,19 +31,20 @@ public class OrgAllProductsListAdapter extends BaseAdapter {
         this.productData = prodData;
         this.mIsCustomer = mIsCustomer;
 
-        flagsMap = new HashMap<>();
+        if(mIsCustomer) {
+            flagsMap = new HashMap<>();
 
 
             String flags = prodData.get("flag");
             String[] flagsArrayindex = flags.split(",");
-            Log.e(TAG,"Flag size: " + flags.length());
-            for(int i = 0; i < flagsArrayindex.length; i++){
+            Log.e(TAG, "Flag size: " + flags.length());
+            for (int i = 0; i < flagsArrayindex.length; i++) {
                 String str = flagsArrayindex[i].replace("'", "");
                 String str2 = str.replace(" ", "");
-                Log.e(TAG, "str: "+str2);
+                Log.e(TAG, "str: " + str2);
                 flagsMap.put(str2, "");
             }
-
+        }
 
     }
 
@@ -73,18 +74,14 @@ public class OrgAllProductsListAdapter extends BaseAdapter {
         TextView productName =  vi.findViewById(R.id.product_name);
         LinearLayout editProduct = vi.findViewById(R.id.edit_product);
 
-
-
-        if(mIsCustomer){
-            editProduct.setVisibility(View.GONE);
-        }
-
         String productNameText = (String) productData.keySet().toArray()[position];
         productName.setText(productNameText);
 
-        if(flagsMap.containsKey(productNameText.replace(" ", ""))){
-            Log.e(TAG, "herereeree");
-            vi.setBackgroundColor(Color.parseColor("#DB7093"));
+        if(mIsCustomer){
+            editProduct.setVisibility(View.GONE);
+            if(flagsMap.containsKey(productNameText.replace(" ", ""))){
+                vi.setBackgroundColor(Color.parseColor("#DB7093"));
+            }
         }
 
         return vi;
