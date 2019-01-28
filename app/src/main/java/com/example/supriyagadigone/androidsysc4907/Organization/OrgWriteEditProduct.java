@@ -82,28 +82,32 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
         mProductIdView = findViewById(R.id.product_id);
         mTags = findViewById(R.id.tags_options);
         mIngredientsButton = findViewById(R.id.ingredients_list);
-        mNfcIdView = findViewById(R.id.nfc_id);
         mSaveButton = findViewById(R.id.save_button);
         mIngridientsBuilder = new AlertDialog.Builder(OrgWriteEditProduct.this);
 
-
-
         if (mIsWrite.equals("1")) {
             mProductData = getIntent().getStringExtra("PROD_DATA");
+            Log.e(TAG, "PROD_DATA: " + mProductData);
 
             try {
                 //JSONArray productJsonArr = new JSONArray(mProductData);
-                JSONObject productJsonObj = new JSONObject(mProductData);
-                prodInfo.put("nfc_id", productJsonObj.getString("nfc_id"));
-                toolbar.setTitle("Edit: " + productJsonObj.getString("name"));
-                mProductNameView.setText(productJsonObj.getString("name"));
 
+                JSONObject productJsonObj = new JSONObject(mProductData);
+                mProductNameView.setText(productJsonObj.getString("name"));
+                toolbar.setTitle("Edit: " + productJsonObj.getString("name"));
+                mProductIdView.setText(productJsonObj.getString("product_id"));
+                prodInfo.put("product_id", productJsonObj.getString("product_id"));
+                // mNfcIdView.setVisibility(View.GONE);
                 RequestHandler mRequestHandlerm1 = new RequestHandler(getApplicationContext(),
                         this,
                         "ingredientList", prodInfo);
                 RequestHandler mRequestHandlerm2 = new RequestHandler(getApplicationContext(),
                         this,
                         "product", prodInfo);
+
+                tagItems = new String[]{productJsonObj.getString("tags")};
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, tagItems);
+                mTags.setAdapter(adapter);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -113,14 +117,19 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
         } else {
             //Todo: add list of ingridients and tags
             toolbar.setTitle("Write to NFC");
-            mNfcIdView.setVisibility(View.GONE);
+            // mNfcIdView.setVisibility(View.GONE);
             mSaveButton.setText("Write to NFC");
-            findViewById(R.id.nfc_id_tv).setVisibility(View.GONE);
+            // findViewById(R.id.nfc_id_tv).setVisibility(View.GONE);
+            RequestHandler mRequestHandlerm1 = new RequestHandler(getApplicationContext(),
+                    this,
+                    "ingredientList");
+//            RequestHandler mRequestHandlerm2 = new RequestHandler(getApplicationContext(),
+//                    this,
+//                    "product", prodInfo);
             RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
                     this,
                     "newNFCId");
         }
-
 
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
@@ -151,21 +160,16 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
 
 
     public void parseProductData(String response) {
-
         try {
             JSONObject productJsonObj = new JSONObject(response);
 
-            if (mIsWrite.equals("1")) {
-                mNfcIdView.setText(productJsonObj.getString("nfc_id"));
-                mProductIdView.setText(productJsonObj.getString("product_id"));
-            }
-            tagItems = new String[]{productJsonObj.getString("tags")};
+//            if (mIsWrite.equals("1")) {
+//                //   mNfcIdView.setText(productJsonObj.getString("nfc_id"));
+//              //  mProductIdView.setText(productJsonObj.getString("product_id"));
+//            }
+            JSONObject productJsonObj2 = new JSONObject(productJsonObj.getString("product"));
+            parseInfo(productJsonObj2.getJSONArray("ingredient"));
 
-            JSONArray ingrJsonData = new JSONArray(productJsonObj.getString("ingredient"));
-            parseInfo(ingrJsonData);
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, tagItems);
-            mTags.setAdapter(adapter);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -184,6 +188,12 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        if (!mIsCustomer) {
+            setIngredientsButton();
+            mSelectedItems = new ArrayList<>();
+        }
+
     }
 
     private void parseInfo(JSONArray ingrJsonData) throws JSONException {
@@ -203,7 +213,6 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
             }
 
         }
-
         setIngredientsButton();
 
     }
@@ -233,8 +242,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
                             public void onClick(DialogInterface dialog, int whichButton) {
 
                             }
-                        })
-                ;
+                        });
 
                 AlertDialog mDialog = mIngridientsBuilder.create();
                 mDialog.show();
@@ -247,38 +255,51 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     private void editProductInfo() {
         prodInfo.put("new_name", mProductNameView.getText().toString());
         if (mIsWrite.equals("1")) {
-            prodInfo.put("new_nfc_id", mNfcIdView.getText().toString());
+            //  prodInfo.put("new_nfc_id", mNfcIdView.getText().toString());
+            //  prodInfo.put("new_tags", mTags.getItemAtPosition(0).toString());
             prodInfo.put("new_tags", mTags.getItemAtPosition(0).toString());
             String s = "";
             for (int i = 0; i <= mSelectedItems.size() - 1; i++) {
 
                 s += mSelectedItems.get(i) + ",";
             }
+            Log.e(TAG, "STR: "+s);
             prodInfo.put("new_ingredientId", s);
+            prodInfo.put("new_product_id", mProductIdView.getText().toString());
+            RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
+                    this,
+                    "newProduct", prodInfo);
         } else {
             //TODO: FIX
-            prodInfo.put("new_nfc_id", mNewNfcID);
-            prodInfo.put("new_tags", "deli");
-            prodInfo.put("new_ingredientId", "1");
-        }
-        prodInfo.put("new_product_id", mProductIdView.getText().toString());
 
-        RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
-                this,
-                "newProduct", prodInfo);
+            prodInfo.put("new_tags", "deli");
+            prodInfo.put("new_ingredients", "38");
+            prodInfo.put("new_product_id", mProductIdView.getText().toString());
+
+            RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
+                    this,
+                    "newProduct", prodInfo);
+
+            prodInfo = new HashMap<>();
+            prodInfo.put("nfc_id", mNewNfcID);
+            prodInfo.put("flag", "new");
+            prodInfo.put("product_id", mProductIdView.getText().toString());
+            RequestHandler mRequestHandlerm2 = new RequestHandler(getApplicationContext(),
+                    this,
+                    "tag", prodInfo);
+
+        }
     }
 
 
     public void onResponse(String endpoint, String response) {
         if (endpoint.equals("product")) {
+            Log.e(TAG, "product: "+ response);
             parseProductData(response);
-            Log.e(TAG, "product: " + mProductData);
         }
 
         if (endpoint.equals("ingredientList")) {
             populateIngredientsData(response);
-            Log.e(TAG, "ingredientList: " + mProductData);
-
         }
 
         if (endpoint.equals("newProduct") && mIsWrite.equals("1")) {
@@ -292,7 +313,6 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
             try {
                 JSONObject productJsonObj = new JSONObject(response);
                 mNewNfcID = productJsonObj.getString("nfc_id");
-                Log.e(TAG, "Resp: " + productJsonObj.getString("nfc_id"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -319,7 +339,6 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
         if (mWriteMode && NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
             Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             NdefMessage message = createTextMessage(mNewNfcID);
-            Log.e(TAG,"NEW NFC ID: "+ mNewNfcID);
             if (writeTag(message, detectedTag)) {
                 Toast.makeText(this, "Success in writing to the NFC tag", Toast.LENGTH_LONG)
                         .show();

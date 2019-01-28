@@ -76,11 +76,16 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
                 Intent intent;
                 if (mIsCustomer) {
                     intent = new Intent(UserLandingPage.this, CustomerTappedProductInfo.class);
+
+                  Log.e(TAG,"um leggo: "+ (String)productData.get(productData.keySet().toArray()[position]));
+                  intent.putExtra("PROD_DATA",(String)productData.get(productData.keySet().toArray()[position]));
+
                 } else {
                     intent = new Intent(UserLandingPage.this, OrgWriteEditProduct.class);
                     intent.putExtra("IS_WRITE", "1");
+                    intent.putExtra("PROD_DATA", productData.get(productData.keySet().toArray()[position]));
                 }
-                intent.putExtra("PROD_DATA", productData.get(productData.keySet().toArray()[position]));
+
                 startActivity(intent);
             }
         });
@@ -111,8 +116,6 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
 
     public void onResponse(String endpoint, String response) {
         parseProductsData(response);
-        Log.e(TAG, "*****: "+response);
-
     }
 
 }

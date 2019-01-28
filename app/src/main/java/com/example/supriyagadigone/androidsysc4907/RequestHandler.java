@@ -50,7 +50,12 @@ public class RequestHandler extends AppCompatActivity {
         this.mEndpoint = endpoint;
         this.prodInfo = prodInfo;
         this.mNfcId = prodInfo.get("nfc_id");
-        getRequestResponseWithParams();
+
+        if (endpoint.equals("login")) {
+            getRequestLogin();
+        } else{
+            getRequestResponseWithParams();
+        }
     }
 
     public void getRequestResponse() {
@@ -76,27 +81,45 @@ public class RequestHandler extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> data = new HashMap<String, String>();
                 if (mEndpoint.equals("product") && data != null) {
-                    data.put("nfc_id", prodInfo.get("nfc_id"));
+                    if(prodInfo.get("product_id")!=null){
+                        data.put("product_id", prodInfo.get("product_id"));
+                    }
+                    if(prodInfo.get("nfc_id")!=null){
+                        data.put("nfc_id", prodInfo.get("nfc_id"));
+                    }
+                }
+
+                if (mEndpoint.equals("tag") && data != null) {
+                    for (Map.Entry<String, String> entry : prodInfo.entrySet()) {
+                        if (entry.getKey() != null && entry.getValue() != null) {
+                            data.put(entry.getKey(), entry.getValue());
+                        }
+                    }
                 }
                 if (mEndpoint.equals("newProduct") && data != null) {
                     if (mNfcId != null) {
                         data.put("nfc_id", mNfcId);
                     }
                     for (Map.Entry<String, String> entry : prodInfo.entrySet()) {
-                        if(entry.getKey()!=null && entry.getValue()!=null) {
+                        if (entry.getKey() != null && entry.getValue() != null) {
                             data.put(entry.getKey(), entry.getValue());
                         }
                     }
                 }
 
-                if((mEndpoint.equals("login") || mEndpoint.equals("shoppingList")) && data != null){
+                if ((mEndpoint.equals("login") || mEndpoint.equals("shoppingList")) && data != null) {
                     for (Map.Entry<String, String> entry : prodInfo.entrySet()) {
-                        if(entry.getKey()!=null && entry.getValue()!=null) {
+                        if (entry.getKey() != null && entry.getValue() != null) {
                             data.put(entry.getKey(), entry.getValue());
                         }
                     }
                 }
 
+                for (Map.Entry<String, String> entry : data.entrySet()) {
+                    if (entry.getKey() != null && entry.getValue() != null) {
+                        Log.e(TAG, entry.getKey() +" *:* "+entry.getValue());
+                    }
+                }
 
                 return data;
             }
@@ -114,12 +137,34 @@ public class RequestHandler extends AppCompatActivity {
         mRequestQueue.add(ingredientsRequest);
     }
 
+    public void getRequestLogin() {
+        String url = HOST_NAME + mEndpoint + "/";
+        StringRequest ingredientsRequest = new StringRequest(Request.Method.POST, url, getPostResponseListener(), getPostErrorListener()) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> data = new HashMap<String, String>();
+
+                for (Map.Entry<String, String> entry : prodInfo.entrySet()) {
+                    if (entry.getKey() != null && entry.getValue() != null) {
+                        data.put(entry.getKey(), entry.getValue());
+                    }
+
+                }
+
+                return data;
+            }
+        };
+        mRequestQueue.add(ingredientsRequest);
+    }
+
     private Response.Listener<String> getPostResponseListener() {
         return new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.e(TAG,"Endpoint: " + mEndpoint );
+                Log.e(TAG,"Response: " + response );
                 onResponseCallback.onResponse(mEndpoint, response);
-                    //TODO: Can make everything JsonArray here to avoid a for loop
+                //TODO: Can make everything JsonArray here to avoid a for loop
 
             }
         };
