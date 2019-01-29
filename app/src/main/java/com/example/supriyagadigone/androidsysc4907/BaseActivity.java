@@ -28,6 +28,7 @@ public class BaseActivity extends AppCompatActivity {
     protected FrameLayout frameLayout;
     protected boolean mIsCustomer; //if false, it is organization
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

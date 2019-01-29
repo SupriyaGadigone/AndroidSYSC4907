@@ -51,7 +51,6 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     private Button mIngredientsButton;
     private Button mSaveButton;
     private Map<String, String> ingridentsData;
-    private String[] tagItems;
     private boolean[] isChecked;
     private Map<String, String> prodInfo;
     private AlertDialog.Builder mIngridientsBuilder;
@@ -61,6 +60,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     private PendingIntent mNfcPendingIntent;
     private String mNewNfcID;
     boolean mWriteMode = false;
+    private String[] tagItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +84,10 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
         mIngredientsButton = findViewById(R.id.ingredients_list);
         mSaveButton = findViewById(R.id.save_button);
         mIngridientsBuilder = new AlertDialog.Builder(OrgWriteEditProduct.this);
+        tagItems = new String[]{"MEAT","PRODUCE","ORGANIC","DELI","SEAFOOD", "GROCERY", "BAKERY"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, tagItems);
+        mTags.setAdapter(adapter);
 
         if (mIsWrite.equals("1")) {
             mProductData = getIntent().getStringExtra("PROD_DATA");
@@ -105,9 +109,9 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
                         this,
                         "product", prodInfo);
 
-                tagItems = new String[]{productJsonObj.getString("tags")};
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, tagItems);
-                mTags.setAdapter(adapter);
+                int spinnerPosition = adapter.getPosition(productJsonObj.getString("tags"));
+                mTags.setSelection(spinnerPosition);
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -130,6 +134,8 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
                     this,
                     "newNFCId");
         }
+
+
 
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
@@ -160,6 +166,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
 
 
     public void parseProductData(String response) {
+        Log.e(TAG,"Here1");
         try {
             JSONObject productJsonObj = new JSONObject(response);
 
@@ -177,7 +184,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     }
 
     public void populateIngredientsData(String response) {
-
+        Log.e(TAG,"Here2");
         try {
             JSONArray jsonData = new JSONArray(response);
             for (int i = 0; i < jsonData.length(); i++) {
@@ -188,15 +195,17 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        if (!mIsCustomer) {
+        if (mIsWrite.equals("0")) {
             setIngredientsButton();
+            isChecked = new boolean[ingridentsData.size()];
+            Arrays.fill(isChecked, Boolean.FALSE);
             mSelectedItems = new ArrayList<>();
         }
 
     }
 
     private void parseInfo(JSONArray ingrJsonData) throws JSONException {
+        Log.e(TAG,"Here3");
         isChecked = new boolean[ingridentsData.size()];
         mSelectedItems = new ArrayList<>();
         Arrays.fill(isChecked, Boolean.FALSE);
@@ -214,10 +223,10 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
 
         }
         setIngredientsButton();
-
     }
 
     private void setIngredientsButton() {
+        Log.e(TAG,"Here4");
         final String[] items = ingridentsData.keySet().toArray(new String[ingridentsData.keySet().size()]);
 
         mIngredientsButton.setOnClickListener(new View.OnClickListener() {
@@ -228,12 +237,13 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
                         .setMultiChoiceItems(items, isChecked,
                                 new DialogInterface.OnMultiChoiceClickListener() {
                                     public void onClick(DialogInterface dialogInterface, int i, boolean isChecked) {
+
                                         if (isChecked) {
                                             // If the user checked the item, add it to the selected items
                                             mSelectedItems.add(Integer.parseInt(ingridentsData.get(ingridentsData.keySet().toArray()[i])));
-                                        } else if (mSelectedItems.contains(i)) {
+                                        } else if (mSelectedItems.contains(ingridentsData.get(ingridentsData.keySet().toArray()[i]))) {
                                             // Else, if the item is already in the array, remove it
-                                            mSelectedItems.remove(Integer.valueOf(i));
+                                            mSelectedItems.remove(Integer.parseInt(ingridentsData.get(ingridentsData.keySet().toArray()[i])));
                                         }
                                     }
 
@@ -253,27 +263,26 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     }
 
     private void editProductInfo() {
+        Log.e(TAG,"Here5");
+        prodInfo = new HashMap<>();
         prodInfo.put("new_name", mProductNameView.getText().toString());
+        String s = "";
+        for (int i = 0; i <= mSelectedItems.size() - 1; i++) {
+
+            s += mSelectedItems.get(i) + ",";
+        }
+        prodInfo.put("new_ingredients", s);
         if (mIsWrite.equals("1")) {
             //  prodInfo.put("new_nfc_id", mNfcIdView.getText().toString());
             //  prodInfo.put("new_tags", mTags.getItemAtPosition(0).toString());
-            prodInfo.put("new_tags", mTags.getItemAtPosition(0).toString());
-            String s = "";
-            for (int i = 0; i <= mSelectedItems.size() - 1; i++) {
-
-                s += mSelectedItems.get(i) + ",";
-            }
-            Log.e(TAG, "STR: "+s);
-            prodInfo.put("new_ingredientId", s);
+            prodInfo.put("new_tags", mTags.getSelectedItem().toString());
             prodInfo.put("new_product_id", mProductIdView.getText().toString());
             RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
                     this,
                     "newProduct", prodInfo);
         } else {
             //TODO: FIX
-
-            prodInfo.put("new_tags", "deli");
-            prodInfo.put("new_ingredients", "38");
+            prodInfo.put("new_tags", mTags.getSelectedItem().toString());
             prodInfo.put("new_product_id", mProductIdView.getText().toString());
 
             RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
@@ -289,12 +298,12 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
                     "tag", prodInfo);
 
         }
+        Log.e(TAG, "STR: "+s);
     }
 
 
     public void onResponse(String endpoint, String response) {
         if (endpoint.equals("product")) {
-            Log.e(TAG, "product: "+ response);
             parseProductData(response);
         }
 
@@ -318,6 +327,8 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
             }
 
         }
+
+        Log.e(TAG, "Endpoint: "+endpoint+" : "+ response);
     }
 
 

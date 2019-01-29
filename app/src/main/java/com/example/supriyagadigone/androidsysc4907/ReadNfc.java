@@ -125,9 +125,9 @@ public class ReadNfc extends BaseActivity implements OnResponseCallback {
         //TODO:get list of tags
         //TODO: flag and warning here
 
-        ParseProductInfo p = new ParseProductInfo();
+        ParseProductInfo p = new ParseProductInfo(this);
 
-        alertDialogBuilder.setView(p.parseProductData( response , v, this));
+        alertDialogBuilder.setView(p.parseProductData( response , v));
 
         alertDialog = alertDialogBuilder.create();
         alertDialog.setTitle("Product Information");

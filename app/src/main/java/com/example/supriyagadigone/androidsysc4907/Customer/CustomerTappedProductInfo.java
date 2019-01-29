@@ -33,8 +33,8 @@ public class CustomerTappedProductInfo extends BaseActivity {
         initToolbar();
         toolbar.setTitle("Tapped Product");
 
-        ParseProductInfo p = new ParseProductInfo();
-        p.parseProductData("{\"product\":"+getIntent().getStringExtra("PROD_DATA")+"}", v, this);
+        ParseProductInfo p = new ParseProductInfo(this);
+        p.parseProductData("{\"product\":"+getIntent().getStringExtra("PROD_DATA")+"}", v);
 
         mIsCustomer = true;
     }

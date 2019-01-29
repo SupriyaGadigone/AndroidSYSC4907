@@ -5,13 +5,36 @@
               android:orientation="vertical"
               android:paddingTop="@dimen/toolbar_padding">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:id="@+id/layout"
+        android:background="@color/lightPurple">
+
     <ImageView
         android:id="@+id/myimg"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
         android:background="@drawable/ic_account_circle_black_24dp"
         />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_padding"
+        android:text="Username: admin"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_padding"
+        android:text="Password: ***********"/>
 
 
 </LinearLayout>

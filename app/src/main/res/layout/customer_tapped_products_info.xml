@@ -26,20 +26,6 @@
         android:layout_marginBottom="@dimen/default_padding"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="@dimen/title_size"
-        android:text="NFC ID: "/>
-
-    <TextView
-        android:id="@+id/nfc_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/title_size"
-        android:layout_marginBottom="@dimen/default_padding"
-        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -83,8 +69,8 @@
         android:id="@+id/ingredients_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ingredients"
-        android:layout_marginBottom="@dimen/default_padding"/>
+        android:layout_marginBottom="@dimen/toolbar_padding"
+        android:text="Ingredients"/>
 
 
 
