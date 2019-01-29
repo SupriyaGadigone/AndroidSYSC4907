@@ -81,7 +81,6 @@ public class ParseProductInfo implements OnResponseCallback{
     }
 
     public void populateIngredientsData(String response) {
-        Log.e(TAG,"populateIngredientsData: "+ response);
         try {
             JSONArray jsonData = new JSONArray(response);
             for (int i = 0; i < jsonData.length(); i++) {
@@ -96,7 +95,6 @@ public class ParseProductInfo implements OnResponseCallback{
     }
 
     private void parseInfo(JSONArray ingrJsonData) throws JSONException {
-        Log.e(TAG,"Here3");
         isChecked = new boolean[ingridentsData.size()];
         mSelectedItems = new ArrayList<>();
         Arrays.fill(isChecked, Boolean.FALSE);
@@ -118,7 +116,6 @@ public class ParseProductInfo implements OnResponseCallback{
 
     private void setIngredientsButton() {
         final AlertDialog.Builder mIngridientsBuilder = new AlertDialog.Builder(mContext);
-        Log.e(TAG,"Here4");
         final String[] items = ingridentsData.keySet().toArray(new String[ingridentsData.keySet().size()]);
 
         mIngredientsButton.setOnClickListener(new View.OnClickListener() {

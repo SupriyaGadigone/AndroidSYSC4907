@@ -33,6 +33,10 @@ public class CustomerTappedProductInfo extends BaseActivity {
         initToolbar();
         toolbar.setTitle("Tapped Product");
 
+        if(getIntent().getStringExtra("FLAG")!=null){
+            v.findViewById(R.id.warning_text).setVisibility(View.VISIBLE);
+        }
+
         ParseProductInfo p = new ParseProductInfo(this);
         p.parseProductData("{\"product\":"+getIntent().getStringExtra("PROD_DATA")+"}", v);
 

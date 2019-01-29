@@ -29,6 +29,7 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
     private ListView allProductsList;
 
     private String mCustOrgBtn;
+    private Map<String, String> flagsMap;
 
 
     @Override
@@ -40,7 +41,7 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
         productData = new HashMap<>();
         emptyProd = findViewById(R.id.empty_products);
         //TODO: once empty, write to NFC option should show up
-
+        flagsMap = new HashMap<>();
 
         allProductsList = findViewById(R.id.listProducts);
 
@@ -76,9 +77,11 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
                 Intent intent;
                 if (mIsCustomer) {
                     intent = new Intent(UserLandingPage.this, CustomerTappedProductInfo.class);
-
-                  Log.e(TAG,"um leggo: "+ (String)productData.get(productData.keySet().toArray()[position]));
-                  intent.putExtra("PROD_DATA",(String)productData.get(productData.keySet().toArray()[position]));
+                    String prodName = (String) productData.keySet().toArray()[position];
+                    if(flagsMap.containsKey(prodName.replace(" ", ""))){
+                        intent.putExtra("FLAG", "0");
+                    }
+                    intent.putExtra("PROD_DATA", (String) productData.get(productData.keySet().toArray()[position]));
 
                 } else {
                     intent = new Intent(UserLandingPage.this, OrgWriteEditProduct.class);
@@ -98,17 +101,33 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
                 JSONObject productJsonObj = new JSONObject(response);
                 response = productJsonObj.getString("TappedProducts");
                 productData.put("flag", productJsonObj.getString("flag"));
+
+
+                String flags = productJsonObj.getString("flag");
+                String[] flagsArrayindex = flags.split(",");
+                Log.e(TAG, "Flag size: " + flags.length());
+                for (int i = 0; i < flagsArrayindex.length; i++) {
+                    String str = flagsArrayindex[i].replace("'", "");
+                    String str2 = str.replace(" ", "");
+                    Log.e(TAG, "str: " + str2);
+                    flagsMap.put(str2, "");
+                }
             }
             JSONArray jsonData = new JSONArray(response);
             for (int i = 0; i < jsonData.length(); i++) {
                 JSONObject productJsonObj = new JSONObject(jsonData.get(i).toString());
                 productData.put(productJsonObj.getString("name"), productJsonObj.toString());
             }
-            OrgAllProductsListAdapter adapter = new OrgAllProductsListAdapter(UserLandingPage.this, productData, mIsCustomer);
+
+            OrgAllProductsListAdapter adapter = new OrgAllProductsListAdapter(UserLandingPage.this, productData, mIsCustomer, flagsMap);
             if (productData.size() == 0) {
                 emptyProd.setVisibility(View.VISIBLE);
             }
             allProductsList.setAdapter(adapter);
+
+
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

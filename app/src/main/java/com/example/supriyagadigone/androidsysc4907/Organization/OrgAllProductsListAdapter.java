@@ -26,25 +26,11 @@ public class OrgAllProductsListAdapter extends BaseAdapter {
     private boolean mIsCustomer;
     private Map<String, String> flagsMap;
 
-    public OrgAllProductsListAdapter(Context context, Map<String,String> prodData, boolean mIsCustomer) {
+    public OrgAllProductsListAdapter(Context context, Map<String,String> prodData, boolean mIsCustomer,  Map<String, String> flagsMap) {
         this.context = context;
         this.productData = prodData;
         this.mIsCustomer = mIsCustomer;
-
-        if(mIsCustomer) {
-            flagsMap = new HashMap<>();
-
-
-            String flags = prodData.get("flag");
-            String[] flagsArrayindex = flags.split(",");
-            Log.e(TAG, "Flag size: " + flags.length());
-            for (int i = 0; i < flagsArrayindex.length; i++) {
-                String str = flagsArrayindex[i].replace("'", "");
-                String str2 = str.replace(" ", "");
-                Log.e(TAG, "str: " + str2);
-                flagsMap.put(str2, "");
-            }
-        }
+        this.flagsMap = flagsMap;
 
     }
 

@@ -73,5 +73,17 @@
         android:text="Ingredients"/>
 
 
+    <TextView
+        android:id="@+id/warning_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/title_size"
+        android:text="Warning! This product contains a ingredient you marked as restricted"
+        android:visibility="gone"
+        android:gravity="center"
+        android:background="@color/lightRed"/>
+
+
 
 </LinearLayout>
