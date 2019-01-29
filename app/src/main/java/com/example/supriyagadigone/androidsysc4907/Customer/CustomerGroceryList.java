@@ -13,9 +13,13 @@ import com.example.supriyagadigone.androidsysc4907.OnResponseCallback;
 import com.example.supriyagadigone.androidsysc4907.R;
 import com.example.supriyagadigone.androidsysc4907.RequestHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
-public class CustomerGroceryList extends BaseActivity implements OnResponseCallback {
+public class CustomerGroceryList extends BaseActivity {
 
     private static String TAG = "CustomerGroceryList";
 
@@ -41,7 +45,9 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
         lvItems.setAdapter(itemsAdapter);
 
 
-        listData = getIntent().getStringExtra("IS_WRITE");
+        listData = getIntent().getStringExtra("LIST_DATA");
+
+        parseListData(listData);
         Log.e(TAG, "********: "+listData);
 
         setupListViewListener();
@@ -70,12 +76,17 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
                 });
     }
 
-    private void parseShoppingListsData(String response){
-
+    private void parseListData(String response){
+        try {
+            JSONArray shoppingListsArray = new JSONArray(response);
+            for(int i = 0; i < shoppingListsArray.length(); i++) {
+                JSONObject shoppingList = new JSONObject(shoppingListsArray.get(i).toString());
+                items.add(shoppingList.getString("name"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void onResponse(String endpoint, String response) {
-        Log.e(TAG, response);
-        parseShoppingListsData(response);
-    }
+
 }

@@ -83,22 +83,12 @@ public class CustomerGroceryListPage extends BaseActivity implements OnResponseC
 
 
     private void setupListViewGroceryList() {
-
-        for (String name: shopListsData.keySet()){
-
-            String key =name;
-            String value = shopListsData.get(name);
-            Log.e(TAG, key + " *:* " + value);
-
-
-        }
-
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
                     Intent myIntent = new Intent(view.getContext(), CustomerGroceryList.class);
-                    //myIntent.putExtra("LIST_DATA",shopListsData.get(shopListsData.keySet().toArray()[position]));
+                    myIntent.putExtra("LIST_DATA",shopListsData.get(shopListsData.keySet().toArray()[position]));
                     startActivityForResult(myIntent, 0);
                 }});
     }
@@ -110,7 +100,7 @@ public class CustomerGroceryListPage extends BaseActivity implements OnResponseC
             for(int i = 0; i < shoppingListsArray.length(); i++) {
                 JSONObject shoppingList = new JSONObject(shoppingListsArray.get(i).toString());
                 items.add(shoppingList.getString("name"));
-                shopListsData.put(shoppingList.getString("name"), shoppingList.toString());
+                shopListsData.put(shoppingList.getString("name"), shoppingList.getString("product"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
