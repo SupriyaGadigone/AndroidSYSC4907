@@ -31,7 +31,6 @@ public class CustomerGroceryListPage extends BaseActivity implements OnResponseC
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
     private Map<String,String> shopListsData;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +42,10 @@ public class CustomerGroceryListPage extends BaseActivity implements OnResponseC
         shopListsData = new HashMap<>();
         lvItems = findViewById(R.id.listItems);
 
+        items = new ArrayList<String>();
+        itemsAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, items);
+        lvItems.setAdapter(itemsAdapter);
 
         RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
                 this,
@@ -54,6 +57,8 @@ public class CustomerGroceryListPage extends BaseActivity implements OnResponseC
     public void onAddItem(View v) {
         EditText etNewItem = findViewById(R.id.addListEditText);
         String itemText = etNewItem.getText().toString();
+        Log.e(TAG, "itemText: "+itemText);
+        Log.e(TAG, "itemsAdapter: "+itemsAdapter.toString());
         itemsAdapter.add(itemText);
         etNewItem.setText("");
 
@@ -61,7 +66,7 @@ public class CustomerGroceryListPage extends BaseActivity implements OnResponseC
         Random rand = new Random();
         int num = rand.nextInt(50) + 1;
         listInfo.put("list_id",num+"");
-        listInfo.put("new_name",etNewItem.getText().toString());
+        listInfo.put("new_name",itemText);
         RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
                 this,
                 "shoppingList", listInfo);
@@ -88,13 +93,15 @@ public class CustomerGroceryListPage extends BaseActivity implements OnResponseC
                                     int position, long id) {
 
                     Intent myIntent = new Intent(view.getContext(), CustomerGroceryList.class);
-                    myIntent.putExtra("LIST_DATA",shopListsData.get(shopListsData.keySet().toArray()[position]));
+                String selectedFromList = (String)(lvItems.getItemAtPosition(position));//TODO: change everythign to this
+                if(shopListsData.get(selectedFromList)!=null){
+                        myIntent.putExtra("LIST_DATA",shopListsData.get(selectedFromList));
+                    }
                     startActivityForResult(myIntent, 0);
                 }});
     }
 
     private void parseShoppingListsData(String response) {
-        items = new ArrayList<String>();
         try {
             JSONArray shoppingListsArray = new JSONArray(response);
             for(int i = 0; i < shoppingListsArray.length(); i++) {
@@ -105,10 +112,6 @@ public class CustomerGroceryListPage extends BaseActivity implements OnResponseC
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        itemsAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, items);
-        lvItems.setAdapter(itemsAdapter);
 
         setupListViewGroceryList();
 

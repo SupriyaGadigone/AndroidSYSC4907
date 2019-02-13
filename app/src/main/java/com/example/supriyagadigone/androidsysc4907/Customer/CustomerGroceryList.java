@@ -44,11 +44,12 @@ public class CustomerGroceryList extends BaseActivity {
                 android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
 
-
         listData = getIntent().getStringExtra("LIST_DATA");
 
-        parseListData(listData);
-        Log.e(TAG, "********: "+listData);
+        if(listData!=null) {
+            parseListData(listData);
+            Log.e(TAG, "********: " + listData);
+        }
 
         setupListViewListener();
     }

@@ -1,7 +1,9 @@
 package com.example.supriyagadigone.androidsysc4907;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,6 +38,29 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.products_list, frameLayout);
+
+
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setTitle("Example");
+        String[] types = {"By Zip", "By Category"};
+        b.setItems(types, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+                switch(which){
+                    case 0:
+                        break;
+                    case 1:
+
+                        break;
+                }
+            }
+
+        });
+
+        b.show();
 
 
         productData = new HashMap<>();
@@ -100,7 +125,7 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
             if (mIsCustomer) {
                 JSONObject productJsonObj = new JSONObject(response);
                 response = productJsonObj.getString("TappedProducts");
-                productData.put("flag", productJsonObj.getString("flag"));
+               // productData.put("flag", productJsonObj.getString("flag"));
 
 
                 String flags = productJsonObj.getString("flag");
