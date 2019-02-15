@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -18,8 +20,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class CustomerGroceryList extends BaseActivity {
+public class CustomerGroceryList extends BaseActivity implements OnResponseCallback {
 
     private static String TAG = "CustomerGroceryList";
 
@@ -27,6 +30,7 @@ public class CustomerGroceryList extends BaseActivity {
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
     private String  listData;
+    private Button mAddBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,10 @@ public class CustomerGroceryList extends BaseActivity {
         mIsCustomer = true;
 
         lvItems = findViewById(R.id.listItems);
+
+        mAddBtn = findViewById(R.id.btnAddItem);
+        mAddBtn.setEnabled(false);
+
         items = new ArrayList<String>();
         itemsAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, items);
@@ -51,14 +59,22 @@ public class CustomerGroceryList extends BaseActivity {
             Log.e(TAG, "********: " + listData);
         }
 
+        RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
+                this,
+                "productList");
+
         setupListViewListener();
     }
 
     public void onAddItem(View v) {
-        EditText etNewItem = (EditText) findViewById(R.id.addGroceryItemEditText);
-        String itemText = etNewItem.getText().toString();
+        AutoCompleteTextView productSearch = findViewById(R.id.addGroceryItemView);
+        String itemText = productSearch.getText().toString();
         itemsAdapter.add(itemText);
-        etNewItem.setText("");
+        productSearch.setText("");
+    }
+
+    public void onSaveList(View v){
+             
     }
 
     // Attaches a long click listener to the listview
@@ -89,5 +105,32 @@ public class CustomerGroceryList extends BaseActivity {
         }
     }
 
+    private void setSearchData(String response){
+        Log.e(TAG, response);
+        List<String> productsList = new ArrayList<String>();
+        try {
+        JSONArray jsonData = new JSONArray(response);
+            try {
+                for (int i = 0; i < jsonData.length(); i++) {
 
+                    JSONObject productJsonObj = new JSONObject(jsonData.get(i).toString());
+                    productsList.add(productJsonObj.getString("name"));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, productsList);
+        AutoCompleteTextView textView = (AutoCompleteTextView)
+                findViewById(R.id.addGroceryItemView);
+        textView.setAdapter(adapter);
+        mAddBtn.setEnabled(true);
+    }
+    public void onResponse(String endpoint, String response) {
+        setSearchData(response);
+    }
 }

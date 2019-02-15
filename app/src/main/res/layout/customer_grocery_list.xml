@@ -5,8 +5,8 @@
                 android:paddingTop="@dimen/toolbar_padding">
 
 
-    <EditText
-        android:id="@+id/addGroceryItemEditText"
+    <AutoCompleteTextView
+        android:id="@+id/addGroceryItemView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Item name"
@@ -32,5 +32,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@id/btnAddItem" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save List"
+        android:layout_alignParentBottom="true"
+        android:onClick="onSaveList"/>
 
 </RelativeLayout>
