@@ -80,7 +80,7 @@ public class QuizActivity extends AppCompatActivity implements OnResponseCallbac
     }
 
     private void parseQuizValues(String response){
-        Log.e(TAG, response);
+       // Log.e(TAG, response);
 
         try {
             JSONObject quizData = new JSONObject(response);
@@ -101,7 +101,7 @@ public class QuizActivity extends AppCompatActivity implements OnResponseCallbac
 
 
     public void populateIngredientsData(String response) {
-        Log.e(TAG,"Here2");
+    //    Log.e(TAG,"Here2");
         try {
             JSONArray jsonData = new JSONArray(response);
             for (int i = 0; i < jsonData.length(); i++) {
@@ -160,7 +160,7 @@ public class QuizActivity extends AppCompatActivity implements OnResponseCallbac
 
             s += mSelectedItems.get(i) + ",";
         }
-        Log.e(TAG, "string"+s);
+       // Log.e(TAG, "string"+s);
         Map<String, String> customRest = new HashMap<String, String>();
         customRest.put("restrict", s);
 

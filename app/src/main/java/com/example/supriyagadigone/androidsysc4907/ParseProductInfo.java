@@ -42,9 +42,7 @@ public class ParseProductInfo implements OnResponseCallback{
     }
 
     public View parseProductData(String response, View v) {
-        Log.e(TAG, response);
-
-
+        Log.e(TAG, "parseProductData(): " + response);
         TextView mProductNameView = v.findViewById(R.id.product_name);
         //TextView mNfcIdView = v.findViewById(R.id.nfc_id);
         TextView  mProductIdView = v.findViewById(R.id.product_id);
@@ -77,6 +75,8 @@ public class ParseProductInfo implements OnResponseCallback{
 
 
     public void onResponse(String endpoint, String response) {
+        Log.e(TAG, response);
+        Log.e(TAG, endpoint);
         populateIngredientsData(response);
     }
 

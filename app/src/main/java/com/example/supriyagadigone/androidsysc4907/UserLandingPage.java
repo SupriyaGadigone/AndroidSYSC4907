@@ -40,27 +40,27 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
         getLayoutInflater().inflate(R.layout.products_list, frameLayout);
 
 
-        AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setTitle("Example");
-        String[] types = {"By Zip", "By Category"};
-        b.setItems(types, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                dialog.dismiss();
-                switch(which){
-                    case 0:
-                        break;
-                    case 1:
-
-                        break;
-                }
-            }
-
-        });
-
-        b.show();
+//        AlertDialog.Builder b = new AlertDialog.Builder(this);
+//        b.setTitle("Example");
+//        String[] types = {"By Zip", "By Category"};
+//        b.setItems(types, new DialogInterface.OnClickListener() {
+//
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//                dialog.dismiss();
+//                switch(which){
+//                    case 0:
+//                        break;
+//                    case 1:
+//
+//                        break;
+//                }
+//            }
+//
+//        });
+//
+//        b.show();
 
 
         productData = new HashMap<>();
@@ -130,11 +130,11 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
 
                 String flags = productJsonObj.getString("flag");
                 String[] flagsArrayindex = flags.split(",");
-                Log.e(TAG, "Flag size: " + flags.length());
+              //  Log.e(TAG, "Flag size: " + flags.length());
                 for (int i = 0; i < flagsArrayindex.length; i++) {
                     String str = flagsArrayindex[i].replace("'", "");
                     String str2 = str.replace(" ", "");
-                    Log.e(TAG, "str: " + str2);
+               //     Log.e(TAG, "str: " + str2);
                     flagsMap.put(str2, "");
                 }
             }

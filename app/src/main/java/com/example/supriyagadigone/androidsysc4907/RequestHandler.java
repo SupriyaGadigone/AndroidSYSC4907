@@ -115,11 +115,11 @@ public class RequestHandler extends AppCompatActivity {
                     }
                 }
 
-                for (Map.Entry<String, String> entry : data.entrySet()) {
-                    if (entry.getKey() != null && entry.getValue() != null) {
-                        Log.e(TAG, entry.getKey() +" *:* "+entry.getValue());
-                    }
-                }
+//                for (Map.Entry<String, String> entry : data.entrySet()) {
+//                    if (entry.getKey() != null && entry.getValue() != null) {
+//                        Log.e(TAG, entry.getKey() +" *:* "+entry.getValue());
+//                    }
+//                }
 
                 return data;
             }
@@ -161,8 +161,8 @@ public class RequestHandler extends AppCompatActivity {
         return new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e(TAG,"Endpoint: " + mEndpoint );
-                Log.e(TAG,"Response: " + response );
+              //  Log.e(TAG,"Endpoint: " + mEndpoint );
+              //  Log.e(TAG,"Response: " + response );
                 onResponseCallback.onResponse(mEndpoint, response);
                 //TODO: Can make everything JsonArray here to avoid a for loop
 

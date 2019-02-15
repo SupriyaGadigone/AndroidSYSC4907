@@ -298,7 +298,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
                     "tag", prodInfo);
 
         }
-        Log.e(TAG, "STR: "+s);
+       // Log.e(TAG, "STR: "+s);
     }
 
 
@@ -328,7 +328,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
 
         }
 
-        Log.e(TAG, "Endpoint: "+endpoint+" : "+ response);
+      //  Log.e(TAG, "Endpoint: "+endpoint+" : "+ response);
     }
 
 
