@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity implements OnResponseCallba
     private EditText mPassword;
     private String mCustOrgBtn;
     private Context mContext;
+    private String mToken;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,15 +70,43 @@ public class LoginActivity extends AppCompatActivity implements OnResponseCallba
 
 
     public void onResponse(String endpoint, String response) {
-        setUserInfo(response);
+
+        if(endpoint.equals("login")) {
+            setUserInfo(response);
+        }
+
+        if(endpoint.equals("restrictions")) {
+            setUserActivity(response);
+        }
+
     }
 
     private void setUserInfo(String response) {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        try {
+            JSONObject jObject = new JSONObject(response);
+            mToken = jObject.getString("token");
+            editor.putString("token", "token " + mToken);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        editor.apply();
+
+        RequestHandler mRequestHandlerm = new RequestHandler(mContext,
+                LoginActivity.this,
+                "restrictions");
+
+    }
+
+    private void setUserActivity(String response){
+        Log.e(TAG, response);
         Intent intent;
         if (mCustOrgBtn.equals("0")) {
-            SharedPreferences prefs = getSharedPreferences(QuizActivity.PREFS_NAME, Context.MODE_PRIVATE);
-            Map<String, String> allEntries = (Map<String, String>) prefs.getAll();
-            if (allEntries.entrySet().size() == 0 || allEntries.entrySet() == null) {
+            if (response.equals("[]")) {
                 intent = new Intent(LoginActivity.this, QuizActivity.class);
             } else {
                 intent = new Intent(LoginActivity.this, UserLandingPage.class);
@@ -85,20 +114,6 @@ public class LoginActivity extends AppCompatActivity implements OnResponseCallba
         } else {
             intent = new Intent(LoginActivity.this, UserLandingPage.class);
         }
-
-        SharedPreferences prefs = getApplicationContext().getSharedPreferences(LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        try {
-            JSONObject jObject = new JSONObject(response);
-            String token = jObject.getString("token");
-            editor.putString("token", "token " + token);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        editor.apply();
 
         intent.putExtra("BTN_PRESSED", mCustOrgBtn);
         startActivity(intent);
