@@ -107,7 +107,7 @@ public class CustomerGroceryListPage extends BaseActivity implements OnResponseC
             for(int i = 0; i < shoppingListsArray.length(); i++) {
                 JSONObject shoppingList = new JSONObject(shoppingListsArray.get(i).toString());
                 items.add(shoppingList.getString("name"));
-                shopListsData.put(shoppingList.getString("name"), shoppingList.getString("product"));
+                shopListsData.put(shoppingList.getString("name"), shoppingList.toString());
             }
         } catch (JSONException e) {
             e.printStackTrace();

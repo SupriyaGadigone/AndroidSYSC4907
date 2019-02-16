@@ -107,7 +107,7 @@ public class RequestHandler extends AppCompatActivity {
                     }
                 }
 
-                if ((mEndpoint.equals("login") || mEndpoint.equals("shoppingList") || mEndpoint.equals("restrictions")) && data != null) {
+                if ((mEndpoint.equals("login") || mEndpoint.equals("shoppingList") || mEndpoint.equals("restrictions"))  && data != null) {
                     for (Map.Entry<String, String> entry : prodInfo.entrySet()) {
                         if (entry.getKey() != null && entry.getValue() != null) {
                             data.put(entry.getKey(), entry.getValue());
@@ -115,11 +115,12 @@ public class RequestHandler extends AppCompatActivity {
                     }
                 }
 
-//                for (Map.Entry<String, String> entry : data.entrySet()) {
-//                    if (entry.getKey() != null && entry.getValue() != null) {
-//                        Log.e(TAG, entry.getKey() +" *:* "+entry.getValue());
-//                    }
-//                }
+                for (Map.Entry<String, String> entry : data.entrySet()) {
+                    Log.e(TAG, mEndpoint);
+                    if (entry.getKey() != null && entry.getValue() != null) {
+                        Log.e(TAG, entry.getKey() +" *:* "+entry.getValue());
+                    }
+                }
 
                 return data;
             }

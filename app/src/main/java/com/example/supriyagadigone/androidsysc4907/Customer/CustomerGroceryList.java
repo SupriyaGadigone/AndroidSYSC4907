@@ -1,5 +1,6 @@
 package com.example.supriyagadigone.androidsysc4907.Customer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +21,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerGroceryList extends BaseActivity implements OnResponseCallback {
 
@@ -31,6 +34,9 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
     private ListView lvItems;
     private String  listData;
     private Button mAddBtn;
+    private Map<String, String> productData;
+    private String listId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +54,16 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
         mAddBtn.setEnabled(false);
 
         items = new ArrayList<String>();
+        productData = new HashMap<>();
         itemsAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
 
         listData = getIntent().getStringExtra("LIST_DATA");
+        Log.e(TAG, "********: " + listData);
 
         if(listData!=null) {
             parseListData(listData);
-            Log.e(TAG, "********: " + listData);
         }
 
         RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
@@ -71,10 +78,14 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
         String itemText = productSearch.getText().toString();
         itemsAdapter.add(itemText);
         productSearch.setText("");
-    }
 
-    public void onSaveList(View v){
-             
+        Map<String, String> prodInfo = new HashMap<>();
+
+        prodInfo.put("list_id", listId);
+        prodInfo.put("product", productData.get(itemText));
+        RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
+                this,
+                "shoppingList", prodInfo);
     }
 
     // Attaches a long click listener to the listview
@@ -94,11 +105,15 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
     }
 
     private void parseListData(String response){
+        Log.e(TAG, "parseListData(): "+ response);
         try {
-            JSONArray shoppingListsArray = new JSONArray(response);
+            JSONObject shoppingListData = new JSONObject(response);
+            JSONArray shoppingListsArray = new JSONArray(shoppingListData.getString("product"));
+            listId = shoppingListData.getString("list_id");
             for(int i = 0; i < shoppingListsArray.length(); i++) {
                 JSONObject shoppingList = new JSONObject(shoppingListsArray.get(i).toString());
                 items.add(shoppingList.getString("name"));
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -108,6 +123,7 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
     private void setSearchData(String response){
         Log.e(TAG, response);
         List<String> productsList = new ArrayList<String>();
+        //List<String> productsList = new ArrayList<String>();
         try {
         JSONArray jsonData = new JSONArray(response);
             try {
@@ -115,6 +131,7 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
 
                     JSONObject productJsonObj = new JSONObject(jsonData.get(i).toString());
                     productsList.add(productJsonObj.getString("name"));
+                    productData.put(productJsonObj.getString("name"), productJsonObj.getString("product_id"));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -132,5 +149,11 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
     }
     public void onResponse(String endpoint, String response) {
         setSearchData(response);
+    }
+
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this, CustomerGroceryListPage.class);
+        startActivity(intent);
     }
 }
