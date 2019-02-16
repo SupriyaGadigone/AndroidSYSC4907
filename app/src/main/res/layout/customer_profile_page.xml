@@ -70,5 +70,12 @@
         android:text="Choose Ingredients"
         android:layout_marginBottom="@dimen/default_padding"/>
 
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_marginBottom="@dimen/default_padding"/>
+
 </LinearLayout>
 </ScrollView>

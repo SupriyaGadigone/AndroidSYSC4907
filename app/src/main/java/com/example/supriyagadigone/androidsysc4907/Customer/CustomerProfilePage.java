@@ -1,12 +1,15 @@
 package com.example.supriyagadigone.androidsysc4907.Customer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.supriyagadigone.androidsysc4907.BaseActivity;
@@ -33,6 +36,10 @@ public class CustomerProfilePage extends BaseActivity implements OnResponseCallb
     private final String TAG = "CustomerProfilePage";
     private QuizAdapter mQuizAdapter;
     private RecyclerView mRecyclerView;
+    private RestrictionsQuizHandler mRestrictionsQuizHandler;
+    private Button mIngredientsButton;
+    private ArrayList<Integer> mSelectedItems;
+    private Button mSaveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,8 @@ public class CustomerProfilePage extends BaseActivity implements OnResponseCallb
         mIsCustomer = true;
 
         mRecyclerView = findViewById(R.id.recycler_View);
+        mRestrictionsQuizHandler = new RestrictionsQuizHandler();
+        mIngredientsButton = findViewById(R.id.ingredients_list);
 
         Map<String, String> quizData = new HashMap<String, String>();
         quizData.put("flag", "tags");
@@ -50,8 +59,21 @@ public class CustomerProfilePage extends BaseActivity implements OnResponseCallb
         RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
                 CustomerProfilePage.this,
                 "restrictions", quizData);
+
+        RequestHandler mRequestHandlerm1 = new RequestHandler(getApplicationContext(),
+                this,
+                "ingredientList");
+
         List<RestrictionsData> restDataList = Arrays.asList(RestrictionsData.values());
 
+
+        mSaveButton = findViewById(R.id.save_button);
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                setRestrictions();
+
+            }
+        });
 
         //TODO: add edit quiz
     }
@@ -60,6 +82,10 @@ public class CustomerProfilePage extends BaseActivity implements OnResponseCallb
 
         if (endpoint.equals("restrictions")) {
             parseQuizValues(response);
+        }
+
+        if (endpoint.equals("ingredientList")) {
+            mRestrictionsQuizHandler.populateIngredientsData(response, this, mIngredientsButton);
         }
 
     }
@@ -81,5 +107,21 @@ public class CustomerProfilePage extends BaseActivity implements OnResponseCallb
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mQuizAdapter);
+    }
+
+    private void setRestrictions(){
+        String s = "";
+        mSelectedItems = mRestrictionsQuizHandler.getSelectedItems();
+        for (int i = 0; i <= mSelectedItems.size() - 1; i++) {
+
+            s += mSelectedItems.get(i) + ",";
+        }
+        // Log.e(TAG, "string"+s);
+        Map<String, String> customRest = new HashMap<String, String>();
+        customRest.put("restrict", s);
+
+        RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
+                this,
+                "restrictions", customRest);
     }
 }

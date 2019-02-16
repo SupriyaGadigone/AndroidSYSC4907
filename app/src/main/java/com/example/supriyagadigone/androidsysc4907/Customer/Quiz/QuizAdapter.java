@@ -72,7 +72,8 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
         }
 
         public void onResponse(String endpoint, String response) {
-
+            Log.e(TAG, "ENDPOINT: " + endpoint);
+            Log.e(TAG, "response: " + response);
         }
     }
 }

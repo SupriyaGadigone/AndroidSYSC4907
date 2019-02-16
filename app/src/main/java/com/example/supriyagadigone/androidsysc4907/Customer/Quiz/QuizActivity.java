@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.supriyagadigone.androidsysc4907.Customer.RestrictionsQuizHandler;
 import com.example.supriyagadigone.androidsysc4907.LoginActivity;
 import com.example.supriyagadigone.androidsysc4907.OnResponseCallback;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgWriteEditProduct;
@@ -44,6 +45,7 @@ public class QuizActivity extends AppCompatActivity implements OnResponseCallbac
     private ArrayList<Integer> mSelectedItems;
     private AlertDialog.Builder mIngridientsBuilder;
     private Button mIngredientsButton;
+    private RestrictionsQuizHandler mRestrictionsQuizHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class QuizActivity extends AppCompatActivity implements OnResponseCallbac
         ingridentsData = new HashMap<>();
         mIngridientsBuilder = new AlertDialog.Builder(QuizActivity.this);
         mIngredientsButton = findViewById(R.id.ingredients_list);
+        mRestrictionsQuizHandler = new RestrictionsQuizHandler();
 
         Map<String, String> quizData = new HashMap<String, String>();
         quizData.put("flag", "tags");
@@ -99,63 +102,9 @@ public class QuizActivity extends AppCompatActivity implements OnResponseCallbac
         mRecyclerView.setAdapter(mQuizAdapter);
     }
 
-
-    public void populateIngredientsData(String response) {
-    //    Log.e(TAG,"Here2");
-        try {
-            JSONArray jsonData = new JSONArray(response);
-            for (int i = 0; i < jsonData.length(); i++) {
-                JSONObject productJsonObj = new JSONObject(jsonData.get(i).toString());
-                ingridentsData.put(productJsonObj.getString("name"), productJsonObj.getString("ingredient_id"));
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        setIngredientsButton();
-
-    }
-
-
-    private void setIngredientsButton() {
-        mSelectedItems = new ArrayList<>();
-        final String[] items = ingridentsData.keySet().toArray(new String[ingridentsData.keySet().size()]);
-
-        mIngredientsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mIngridientsBuilder.setTitle("Choose Ingredients");
-                mIngridientsBuilder
-                        .setMultiChoiceItems(items, null,
-                                new DialogInterface.OnMultiChoiceClickListener() {
-                                    public void onClick(DialogInterface dialogInterface, int i, boolean isChecked) {
-
-                                        if (isChecked) {
-                                            // If the user checked the item, add it to the selected items
-                                            mSelectedItems.add(Integer.parseInt(ingridentsData.get(ingridentsData.keySet().toArray()[i])));
-                                        } else if (mSelectedItems.contains(ingridentsData.get(ingridentsData.keySet().toArray()[i]))) {
-                                            // Else, if the item is already in the array, remove it
-                                            mSelectedItems.remove(Integer.parseInt(ingridentsData.get(ingridentsData.keySet().toArray()[i])));
-                                        }
-                                    }
-
-                                })
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                            }
-                        });
-
-                AlertDialog mDialog = mIngridientsBuilder.create();
-                mDialog.show();
-            }
-        });
-
-    }
-
     private void setRestrictions(){
         String s = "";
+        mSelectedItems = mRestrictionsQuizHandler.getSelectedItems();
         for (int i = 0; i <= mSelectedItems.size() - 1; i++) {
 
             s += mSelectedItems.get(i) + ",";
@@ -176,7 +125,7 @@ public class QuizActivity extends AppCompatActivity implements OnResponseCallbac
         }
 
         if (endpoint.equals("ingredientList")) {
-            populateIngredientsData(response);
+            mRestrictionsQuizHandler.populateIngredientsData(response, this, mIngredientsButton);
         }
 
     }
