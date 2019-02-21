@@ -23,15 +23,12 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
 
     private String[] mRestrictionsDataValues;
     private Context mContext;
-    private SharedPreferences prefs;
 
 
     public QuizAdapter (String[] restrictionsDataValues, Context context){
         this.mRestrictionsDataValues = restrictionsDataValues;
         this.mContext = context;
-
-        prefs = mContext.getSharedPreferences(QuizActivity.PREFS_NAME, Context.MODE_PRIVATE);
-    }
+        }
 
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.quiz_list_row, parent, false);
@@ -61,7 +58,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
         public void onClick(View view) {
             Map<String, String> quizData = new HashMap<String, String>();
             Log.e(TAG,"blah: "+ mRestrictionsDataValues[getAdapterPosition()]);
-            quizData.put("restrict", mRestrictionsDataValues[getAdapterPosition()]);
+            quizData.put("restrict", mRestrictionsDataValues[getAdapterPosition()].replaceAll(" ",""));
 
             RequestHandler mRequestHandlerm = new RequestHandler(mContext,
                     this,
