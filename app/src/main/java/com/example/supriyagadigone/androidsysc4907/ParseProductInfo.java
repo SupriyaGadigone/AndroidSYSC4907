@@ -23,21 +23,17 @@ public class ParseProductInfo implements OnResponseCallback{
 
     private static String TAG = "ParseProductInfo";
     private Context mContext;
-    private Map<String,String> ingridentsData;
     private boolean[] isChecked;
     private ArrayList<Integer> mSelectedItems;
     private Button mIngredientsButton;
     String[] tagItems;
 
 
+    private JSONArray mIngrJsonData;
+
     public ParseProductInfo(Context c){
         this.mContext = c;
-        RequestHandler mRequestHandlerm1 = new RequestHandler(mContext,
-                this,
-                "ingredientList");
-        ingridentsData = new HashMap<>();
-        mIngredientsButton = new Button(c);
-        mIngredientsButton.findViewById(R.id.ingredients_list);
+        mIngrJsonData = new JSONArray();
         tagItems = new String[]{"MEAT","PRODUCE","ORGANIC","DELI","SEAFOOD", "GROCERY", "BAKERY"};
     }
 
@@ -47,24 +43,25 @@ public class ParseProductInfo implements OnResponseCallback{
         //TextView mNfcIdView = v.findViewById(R.id.nfc_id);
         TextView  mProductIdView = v.findViewById(R.id.product_id);
         Spinner mTags = v.findViewById(R.id.tags_options);
+        mIngredientsButton = v.findViewById(R.id.ingredients_list);
 
         try {
-           // JSONArray prdArray = new JSONArray(response);
             JSONObject productJsonObj = new JSONObject(response);
             JSONObject productJsonObj2 = new JSONObject(productJsonObj.getString("product"));
             mProductNameView.setText(productJsonObj2.getString("name"));
-           // mNfcIdView.setText(productJsonObj.getString("nfc_id"));
             mProductIdView.setText(productJsonObj2.getString("product_id"));
 
-            parseInfo(productJsonObj2.getJSONArray("ingredient"));
-            //TODO: get list of tags
+            mIngrJsonData = productJsonObj2.getJSONArray("ingredient");
+
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, tagItems);
             mTags.setAdapter(adapter);
             int spinnerPosition = adapter.getPosition(productJsonObj2.getString("tags"));
             mTags.setSelection(spinnerPosition);
 
-
+            RequestHandler mRequestHandlerm1 = new RequestHandler(mContext,
+                    this,
+                    "ingredientList");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -75,18 +72,19 @@ public class ParseProductInfo implements OnResponseCallback{
 
 
     public void onResponse(String endpoint, String response) {
-        Log.e(TAG, response);
-        Log.e(TAG, endpoint);
         populateIngredientsData(response);
     }
 
     public void populateIngredientsData(String response) {
+
+        Map<String,String> ingridentsData = new HashMap<>();
         try {
             JSONArray jsonData = new JSONArray(response);
             for (int i = 0; i < jsonData.length(); i++) {
                 JSONObject productJsonObj = new JSONObject(jsonData.get(i).toString());
                 ingridentsData.put(productJsonObj.getString("name"), productJsonObj.getString("ingredient_id"));
             }
+            parseInfo(mIngrJsonData, ingridentsData);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -94,7 +92,7 @@ public class ParseProductInfo implements OnResponseCallback{
 
     }
 
-    private void parseInfo(JSONArray ingrJsonData) throws JSONException {
+    private void parseInfo(JSONArray ingrJsonData, Map<String,String>  ingridentsData) throws JSONException {
         isChecked = new boolean[ingridentsData.size()];
         mSelectedItems = new ArrayList<>();
         Arrays.fill(isChecked, Boolean.FALSE);
@@ -111,10 +109,10 @@ public class ParseProductInfo implements OnResponseCallback{
             }
 
         }
-        setIngredientsButton();
+        setIngredientsButton(ingridentsData);
     }
 
-    private void setIngredientsButton() {
+    private void setIngredientsButton(final Map<String,String> ingridentsData) {
         final AlertDialog.Builder mIngridientsBuilder = new AlertDialog.Builder(mContext);
         final String[] items = ingridentsData.keySet().toArray(new String[ingridentsData.keySet().size()]);
 
