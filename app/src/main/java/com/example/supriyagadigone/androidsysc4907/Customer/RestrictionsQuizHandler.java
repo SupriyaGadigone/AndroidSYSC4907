@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -23,8 +24,10 @@ import java.util.Map;
 
 public class RestrictionsQuizHandler {
 
+    private static String TAG = "RestrictionsQuizHandler";
 
     private Map<String, String> ingridentsData;
+    private Map<String, String> storeData;
     private ArrayList<Integer> mSelectedItems = new ArrayList<>();
 
 
@@ -43,6 +46,43 @@ public class RestrictionsQuizHandler {
         }
 
          setIngredientsButton(c, mIngredientsButton);
+    }
+
+    public void populateStoreData(String response, Context c, Button storeButton){
+        storeData = new HashMap<>();
+        try {
+            JSONArray jsonData = new JSONArray(response);
+            for (int i = 0; i < jsonData.length(); i++) {
+                JSONObject productJsonObj = new JSONObject(jsonData.get(i).toString());
+                storeData.put(productJsonObj.getString("name"), productJsonObj.getString("org_id"));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        final String[] items = storeData.keySet().toArray(new String[storeData.keySet().size()]);
+        final AlertDialog.Builder mStoreBuilder = new AlertDialog.Builder(c);
+
+        storeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStoreBuilder.setTitle("Choose Store");
+                mStoreBuilder
+                        .setSingleChoiceItems(items, 0, null)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.dismiss();
+                                int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+                                Log.e(TAG, "slected pos: "+selectedPosition);
+                             }
+                        });
+
+                AlertDialog mDialog = mStoreBuilder.create();
+                mDialog.show();
+            }
+        });
+
     }
 
 

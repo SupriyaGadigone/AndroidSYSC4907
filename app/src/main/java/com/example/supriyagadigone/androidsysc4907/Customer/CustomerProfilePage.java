@@ -38,6 +38,7 @@ public class CustomerProfilePage extends BaseActivity implements OnResponseCallb
     private RecyclerView mRecyclerView;
     private RestrictionsQuizHandler mRestrictionsQuizHandler;
     private Button mIngredientsButton;
+    private Button mStoreButton;
     private ArrayList<Integer> mSelectedItems;
     private Button mSaveButton;
 
@@ -52,6 +53,7 @@ public class CustomerProfilePage extends BaseActivity implements OnResponseCallb
         mRecyclerView = findViewById(R.id.recycler_View);
         mRestrictionsQuizHandler = new RestrictionsQuizHandler();
         mIngredientsButton = findViewById(R.id.ingredients_list);
+        mStoreButton = findViewById(R.id.store_list);
 
         Map<String, String> quizData = new HashMap<String, String>();
         quizData.put("flag", "tags");
@@ -63,6 +65,10 @@ public class CustomerProfilePage extends BaseActivity implements OnResponseCallb
         RequestHandler mRequestHandlerm1 = new RequestHandler(getApplicationContext(),
                 this,
                 "ingredientList");
+
+        RequestHandler mRequestHandlerm2 = new RequestHandler(getApplicationContext(),
+                this,
+                "organization");
 
         List<RestrictionsData> restDataList = Arrays.asList(RestrictionsData.values());
 
@@ -85,6 +91,10 @@ public class CustomerProfilePage extends BaseActivity implements OnResponseCallb
 
         if (endpoint.equals("ingredientList")) {
             mRestrictionsQuizHandler.populateIngredientsData(response, this, mIngredientsButton);
+        }
+
+        if (endpoint.equals("organization")) {
+            mRestrictionsQuizHandler.populateStoreData(response, this, mStoreButton);
         }
 
     }

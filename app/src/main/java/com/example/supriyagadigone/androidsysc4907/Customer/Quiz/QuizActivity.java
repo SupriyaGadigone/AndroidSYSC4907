@@ -1,36 +1,27 @@
 package com.example.supriyagadigone.androidsysc4907.Customer.Quiz;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.supriyagadigone.androidsysc4907.Customer.RestrictionsQuizHandler;
-import com.example.supriyagadigone.androidsysc4907.LoginActivity;
 import com.example.supriyagadigone.androidsysc4907.OnResponseCallback;
-import com.example.supriyagadigone.androidsysc4907.Organization.OrgWriteEditProduct;
 import com.example.supriyagadigone.androidsysc4907.R;
 import com.example.supriyagadigone.androidsysc4907.RequestHandler;
 import com.example.supriyagadigone.androidsysc4907.UserLandingPage;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.security.auth.login.LoginException;
 
 public class QuizActivity extends AppCompatActivity implements OnResponseCallback {
 
@@ -45,6 +36,7 @@ public class QuizActivity extends AppCompatActivity implements OnResponseCallbac
     private ArrayList<Integer> mSelectedItems;
     private AlertDialog.Builder mIngridientsBuilder;
     private Button mIngredientsButton;
+    private Button mStoreButton;
     private RestrictionsQuizHandler mRestrictionsQuizHandler;
 
     @Override
@@ -56,6 +48,7 @@ public class QuizActivity extends AppCompatActivity implements OnResponseCallbac
         ingridentsData = new HashMap<>();
         mIngridientsBuilder = new AlertDialog.Builder(QuizActivity.this);
         mIngredientsButton = findViewById(R.id.ingredients_list);
+        mStoreButton = findViewById(R.id.store_list);
         mRestrictionsQuizHandler = new RestrictionsQuizHandler();
 
         Map<String, String> quizData = new HashMap<String, String>();
@@ -69,6 +62,10 @@ public class QuizActivity extends AppCompatActivity implements OnResponseCallbac
         RequestHandler mRequestHandlerm1 = new RequestHandler(getApplicationContext(),
                 this,
                 "ingredientList");
+
+        RequestHandler mRequestHandlerm2 = new RequestHandler(getApplicationContext(),
+                this,
+                "organization");
 
         mNextButton = findViewById(R.id.next_button);
         mNextButton.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +123,10 @@ public class QuizActivity extends AppCompatActivity implements OnResponseCallbac
 
         if (endpoint.equals("ingredientList")) {
             mRestrictionsQuizHandler.populateIngredientsData(response, this, mIngredientsButton);
+        }
+
+        if (endpoint.equals("organization")) {
+            mRestrictionsQuizHandler.populateStoreData(response, this, mStoreButton);
         }
 
     }
