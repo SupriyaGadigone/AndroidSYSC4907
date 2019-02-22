@@ -75,8 +75,6 @@ public class CustomerProfilePage extends BaseActivity implements OnResponseCallb
             }
         });
 
-        //TODO: add edit quiz
-        //TODO: fix the default resstrictions - Quiz Adapter
     }
 
     public void onResponse(String endpoint, String response) {

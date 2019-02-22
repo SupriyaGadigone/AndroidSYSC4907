@@ -1,7 +1,9 @@
 package com.example.supriyagadigone.androidsysc4907;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -38,6 +40,10 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.products_list, frameLayout);
+
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(LoginActivity.LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
 
 
 //        AlertDialog.Builder b = new AlertDialog.Builder(this);
@@ -84,6 +90,9 @@ public class UserLandingPage extends BaseActivity implements OnResponseCallback 
             setData("All Products", "productList");
             mIsCustomer = false;
         }
+
+        editor.putString("customer", mCustOrgBtn);
+        editor.apply();
 
 
     }

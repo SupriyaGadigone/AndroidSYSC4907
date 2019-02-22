@@ -2,6 +2,7 @@ package com.example.supriyagadigone.androidsysc4907;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -17,6 +18,8 @@ import com.example.supriyagadigone.androidsysc4907.Customer.CustomerGroceryListP
 import com.example.supriyagadigone.androidsysc4907.Customer.CustomerProfilePage;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgWriteEditProduct;
 import com.example.supriyagadigone.androidsysc4907.Organization.OrgProfilePage;
+
+import java.util.Map;
 
 public class BaseActivity extends AppCompatActivity {
     public Toolbar toolbar;
@@ -54,6 +57,17 @@ public class BaseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         navigationView = findViewById(R.id.nav_view);
+
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(LoginActivity.LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
+        Map<String, String> allEntries = (Map<String, String>) prefs.getAll();
+
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            if (entry.getKey().equals("customer")) {
+                 if(entry.getValue().toString().equals("0")){
+                     mIsCustomer = true;
+                 }
+            }
+        }
 
         if(mIsCustomer){
             navigationView.inflateMenu(R.menu.customer_drawer_contents);
