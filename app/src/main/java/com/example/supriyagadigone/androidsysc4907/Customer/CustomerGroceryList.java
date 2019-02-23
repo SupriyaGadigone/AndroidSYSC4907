@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -231,22 +232,27 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
         try {
             JSONObject jsonData = new JSONObject(response);
             String urlStr = jsonData.getString("map");
+            //Bitmap bmp = BitmapFactory.decodeStream(getContentResolver().openInputStream(url));
+            AlertDialog.Builder alertadd = new AlertDialog.Builder(CustomerGroceryList.this);
+            LayoutInflater factory = LayoutInflater.from(CustomerGroceryList.this);
+            final View view = factory.inflate(R.layout.map, null);
+            //ImageView img = view.findViewById(R.id.dialog_imageview);
+
             Log.e(TAG, "url: "+ urlStr);
+            new DownloadImageTask((ImageView) view.findViewById(R.id.dialog_imageview))
+                    .execute(urlStr);
+
 //            URI url = new URI(urlStr);
-//            Bitmap bmp = BitmapFactory.decodeStream(getContentResolver().openInputStream(url));
-//            AlertDialog.Builder alertadd = new AlertDialog.Builder(CustomerGroceryList.this);
-//            LayoutInflater factory = LayoutInflater.from(CustomerGroceryList.this);
-//            final View view = factory.inflate(R.layout.map, null);
-//            ImageView img = view.findViewById(R.id.dialog_imageview);
+//
 //            img.setImageBitmap(bmp);
-//            alertadd.setView(view);
-//            alertadd.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                public void onClick(DialogInterface dlg, int pos) {
-//
-//                }
-//            });
-//
-//            alertadd.show();
+            alertadd.setView(view);
+            alertadd.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dlg, int pos) {
+
+                }
+            });
+
+            alertadd.show();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -288,5 +294,30 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
         RequestHandler mRequestHandlerm2 = new RequestHandler(getApplicationContext(),
                 this,
                 "shoppingList", storeProdInfo);
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }
