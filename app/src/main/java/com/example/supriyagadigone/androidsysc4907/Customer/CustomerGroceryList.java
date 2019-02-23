@@ -1,16 +1,23 @@
 package com.example.supriyagadigone.androidsysc4907.Customer;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.supriyagadigone.androidsysc4907.BaseActivity;
@@ -23,6 +30,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +51,7 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
     private String listData;
     private Button mAddBtn;
     private Map<String, String> productData;
+    private Map<String, String> nfcProductData;
     private String listId;
     private String orgId;
 
@@ -63,7 +77,6 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
         lvItems.setAdapter(itemsAdapter);
 
         listData = getIntent().getStringExtra("LIST_DATA");
-        Log.e(TAG, "********: " + listData);
 
         if (listData != null) {
             parseListData(listData);
@@ -116,19 +129,22 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String value = lvItems.getItemAtPosition(position).toString();
-                if(lvItems.getItemAtPosition(position).toString().contains("IN STOCK")){
-                    Map<String, String> prodInfo = new HashMap<>();
-//                    prodInfo.put("nfc_id", );
-//                    RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
-//                            CustomerGroceryList.this,
-//                            "product", prodInfo);
+                if(lvItems.getItemAtPosition(position).toString().contains("IN STORE")){
+
+                    String val = value.replace(" [IN STORE]","");
+                    String nfcid = nfcProductData.get(val);
+                    Log.e(TAG,".. "+nfcid);
+                    Map<String, String> prodnfcInfo = new HashMap<>();
+                    prodnfcInfo.put("nfc_id", nfcid);
+                    RequestHandler mRequestHandlerm = new RequestHandler(getApplicationContext(),
+                            CustomerGroceryList.this,
+                            "product", prodnfcInfo);
                 }
             }
         });
     }
 
     private void parseListData(String response) {
-        //    Log.e(TAG, "parseListData(): "+ response);
         try {
             JSONObject shoppingListData = new JSONObject(response);
             JSONArray shoppingListsArray = new JSONArray(shoppingListData.getString("product"));
@@ -143,7 +159,6 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
     }
 
     private void setSearchData(String response) {
-        Log.e(TAG, response);
         List<String> productsList = new ArrayList<String>();
         //List<String> productsList = new ArrayList<String>();
         try {
@@ -182,23 +197,25 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
             setSearchData(response);
         }
 
+        if(endpoint.equals("product")){
+            showMap(response);
+        }
+
     }
 
     private void setNfcData(String response) {
-        Log.e(TAG, "setNfcData: " + response);
         try {
             JSONArray jsonData = new JSONArray(response);
 
+            nfcProductData = new HashMap<>();
             for (int i = 0; i < jsonData.length(); i++) {
                 JSONObject prodData = new JSONObject(jsonData.get(i).toString());
                 JSONObject productnfcData = new JSONObject(prodData.getString("product"));
-                Log.e(TAG, "Name: " + productnfcData.getString("name"));
-                Log.e(TAG, "nfcid: " + prodData.getString("nfc_id"));
                 if (!(prodData.getString("nfc_id").equals("False"))) {
-                    Log.e(TAG, "nameee: " + items.indexOf(productnfcData.getString("name")));
                     int index = items.indexOf(productnfcData.getString("name"));
                     items.remove(index);
                     items.add(productnfcData.getString("name") + " [IN STORE]");
+                    nfcProductData.put(productnfcData.getString("name"),prodData.getString("nfc_id"));
                     //TODO: add nfc id to a map and then on click get it, make a new one each time
                 }
             }
@@ -206,6 +223,41 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
+    }
+
+    private void showMap(String response) {
+        try {
+            JSONObject jsonData = new JSONObject(response);
+            String urlStr = jsonData.getString("map");
+            Log.e(TAG, "url: "+ urlStr);
+//            URI url = new URI(urlStr);
+//            Bitmap bmp = BitmapFactory.decodeStream(getContentResolver().openInputStream(url));
+//            AlertDialog.Builder alertadd = new AlertDialog.Builder(CustomerGroceryList.this);
+//            LayoutInflater factory = LayoutInflater.from(CustomerGroceryList.this);
+//            final View view = factory.inflate(R.layout.map, null);
+//            ImageView img = view.findViewById(R.id.dialog_imageview);
+//            img.setImageBitmap(bmp);
+//            alertadd.setView(view);
+//            alertadd.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dlg, int pos) {
+//
+//                }
+//            });
+//
+//            alertadd.show();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+    }
+// catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
 
 
     }
@@ -222,7 +274,6 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
         Map<String, String> allEntries = (Map<String, String>) prefs.getAll();
 
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            Log.e(TAG, "key: " + entry.getKey());
             if (entry.getKey().equals("org_id")) {
                 storeProdInfo.put("org_id", entry.getValue().toString());
                 orgId = entry.getValue().toString();
