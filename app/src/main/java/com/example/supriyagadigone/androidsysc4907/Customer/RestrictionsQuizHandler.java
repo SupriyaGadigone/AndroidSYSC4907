@@ -3,6 +3,7 @@ package com.example.supriyagadigone.androidsysc4907.Customer;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.Button;
 
 import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizActivity;
 import com.example.supriyagadigone.androidsysc4907.Customer.Quiz.QuizAdapter;
+import com.example.supriyagadigone.androidsysc4907.LoginActivity;
 import com.example.supriyagadigone.androidsysc4907.RequestHandler;
 
 import org.json.JSONArray;
@@ -64,6 +66,9 @@ public class RestrictionsQuizHandler {
         final String[] items = storeData.keySet().toArray(new String[storeData.keySet().size()]);
         final AlertDialog.Builder mStoreBuilder = new AlertDialog.Builder(c);
 
+        SharedPreferences prefs = c.getSharedPreferences(LoginActivity.LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = prefs.edit();
+
         storeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,6 +80,9 @@ public class RestrictionsQuizHandler {
                                 dialog.dismiss();
                                 int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
                                 Log.e(TAG, "slected pos: "+selectedPosition);
+                                Log.e(TAG, "slected pos2: "+storeData.get(items[selectedPosition]));
+                                editor.putString("org_id", "" + storeData.get(items[selectedPosition]));
+                                editor.apply();
                              }
                         });
 
@@ -82,6 +90,8 @@ public class RestrictionsQuizHandler {
                 mDialog.show();
             }
         });
+
+
 
     }
 

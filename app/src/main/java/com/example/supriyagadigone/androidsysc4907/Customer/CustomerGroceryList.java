@@ -1,6 +1,8 @@
 package com.example.supriyagadigone.androidsysc4907.Customer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.supriyagadigone.androidsysc4907.BaseActivity;
+import com.example.supriyagadigone.androidsysc4907.LoginActivity;
 import com.example.supriyagadigone.androidsysc4907.OnResponseCallback;
 import com.example.supriyagadigone.androidsysc4907.R;
 import com.example.supriyagadigone.androidsysc4907.RequestHandler;
@@ -105,7 +108,7 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
     }
 
     private void parseListData(String response){
-        Log.e(TAG, "parseListData(): "+ response);
+    //    Log.e(TAG, "parseListData(): "+ response);
         try {
             JSONObject shoppingListData = new JSONObject(response);
             JSONArray shoppingListsArray = new JSONArray(shoppingListData.getString("product"));
@@ -128,7 +131,6 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
         JSONArray jsonData = new JSONArray(response);
             try {
                 for (int i = 0; i < jsonData.length(); i++) {
-
                     JSONObject productJsonObj = new JSONObject(jsonData.get(i).toString());
                     productsList.add(productJsonObj.getString("name"));
                     productData.put(productJsonObj.getString("name"), productJsonObj.getString("product_id"));
@@ -146,14 +148,74 @@ public class CustomerGroceryList extends BaseActivity implements OnResponseCallb
                 findViewById(R.id.addGroceryItemView);
         textView.setAdapter(adapter);
         mAddBtn.setEnabled(true);
+
+        setListNfcData();
+
     }
     public void onResponse(String endpoint, String response) {
-        setSearchData(response);
+        Log.e(TAG,"respp: "+ response);
+        if (endpoint.equals("shoppingList") && response!=""){
+            setNfcData(response);
+        }
+
+        if(endpoint.equals("productList")){
+            setSearchData(response);
+        }
+
+    }
+
+    private void setNfcData(String response){
+        Log.e(TAG,"setNfcData: "+ response);
+        try {
+            JSONArray jsonData = new JSONArray(response);
+
+            for(int i = 0; i < jsonData.length(); i++){
+                JSONObject prodData = new JSONObject(jsonData.get(i).toString());
+                JSONObject productnfcData = new JSONObject(prodData.getString("product"));
+                Log.e(TAG, "Name: "+ productnfcData.getString("name"));
+                Log.e(TAG, "nfcid: "+ prodData.getString("nfc_id"));
+                if(!(prodData.getString("nfc_id").equals("False"))){
+                    Log.e(TAG, "nameee: "+items.indexOf(productnfcData.getString("name")));
+                    int index = items.indexOf(productnfcData.getString("name"));
+                    items.remove(index);
+                    items.add(productnfcData.getString("name") + " [IN STOCK]");
+                }
+            }
+            itemsAdapter.notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     public void onBackPressed()
     {
         Intent intent = new Intent(this, CustomerGroceryListPage.class);
         startActivity(intent);
+    }
+
+    private void setListNfcData(){
+        Map<String, String> storeProdInfo = new HashMap<>();
+
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(LoginActivity.LOGIN_PREFS_NAME, Context.MODE_PRIVATE);
+        Map<String, String> allEntries = (Map<String, String>) prefs.getAll();
+
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            Log.e(TAG,"key: " +entry.getKey());
+            if (entry.getKey().equals("org_id")) {
+                storeProdInfo.put("org_id", entry.getValue().toString());
+            } else
+            {
+                storeProdInfo.put("org_id", "001");
+            }
+        }
+
+        storeProdInfo.put("list_id", listId);
+
+        RequestHandler mRequestHandlerm2 = new RequestHandler(getApplicationContext(),
+                this,
+                "shoppingList", storeProdInfo);
     }
 }

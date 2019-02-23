@@ -115,6 +115,8 @@ public class RequestHandler extends AppCompatActivity {
                     }
                 }
 
+                Log.e(TAG,"*Endpoint:* " + mEndpoint );
+
                 for (Map.Entry<String, String> entry : data.entrySet()) {
                     Log.e(TAG, mEndpoint);
                     if (entry.getKey() != null && entry.getValue() != null) {
@@ -162,8 +164,8 @@ public class RequestHandler extends AppCompatActivity {
         return new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e(TAG,"Endpoint: " + mEndpoint );
-                Log.e(TAG,"Response: " + response );
+              //  Log.e(TAG,"Endpoint: " + mEndpoint );
+               // Log.e(TAG,"Response: " + response );
                 onResponseCallback.onResponse(mEndpoint, response);
                 //TODO: Can make everything JsonArray here to avoid a for loop
 
