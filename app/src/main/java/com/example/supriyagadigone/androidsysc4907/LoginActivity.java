@@ -109,8 +109,7 @@ public class LoginActivity extends AppCompatActivity implements OnResponseCallba
             if (response.equals("[]")) {
                 intent = new Intent(LoginActivity.this, QuizActivity.class);
             } else {
-               // intent = new Intent(LoginActivity.this, UserLandingPage.class);
-                intent = new Intent(LoginActivity.this, QuizActivity.class);
+                intent = new Intent(LoginActivity.this, UserLandingPage.class);
             }
         } else {
             intent = new Intent(LoginActivity.this, UserLandingPage.class);
