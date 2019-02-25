@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.supriyagadigone.androidsysc4907.BaseActivity;
@@ -47,7 +48,8 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     private EditText mProductNameView;
     private EditText mNfcIdView;
     private EditText mProductIdView;
-    private Spinner mTags; //TODO:get list of tags
+    private Spinner mTags;
+    private Spinner mLocations;
     private Button mIngredientsButton;
     private Button mSaveButton;
     private Map<String, String> ingridentsData;
@@ -61,6 +63,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     private String mNewNfcID;
     boolean mWriteMode = false;
     private String[] tagItems;
+    private String[] locations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +84,20 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
         mProductNameView = findViewById(R.id.product_name);
         mProductIdView = findViewById(R.id.product_id);
         mTags = findViewById(R.id.tags_options);
+        mLocations = findViewById(R.id.location_options);
         mIngredientsButton = findViewById(R.id.ingredients_list);
         mSaveButton = findViewById(R.id.save_button);
         mIngridientsBuilder = new AlertDialog.Builder(OrgWriteEditProduct.this);
         tagItems = new String[]{"MEAT","PRODUCE","ORGANIC","DELI","SEAFOOD", "GROCERY", "BAKERY"};
+        locations = new String[]{"A1","A2","A3","A4",
+                                "B1", "B2", "B3", "B4",
+                                "C1", "C2", "C3", "C4"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, tagItems);
         mTags.setAdapter(adapter);
+
+        ArrayAdapter<String> locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locations);
+        mLocations.setAdapter(locationAdapter);
 
         if (mIsWrite.equals("1")) {
             mProductData = getIntent().getStringExtra("PROD_DATA");
@@ -111,6 +121,9 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
 
                 int spinnerPosition = adapter.getPosition(productJsonObj.getString("tags"));
                 mTags.setSelection(spinnerPosition);
+                mLocations.setVisibility(View.GONE);
+                TextView locTV = findViewById(R.id.location_tv);
+                locTV.setVisibility(View.GONE);
 
 
             } catch (JSONException e) {
@@ -293,6 +306,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
             prodInfo.put("nfc_id", mNewNfcID);
             prodInfo.put("flag", "new");
             prodInfo.put("product_id", mProductIdView.getText().toString());
+            prodInfo.put("grid", mLocations.getSelectedItem().toString());
             RequestHandler mRequestHandlerm2 = new RequestHandler(getApplicationContext(),
                     this,
                     "tag", prodInfo);
