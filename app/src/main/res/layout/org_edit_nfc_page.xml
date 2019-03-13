@@ -86,12 +86,20 @@
         android:layout_marginBottom="@dimen/default_padding"/>
 
     <Button
+        android:id="@+id/attach_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal|center"
+        android:text="Attach to NFC"/>
+
+    <Button
         android:id="@+id/save_button"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal|center"
-        android:layout_marginTop="60dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal|center|bottom"
         android:text="Save"/>
+
+
 
 
 </LinearLayout>

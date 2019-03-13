@@ -52,6 +52,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     private Spinner mLocations;
     private Button mIngredientsButton;
     private Button mSaveButton;
+    private Button mAttachButton;
     private Map<String, String> ingridentsData;
     private boolean[] isChecked;
     private Map<String, String> prodInfo;
@@ -87,6 +88,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
         mLocations = findViewById(R.id.location_options);
         mIngredientsButton = findViewById(R.id.ingredients_list);
         mSaveButton = findViewById(R.id.save_button);
+        mAttachButton = findViewById(R.id.attach_button);
         mIngridientsBuilder = new AlertDialog.Builder(OrgWriteEditProduct.this);
         tagItems = new String[]{"MEAT","PRODUCE","ORGANIC","DELI","SEAFOOD", "GROCERY", "BAKERY"};
         locations = new String[]{"A1","A2","A3","A4",
@@ -98,6 +100,10 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
 
         ArrayAdapter<String> locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locations);
         mLocations.setAdapter(locationAdapter);
+
+        RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
+                this,
+                "newNFCId");
 
         if (mIsWrite.equals("1")) {
             mProductData = getIntent().getStringExtra("PROD_DATA");
@@ -136,6 +142,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
             toolbar.setTitle("Write to NFC");
             // mNfcIdView.setVisibility(View.GONE);
             mSaveButton.setText("Write to NFC");
+            mAttachButton.setVisibility(View.GONE);
             // findViewById(R.id.nfc_id_tv).setVisibility(View.GONE);
             RequestHandler mRequestHandlerm1 = new RequestHandler(getApplicationContext(),
                     this,
@@ -143,9 +150,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
 //            RequestHandler mRequestHandlerm2 = new RequestHandler(getApplicationContext(),
 //                    this,
 //                    "product", prodInfo);
-            RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
-                    this,
-                    "newNFCId");
+
         }
 
 
@@ -175,11 +180,33 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
                 }
             }
         });
+
+        mAttachButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attachToNFC();
+
+                mNfcAdapter = NfcAdapter.getDefaultAdapter(OrgWriteEditProduct.this);
+                mNfcPendingIntent = PendingIntent.getActivity(OrgWriteEditProduct.this, 0,
+                        new Intent(OrgWriteEditProduct.this, OrgWriteEditProduct.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+
+                enableTagWriteMode();
+
+                new AlertDialog.Builder(OrgWriteEditProduct.this).setTitle("Touch tag to write")
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                disableTagWriteMode();
+                            }
+
+                        }).create().show();
+
+            }
+        });
     }
 
 
     public void parseProductData(String response) {
-        Log.e(TAG,"Here1");
         try {
             JSONObject productJsonObj = new JSONObject(response);
 
@@ -197,7 +224,6 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     }
 
     public void populateIngredientsData(String response) {
-        Log.e(TAG,"Here2");
         try {
             JSONArray jsonData = new JSONArray(response);
             for (int i = 0; i < jsonData.length(); i++) {
@@ -218,7 +244,6 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     }
 
     private void parseInfo(JSONArray ingrJsonData) throws JSONException {
-        Log.e(TAG,"Here3");
         isChecked = new boolean[ingridentsData.size()];
         mSelectedItems = new ArrayList<>();
         Arrays.fill(isChecked, Boolean.FALSE);
@@ -239,7 +264,6 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     }
 
     private void setIngredientsButton() {
-        Log.e(TAG,"Here4");
         final String[] items = ingridentsData.keySet().toArray(new String[ingridentsData.keySet().size()]);
 
         mIngredientsButton.setOnClickListener(new View.OnClickListener() {
@@ -276,7 +300,6 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     }
 
     private void editProductInfo() {
-        Log.e(TAG,"Here5");
         prodInfo = new HashMap<>();
         prodInfo.put("new_name", mProductNameView.getText().toString());
         String s = "";
@@ -301,24 +324,27 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
             RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
                     this,
                     "newProduct", prodInfo);
-
-            prodInfo = new HashMap<>();
-            prodInfo.put("nfc_id", mNewNfcID);
-            prodInfo.put("flag", "new");
-            prodInfo.put("product_id", mProductIdView.getText().toString());
-            prodInfo.put("grid", mLocations.getSelectedItem().toString());
-            RequestHandler mRequestHandlerm2 = new RequestHandler(getApplicationContext(),
-                    this,
-                    "tag", prodInfo);
+            attachToNFC();
 
         }
-       // Log.e(TAG, "STR: "+s);
+    }
+
+    private void attachToNFC(){
+        prodInfo = new HashMap<>();
+        prodInfo.put("nfc_id", mNewNfcID);
+        prodInfo.put("flag", "new");
+        prodInfo.put("product_id", mProductIdView.getText().toString());
+        prodInfo.put("grid", mLocations.getSelectedItem().toString());
+        RequestHandler mRequestHandlerm2 = new RequestHandler(getApplicationContext(),
+                this,
+                "tag", prodInfo);
     }
 
 
     public void onResponse(String endpoint, String response) {
         if (endpoint.equals("product")) {
             parseProductData(response);
+            Log.e(TAG, "PARSE**: "+response);
         }
 
         if (endpoint.equals("ingredientList")) {
@@ -368,7 +394,10 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
                 Toast.makeText(this, "Success in writing to the NFC tag", Toast.LENGTH_LONG)
                         .show();
 
-                editProductInfo();
+                if(mIsWrite.equals("0")){
+                    editProductInfo();
+                }
+
             }
         }
     }
