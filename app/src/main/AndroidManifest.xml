@@ -37,6 +37,7 @@
         <activity android:name=".Customer.CustomerGroceryList"></activity>
         <activity android:name=".Customer.CustomerTappedProductInfo"></activity>
         <activity android:name=".UserLandingPage"></activity>
+        <activity android:name=".Register"></activity>
     </application>
 
 </manifest>

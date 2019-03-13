@@ -51,7 +51,7 @@ public class RequestHandler extends AppCompatActivity {
         this.prodInfo = prodInfo;
         this.mNfcId = prodInfo.get("nfc_id");
 
-        if (endpoint.equals("login")) {
+        if (endpoint.equals("login")||endpoint.equals("newUser")) {
             getRequestLogin();
         } else{
             getRequestResponseWithParams();

@@ -44,6 +44,8 @@ public class LoginActivity extends AppCompatActivity implements OnResponseCallba
         mContext = getApplicationContext();
 
         loginButtonClicked();
+        registerButtonClicked();
+
 
     }
 
@@ -66,6 +68,21 @@ public class LoginActivity extends AppCompatActivity implements OnResponseCallba
                     }
                 }
         );
+    }
+
+    private void registerButtonClicked(){
+        Button registerButton = findViewById(R.id.registerButton);
+        registerButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(LoginActivity.this, Register.class);
+                        intent.putExtra("BTN_PRESSED", mCustOrgBtn);
+                        startActivity(intent);
+                    }
+                }
+        );
+
     }
 
 
