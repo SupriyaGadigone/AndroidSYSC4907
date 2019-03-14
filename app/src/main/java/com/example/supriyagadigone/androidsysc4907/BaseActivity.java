@@ -100,6 +100,10 @@ public class BaseActivity extends AppCompatActivity {
                             allCust.putExtra("BTN_PRESSED", "0");
                             startActivity(allCust);
                             break;
+                        case R.id.logout:
+                            startActivity(new Intent(BaseActivity.this, MainActivity.class));
+                            break;
+
                     }
                     return false;
                 }
@@ -137,6 +141,9 @@ public class BaseActivity extends AppCompatActivity {
                             Intent allProd = new Intent(BaseActivity.this, UserLandingPage.class);
                             allProd.putExtra("BTN_PRESSED", "1");
                             startActivity(allProd);
+                            break;
+                        case R.id.logout:
+                            startActivity(new Intent(BaseActivity.this, MainActivity.class));
                             break;
                     }
                     return false;
