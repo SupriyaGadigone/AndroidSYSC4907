@@ -66,6 +66,8 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     private String[] tagItems;
     private String[] locations;
 
+    private String mProductNameOld;
+    private String mProductIdOld;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,10 +92,10 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
         mSaveButton = findViewById(R.id.save_button);
         mAttachButton = findViewById(R.id.attach_button);
         mIngridientsBuilder = new AlertDialog.Builder(OrgWriteEditProduct.this);
-        tagItems = new String[]{"MEAT","PRODUCE","ORGANIC","DELI","SEAFOOD", "GROCERY", "BAKERY"};
-        locations = new String[]{"A1","A2","A3","A4",
-                                "B1", "B2", "B3", "B4",
-                                "C1", "C2", "C3", "C4"};
+        tagItems = new String[]{"MEAT", "PRODUCE", "ORGANIC", "DELI", "SEAFOOD", "GROCERY", "BAKERY"};
+        locations = new String[]{"A1", "A2", "A3", "A4",
+                "B1", "B2", "B3", "B4",
+                "C1", "C2", "C3", "C4"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, tagItems);
         mTags.setAdapter(adapter);
@@ -106,6 +108,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
                 "newNFCId");
 
         if (mIsWrite.equals("1")) {
+
             mProductData = getIntent().getStringExtra("PROD_DATA");
             Log.e(TAG, "PROD_DATA: " + mProductData);
 
@@ -113,10 +116,15 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
                 //JSONArray productJsonArr = new JSONArray(mProductData);
 
                 JSONObject productJsonObj = new JSONObject(mProductData);
-                mProductNameView.setText(productJsonObj.getString("name"));
-                toolbar.setTitle("Edit: " + productJsonObj.getString("name"));
-                mProductIdView.setText(productJsonObj.getString("product_id"));
-                prodInfo.put("product_id", productJsonObj.getString("product_id"));
+
+                mProductNameOld = productJsonObj.getString("name");
+                mProductNameView.setText(mProductNameOld);
+
+
+                mProductIdOld = productJsonObj.getString("product_id");
+                toolbar.setTitle("Edit: " + mProductNameOld);
+                mProductIdView.setText(mProductIdOld);
+                prodInfo.put("product_id", mProductIdOld);
                 // mNfcIdView.setVisibility(View.GONE);
                 RequestHandler mRequestHandlerm1 = new RequestHandler(getApplicationContext(),
                         this,
@@ -152,8 +160,6 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
 //                    "product", prodInfo);
 
         }
-
-
 
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
@@ -301,7 +307,6 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
 
     private void editProductInfo() {
         prodInfo = new HashMap<>();
-        prodInfo.put("new_name", mProductNameView.getText().toString());
         String s = "";
         for (int i = 0; i <= mSelectedItems.size() - 1; i++) {
 
@@ -309,15 +314,26 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
         }
         prodInfo.put("new_ingredients", s);
         if (mIsWrite.equals("1")) {
-            //  prodInfo.put("new_nfc_id", mNfcIdView.getText().toString());
-            //  prodInfo.put("new_tags", mTags.getItemAtPosition(0).toString());
+            if (!mProductNameOld.equals(mProductNameView.getText().toString())) {
+                prodInfo.put("new_name", mProductNameView.getText().toString());
+            } else {
+                prodInfo.put("name", mProductNameOld);
+            }
+
+            if (!mProductIdOld.equals(mProductIdView.getText().toString())) {
+                prodInfo.put("new_product_id", mProductIdView.getText().toString());
+            } else {
+                prodInfo.put("product_id", mProductIdOld);
+            }
+
             prodInfo.put("new_tags", mTags.getSelectedItem().toString());
-            prodInfo.put("new_product_id", mProductIdView.getText().toString());
+
             RequestHandler mRequestHandlerm3 = new RequestHandler(getApplicationContext(),
                     this,
                     "newProduct", prodInfo);
         } else {
             //TODO: FIX
+            prodInfo.put("new_name", mProductNameView.getText().toString());
             prodInfo.put("new_tags", mTags.getSelectedItem().toString());
             prodInfo.put("new_product_id", mProductIdView.getText().toString());
 
@@ -329,7 +345,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
         }
     }
 
-    private void attachToNFC(){
+    private void attachToNFC() {
         prodInfo = new HashMap<>();
         prodInfo.put("nfc_id", mNewNfcID);
         prodInfo.put("flag", "new");
@@ -344,7 +360,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
     public void onResponse(String endpoint, String response) {
         if (endpoint.equals("product")) {
             parseProductData(response);
-            Log.e(TAG, "PARSE**: "+response);
+            Log.e(TAG, "PARSE**: " + response);
         }
 
         if (endpoint.equals("ingredientList")) {
@@ -368,7 +384,7 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
 
         }
 
-      //  Log.e(TAG, "Endpoint: "+endpoint+" : "+ response);
+        //  Log.e(TAG, "Endpoint: "+endpoint+" : "+ response);
     }
 
 
@@ -389,12 +405,13 @@ public class OrgWriteEditProduct extends BaseActivity implements OnResponseCallb
         // Tag writing mode
         if (mWriteMode && NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
             Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            Log.e(TAG, mNewNfcID + " ****");
             NdefMessage message = createTextMessage(mNewNfcID);
             if (writeTag(message, detectedTag)) {
                 Toast.makeText(this, "Success in writing to the NFC tag", Toast.LENGTH_LONG)
                         .show();
 
-                if(mIsWrite.equals("0")){
+                if (mIsWrite.equals("0")) {
                     editProductInfo();
                 }
 
